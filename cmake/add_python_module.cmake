@@ -54,7 +54,7 @@ function(add_python_module _NAME _ADD_LIB_LIST)
         add_dependencies(build_python_package ${_NAME})
         add_custom_command(TARGET build_python_package
             POST_BUILD
-            COMMAND cp ${${_NAME}_LIBOUTDIR}/${_NAME}${PYTHON_MODULE_EXTENSION} ${CMAKE_BINARY_DIR}/python/MLSandbox.so
+            COMMAND cp ${${_NAME}_LIBOUTDIR}/${_NAME}${PYTHON_MODULE_EXTENSION} ${CMAKE_BINARY_DIR}/python/MLSandbox/MLSandbox.so
             COMMENT "Copying python extension module \"${_NAME}\""
         )
 

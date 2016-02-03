@@ -90,8 +90,8 @@ if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
 
     add_custom_target(build_python_package
         ALL
-        mkdir -p ${CMAKE_BINARY_DIR}/python
-        COMMAND cp -r ${PROJECT_SOURCE_DIR}/python ${CMAKE_BINARY_DIR}/
+        mkdir -p ${CMAKE_BINARY_DIR}/python/MLSandbox
+        COMMAND cp -r ${PROJECT_SOURCE_DIR}/python/* ${CMAKE_BINARY_DIR}/python/MLSandbox
         DEPENDS mlsandbox
         COMMENT "Building python package ..."
     )
