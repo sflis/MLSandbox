@@ -1,0 +1,35 @@
+#!/bin/sh
+if [ -z "$1" ]
+    then # user did not specify a shell
+    NEW_SHELL=$SHELL
+    # only exit if no shell specified on command line *and* env already loaded
+    if [ -n "$I3_SHELL" ]
+	then
+	echo "******************************************************************"
+	echo "You are currently in a shell with an MLSandbox environment loaded."
+	echo "Please exit the current shell and re-run $0 from a clean shell."
+	echo "******************************************************************"
+	echo "Environment not (re)loaded."
+	exit 2
+    fi
+else
+    NEW_SHELL=$1
+    shift
+    ARGV="$@"
+fi
+printf "########################\n"
+printf "#Entering MLSandbox env#\n"
+printf "########################\n"
+
+_I3_SHELL=$NEW_SHELL
+
+PYTHONPATH=@CMAKE_BINARY_DIR@/python:$PYTHONPATH
+
+$NEW_SHELL "$@"
+
+STATUS=$?
+if [ -z "$ARGV" ]
+then
+    echo "Exited MLSandbox Environment."
+fi
+exit $STATUS

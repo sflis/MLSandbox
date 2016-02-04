@@ -124,6 +124,12 @@ if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
 		private/pybindings/NeymanAnalysis.cxx
     )
 
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/cmake/env_shell.sh.in
+        ${CMAKE_BINARY_DIR}/env_shell.sh
+        @ONLY
+    )
+
     # Install the python module "ndhist" via setuptools.
     configure_file(
         ${CMAKE_SOURCE_DIR}/cmake/install_python_package.cmake.in
