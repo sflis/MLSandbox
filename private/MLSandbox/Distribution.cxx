@@ -171,3 +171,13 @@ double Distribution::SampleFromDistr()const{
    }
    return x;
 }
+
+
+//_____________________________________________________________________________
+double Distribution::SampleFromDistrI()const{
+   double x;
+   double y = 0;
+   double cdf_value = rng->Uniform();
+   std::vector<double>::const_iterator up;
+   return  std::upper_bound(cdf_.begin(), cdf_.end(), cdf_value) - cdf_.begin();
+}

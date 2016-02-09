@@ -1,6 +1,7 @@
 #include "MLSandbox/Likelihood.h"
 #include "MLSandbox/Distribution.h"
 #include "MLSandbox/CombinedLikelihood.h"
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include "bindingutils.h"
 // #include "bindingutils.h"
 
@@ -12,9 +13,9 @@ namespace bn = boost::numpy;
 namespace mlsandbox{
     namespace python{
         void set_events(BinnedLikelihood &self,  bp::object obj){
-            bn::ndarray arr = bn::from_object(obj,bn::dtype::get_builtin<double>(), 1, 1, bn::ndarray::CARRAY_RO);
-            std::vector<double> vec(arr.get_size());
-            std::copy((double*)arr.get_data(), (double*)arr.get_data()+arr.get_size(), &vec[0]);
+            bn::ndarray arr = bn::from_object(obj,bn::dtype::get_builtin<uint64_t>(), 1, 1, bn::ndarray::CARRAY_RO);
+            std::vector<uint64_t> vec(arr.get_size());
+            std::copy((uint64_t*)arr.get_data(), (uint64_t*)arr.get_data()+arr.get_size(), &vec[0]);
             self.SetEvents(vec);
         }
 
@@ -107,7 +108,7 @@ void register_Likelihood()
         )
         .def("SampleEvents",&SignalContaminatedLH::SampleEvents)
         .def("EvaluateLLH",&SignalContaminatedLH::EvaluateLLH)
-        .def("EnableHistogramedEvents",&SignalContaminatedLH::EnableHistogramedEvents)
+        //.def("EnableHistogramedEvents",&SignalContaminatedLH::EnableHistogramedEvents)
         ;
 
         bp::enum_<SignalContaminatedLH::Model>("Model")
@@ -132,7 +133,7 @@ void register_Likelihood()
         )
         .def("SampleEvents",&ShapeLikelihood::SampleEvents)
         .def("EvaluateLLH",&ShapeLikelihood::EvaluateLLH)
-        .def("EnableHistogramedEvents",&ShapeLikelihood::EnableHistogramedEvents)
+        //.def("EnableHistogramedEvents",&ShapeLikelihood::EnableHistogramedEvents)
         .def("EnablePoissonSampling",&ShapeLikelihood::EnablePoissonSampling)
         ;
 

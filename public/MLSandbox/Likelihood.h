@@ -30,6 +30,7 @@
 #include <string>
 #include <math.h>
 #include <iostream>
+#include <set>
 uint32_t SuperFastHash (const char * data, int len);
 typedef double(*likelihoodCallback)(double,void*);
 /**class: Likelihood
@@ -78,9 +79,9 @@ public:
 
         BinnedLikelihood(int seed, uint64_t pdfBins):
         nPDFBins_(pdfBins),
-        nTotalLLHEvaluations_(0),
-        eventsHistogramed_(false),
-        histogramEvents_(false)
+        nTotalLLHEvaluations_(0)
+        //eventsHistogramed_(false),
+        //histogramEvents_(false)
         {
             rng_ = boost::shared_ptr<RNG>(new RNG(seed));
             changed_ = true;
@@ -101,34 +102,32 @@ public:
         virtual likelihoodCallback CallBackFcn() = 0;
 
         ///Enables histogramming of events (must set the pdfBins_ variable)
-        virtual bool EnableHistogramedEvents(){histogramEvents_ = false; return false;}
+        //virtual bool EnableHistogramedEvents(){histogramEvents_ = false; return false;}
 
         /// This function is used to set the event sample for the likelihood to be computed.
         /// \param events a vector containing the event sample that the analysis should run on.
-        void SetEvents(std::vector<double> &events){
-            events_ = events;
-            totEvents_ = events_.size();
-            HistogramEvents();
+        void SetEvents(std::vector<uint64_t> &events){
+
+            observation_ = events;
+            //events_ = events;
+            //FIXME: Count the number of events!!!
+            totEvents_ = events.size();
             changed_ = true;
         }
 
-        std::vector<double>& GetEventSample() {return events_;}
-        std::vector<uint64_t>&  GetHistogramedEventSample() {return histEvents_.GetHistogramArray();}
-        uint32_t ChangedHash(){return SuperFastHash((const char*) &histEvents_.GetHistogramArray(),sizeof(uint64_t)*histEvents_.GetNBins()); }
+        std::vector<uint64_t>& GetEventSample() {return observation_;}
+        uint32_t ChangedHash(){return SuperFastHash((const char*) &observation_[0],sizeof(uint64_t)*observation_.size()); }
 protected:
     void HistogramEvents();
 
     boost::shared_ptr<RNG> rng_;
 
-    std::vector<double> events_;
-    Histogram1D<uint64_t> histEvents_;
-
+    std::vector<uint64_t> observation_;
     uint64_t nPDFBins_;
 
     mutable uint64_t nTotalLLHEvaluations_;
-    bool eventsHistogramed_;
-    bool histogramEvents_;
-    std::vector<uint64_t> usedBins_;
+
+    std::set<uint64_t> usedBins_;
 };
 
 
@@ -173,10 +172,9 @@ class ShapeLikelihood: public BinnedLikelihood{
         mixed_(backgroundSample,boost::shared_ptr<RNG>(rng_)),
         poissonSampling_(poissonSampling)
         {
-            histogramEvents_ = histograming;
             N_ = N;
             totEvents_ = N_;
-
+            observation_.resize(signalPdf_.GetNBins());
         }
 
 
@@ -204,9 +202,10 @@ class ShapeLikelihood: public BinnedLikelihood{
         mixed_(backgroundSample,boost::shared_ptr<RNG>(rng_)),
         poissonSampling_(false)
         {
-            histogramEvents_ = false;
+            //histogramEvents_ = false;
             N_ = N;
             totEvents_ = N_;
+            observation_.resize(signalPdf_.GetNBins());
         }
 
         ///Evaluates the log likelihood sum
@@ -249,10 +248,9 @@ class ShapeLikelihood: public BinnedLikelihood{
             mixed_(base.mixed_,boost::shared_ptr<RNG>(base.rng_)),
             poissonSampling_(base.poissonSampling_){
 
-                histEvents_ = base.histEvents_;
-                histogramEvents_ = base.histogramEvents_;
                 N_ = base.N_;
                 totEvents_ = N_;
+                observation_ = base.observation_;
             }
 
         static double likelihoodEval(double xi, void *params);
@@ -297,7 +295,6 @@ class SignalContaminatedLH : public BinnedLikelihood{
         const Distribution& GetBgPDF()const {return bgPdf_;}
 
         void SampleEvents(double xi);
-        bool EnableHistogramedEvents();
 
         uint64_t GetNEvents(){return totEvents_;}
 
@@ -338,7 +335,6 @@ class SignalContaminatedLH : public BinnedLikelihood{
                                             bg_sample_prob_,
                                             seed);
         }
-        uint32_t ChangedHash(){return SuperFastHash((const char*) &histEvents_.GetHistogramArray(),sizeof(uint64_t)*histEvents_.GetNBins()); }
     private:
         ///Callback function for the minimizer
         static double likelihoodEval(double xi, void *params);

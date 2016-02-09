@@ -21,7 +21,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "RNG.h"
- 
+
 typedef double(*ptDFctD)(double);
 /**class: Distribution
 *\brief A class that provides a common interface for distributions which can be used to build up
@@ -30,31 +30,35 @@ typedef double(*ptDFctD)(double);
 *
 */
 class Distribution{
-   public: 
-      
+   public:
+
         Distribution(Distribution const &base, boost::shared_ptr<RNG> rng);
         Distribution(ptDFctD pdf, double rMin, double rMax, uint64_t nBins, uint rSeed = 1);
-        Distribution(std::vector<double>const &distribution, double rMin, double rMax, uint rSeed = 1);  
-     
+        Distribution(std::vector<double>const &distribution, double rMin, double rMax, uint rSeed = 1);
+
         double PDF(double x) const;
-        
+
         /// Fast unsafe call to PDF (no boundary checks)
         /// \param x the pdf paramater at which the pdf should be evaluated at
         /// \return pdf value at x
         double PDF_f(double x) const{
             return pdf_[(x - rangeMin) * invBinWidth_];
         }
-        
+
         double CDF(double x) const;
 
         double SampleFromDistr() const;
 
+        double SampleFromDistrI() const;
+
         uint64_t GetNBins()const {return nBins_;}
         uint64_t ValueToBin(double x){return (x - rangeMin) * invBinWidth_ + 1;}
-      
+
         std::vector<double> & GetPDFVector(){return pdf_;}
+        double operator[](uint64_t index){return pdf_[index];}
+        double operator[] (uint64_t index) const {return pdf_[index];}
         void SetCDFSampling(bool set){useCDF_ = set;}
-      
+
         double GetRangeMax() const{return rangeMax;}
         double GetRangeMin() const{return rangeMin;}
    private:
@@ -88,7 +92,7 @@ inline void addDistributions(double w1, Distribution const &dst1, double w2, Dis
             target.cdf_[i] = target.cdf_[i-1] + target.pdf_[i];
             target.pdfMax = target.pdf_[i]>target.pdfMax ? target.pdf_[i]: target.pdfMax;
         }
-    
+
 }
 
 

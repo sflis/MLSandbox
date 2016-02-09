@@ -6,82 +6,27 @@
 #include <stdexcept>
 using namespace std;
 
-
-
-//_____________________________________________________________________________
-void BinnedLikelihood::HistogramEvents(){
-    //Only histogram if histograming is enabled and we have more events than
-    //likelihood bins.
-
-    if( histogramEvents_  & (nPDFBins_ < totEvents_) ){
-        eventsHistogramed_ = true;
-        histEvents_.Clear();
-        usedBins_.clear();
-        // Filling the event histogram with events in the event samples bgEvents_ and signalEvents_.
-        for(uint64_t i = 0, n = events_.size(); i < n; i++){
-            histEvents_.Fill(events_[i]);
-        }
-        for(uint64_t i = 1; i <= histEvents_.GetNBins(); i++){
-            if(histEvents_.GetBinContentByIndex(i)!=0){
-                usedBins_.push_back(i);
-            }
-        }
-    }
-    else{
-        eventsHistogramed_  = false;
-    }
-}
 //_____________________________________________________________________________
 double ShapeLikelihood::EvaluateLLH(double xi) const{
     double llhSum = 0;
     const double bgFraction = (1-xi);
-    if(eventsHistogramed_){
-        uint64_t n = usedBins_.size();
 
-        // Loop over the bins of the event histogram to evaluate the likelihood.
-        for(uint64_t i = 0; i < n; i++){
-            uint64_t index = usedBins_[i];
-            llhSum += histEvents_.GetBinContentByIndex(index) *
-            log( xi * signalPdf_.PDF_f(histEvents_.IndexToValue(index)) +
-                bgFraction * bgPdf_.PDF_f(histEvents_.IndexToValue(index)) );
-        }
-
+    uint64_t n = usedBins_.size();
+    // Loop over the bins of the event histogram to evaluate the likelihood.
+    for (std::set<uint64_t>::iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
+    //for(uint64_t i = 0; i < n; i++){
+        uint64_t index = *it;//usedBins_[i];
+        llhSum += observation_[index] *
+        log( xi * signalPdf_[index] +
+            bgFraction * bgPdf_[index]);
     }
-    else{
-        // For unhistogrammed events we simply loop over them.
-        uint64_t n = events_.size();
-        for(uint64_t i = 0; i < n; i++){
-            llhSum += log(xi * signalPdf_.PDF_f( events_[i] ) + bgFraction * bgPdf_.PDF_f( events_[i] ));
-        }
 
-    }
     // Counting the number of llh evaluations.
     nTotalLLHEvaluations_++;
 
     return llhSum;
 }
 
-//_____________________________________________________________________________
-bool ShapeLikelihood::EnableHistogramedEvents(){
-
-    if(signalPdf_.GetNBins() == bgPdf_.GetNBins() &&
-        signalPdf_.GetRangeMin() == bgPdf_.GetRangeMin() &&
-        signalPdf_.GetRangeMax() == bgPdf_.GetRangeMax()){
-        histogramEvents_ = true;
-        histEvents_.Init( signalPdf_.GetNBins(), signalPdf_.GetRangeMin(), signalPdf_.GetRangeMax());
-        nPDFBins_ = signalPdf_.GetNBins();
-        return true;
-    }
-    else{
-        cout<<"The signal and background PDFs must have the same binning and range!"<<endl;
-        cout<<"Background PDF:"<<endl;
-        cout<<"Bins: "<<bgPdf_.GetNBins()<<" range: ("<<bgPdf_.GetRangeMin()<<", "<<bgPdf_.GetRangeMax()<<")"<<endl;
-        cout<<"Signal PDF:"<<endl;
-        cout<<"Bins: "<<signalPdf_.GetNBins()<<" range: ("<<signalPdf_.GetRangeMin()<<", "<<signalPdf_.GetRangeMax()<<")"<<endl;
-        return false;
-    }
-
-}
 //_____________________________________________________________________________
 double ShapeLikelihood::likelihoodEval(double xi, void *params){
     return -((ShapeLikelihood*) params)->EvaluateLLH(xi);
@@ -93,30 +38,30 @@ double ShapeLikelihood::likelihoodEval(double xi, void *params){
         exit(1);
     }
     changed_ = true;
-
+    usedBins_.clear();
     addDistributions(xi, signalSample_, 1.0 - xi, backgroundSample_, mixed_);
     totEvents_ = rng_->Poisson(N_);
-    events_.resize(totEvents_);
+
     //If the number of events is larger than the number of pdf bins
     //poisson sampling is probably faster
     if(poissonSampling_){
-        histEvents_.Clear();
-        usedBins_.clear();
-        eventsHistogramed_ = true;
+
         std::vector<double> &pdf =  mixed_.GetPDFVector();
         for(uint64_t i = 0, n = pdf.size(); i<n; i++){
             uint64_t events = rng_->Poisson(pdf[i]*N_);
-            histEvents_.SetBinContentByIndex(i+1,events);
+            observation_[i] = events;
             if(events!=0){
-                usedBins_.push_back(i+1);
+                usedBins_.insert(i);
             }
         }
     }
     else{
+        std::fill(observation_.begin(), observation_.end(), 0);
         for(uint64_t j = 0; j < totEvents_; j++){
-            events_[j] = mixed_.SampleFromDistr();
+            uint64_t i = mixed_.SampleFromDistrI();
+            observation_[i] +=1;
+            usedBins_.insert(i);
         }
-        HistogramEvents();
     }
 }
 //_____________________________________________________________________________
@@ -156,6 +101,7 @@ SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal 
                         throw std::invalid_argument("Binomial model invalid with given signal and background probabilities. Try modle `None'.");
                     }
                 }
+                observation_.resize(signalPdf_.GetNBins());
 
             }
 
@@ -165,30 +111,18 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
     const double bgFraction = (1-xi);
     const double w = Xi2W(xi);
     const double w_bg = 1-w;
-    if(eventsHistogramed_){
-        uint64_t n =histEvents_.GetNBins();
-        // Loop over the bins of the event histogram to evaluate the likelihood.
-        for(uint64_t i = 0; i < n; i++){
-            uint64_t index = i+1;
-            llhSum += histEvents_.GetBinContentByIndex(index)
-            * log(
-                w * signalPdf_.PDF_f( histEvents_.IndexToValue(index) )
-        //        + bgPdf_.PDF_f( histEvents_.IndexToValue(index))
-        //        - w*signalPdfScrambled_.PDF_f( histEvents_.IndexToValue(index))
-        //    );
-                +  w_bg *( (1+w)*bgPdf_.PDF_f( histEvents_.IndexToValue(index) )
-                - w*signalPdfScrambled_.PDF_f( histEvents_.IndexToValue(index) ) )
-            );
-        }
+    uint64_t n = usedBins_.size();
 
+    // Loop over the bins of the event histogram to evaluate the likelihood.
+    for (std::set<uint64_t>::iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
+        //for(uint64_t i = 0; i < n; i++){
+        uint64_t index = *it;//usedBins_[i];
+        llhSum += observation_[index]
+        * log( w * signalPdf_[index] + bgPdf_[index] - w*signalPdfScrambled_[index] );
+        //    +  w_bg * ( (1+w) * bgPdf_[index] - w*signalPdfScrambled_[index]) )
+        //);
     }
-    else{
-        uint64_t n = events_.size();
-        for(uint64_t i = 0; i < n; i++){
-            llhSum += log(w * signalPdf_.PDF_f( events_[i] ) + w_bg * bgPdf_.PDF_f( events_[i] ));
-        }
 
-    }
     // Adding poisson or binomial factor to the likelihood if enabled.
     switch(usedModel_){
         case Poisson:
@@ -210,76 +144,73 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
 
     return llhSum;
 }
-
-//_____________________________________________________________________________
-bool SignalContaminatedLH::EnableHistogramedEvents(){
-
-    if(signalPdf_.GetNBins() == bgPdf_.GetNBins() &&
-        signalPdf_.GetRangeMin() == bgPdf_.GetRangeMin() &&
-        signalPdf_.GetRangeMax() == bgPdf_.GetRangeMax()){
-        histogramEvents_ = true;
-        histEvents_.Init( signalPdf_.GetNBins(), signalPdf_.GetRangeMin(), signalPdf_.GetRangeMax());
-        nPDFBins_ = signalPdf_.GetNBins();
-        return true;
-    }
-    else{
-        cout<<"The signal and background PDFs must have the same binning and range!"<<endl;
-        cout<<"Background PDF:"<<endl;
-        cout<<"Bins: "<<bgPdf_.GetNBins()<<" range: ("<<bgPdf_.GetRangeMin()<<", "<<bgPdf_.GetRangeMax()<<")"<<endl;
-        cout<<"Signal PDF:"<<endl;
-        cout<<"Bins: "<<signalPdf_.GetNBins()<<" range: ("<<signalPdf_.GetRangeMin()<<", "<<signalPdf_.GetRangeMax()<<")"<<endl;
-        return false;
-    }
-
-}
 //_____________________________________________________________________________
 void SignalContaminatedLH::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);
     double w = Xi2W(xi);
 
-    addDistributions(w, signalPdfScrambled_, 1.0 - w, backgroundSample_, mixed_);
+    addDistributions(w, signalPdfScrambled_, 1.0 - w, backgroundSample_, bgPdf_);
+    addDistributions(w, signalPdf_, 1.0 - w, backgroundSample_, mixed_);
     std::vector<double> &s  = mixed_.GetPDFVector();
     if(xi<0 or xi>1.0){
         throw std::invalid_argument("Signal fraction xi out of bounds [0,1]");
     }
+    //FIXME: All sampling are broken except the None model
     switch(usedModel_){
         case Poisson:
         {
-
+           std::cout<<"Poisson model used\n";
            uint64_t current_n = rng_->Poisson(N_ * ((1 - xi) * bg_sample_prob_ + xi * sig_sample_prob_));
-           events_.resize(current_n);
+           std::fill(observation_.begin(), observation_.end(), 0);
            for(uint64_t j = 0; j < current_n; j++){
-               events_[j] = mixed_.SampleFromDistr();
+               uint64_t i = mixed_.SampleFromDistrI();
+               observation_[i] +=1;
+               usedBins_.insert(i);
            }
 
         }
             break;
         case Binomial:
         {
-
+           std::cout<<"Binomial model used\n";
            double p = sig_prob_*xi + bg_prob_*(1 - xi);
            uint64_t current_bg = rng_->Binomial(bg_sample_prob_*(1 - xi), N_);
            uint64_t current_mu = rng_->Binomial(sig_sample_prob_*xi, N_);
-           events_.resize(current_mu + current_bg);
+           std::fill(observation_.begin(), observation_.end(), 0);
            for(uint64_t j = 0; j < current_bg+current_mu; j++){
-               events_[j] = mixed_.SampleFromDistr();
+               uint64_t i = mixed_.SampleFromDistrI();
+               observation_[i] +=1;
+               usedBins_.insert(i);
            }
-
         }
             break;
         case None:
         default:
         {
-           events_.resize(N_);
-           for(uint64_t j = 0; j < N_; j++){
-               events_[j] = mixed_.SampleFromDistr();
-           }
+            totEvents_ = rng_->Poisson(N_);
+            usedBins_.clear();
+            //*
+            std::vector<double> &pdf =  mixed_.GetPDFVector();
+            for(uint64_t i = 0, n = pdf.size(); i<n; i++){
+                uint64_t events = rng_->Poisson(pdf[i]*N_);
+                observation_[i] = events;
+                if(events!=0){
+                    usedBins_.insert(i);
+                }
+            }
+
+            /* //
+            std::fill(observation_.begin(), observation_.end(), 0);
+            for(uint64_t j = 0; j < totEvents_; j++){
+                uint64_t i = mixed_.SampleFromDistrI();
+                observation_[i] +=1;
+                usedBins_.insert(i);
+            }
+            //*/
         }
             break;
     }
 
-    totEvents_ = events_.size();
-    HistogramEvents();
     changed_ = true;
 }
 
@@ -290,10 +221,9 @@ double SignalContaminatedLH::likelihoodEval(double xi, void *params){
 
 
 
-
 uint32_t SuperFastHash (const char * data, int len) {
-uint32_t hash = len, tmp;
-int rem;
+    uint32_t hash = len, tmp;
+    int rem;
 
     if (len <= 0 || data == NULL) return 0;
 
