@@ -23,7 +23,7 @@ printf "########################\n"
 
 _I3_SHELL=$NEW_SHELL
 
-PYTHONPATH=@CMAKE_BINARY_DIR@/python:$PYTHONPATH
+export PYTHONPATH=@CMAKE_BINARY_DIR@/python:$PYTHONPATH
 
 $NEW_SHELL "$@"
 
