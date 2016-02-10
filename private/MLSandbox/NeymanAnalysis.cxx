@@ -11,7 +11,6 @@
 #include <algorithm>
 #include <queue>
 
-#include "MLSandbox/Histogram1D.h"
 
 #include <boost/make_shared.hpp>
 using namespace std;

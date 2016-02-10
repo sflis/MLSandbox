@@ -126,9 +126,7 @@ seed(rSeed){
         if(PDF(x) < y)
             area += 1;
     }
-//     area /= 10000;
-//     cout<<"average AR: "<<nBins_*area<<"  log(bins): "<<log(nBins_)<<endl;
-//     if(nBins_*area > log(nBins_))
+
         useCDF_ = true;
 
 }
@@ -150,8 +148,7 @@ double Distribution::CDF(double x)const{
 }
 //_____________________________________________________________________________
 double Distribution::SampleFromDistr()const{
-   double x;
-   double y = 0;
+
 
    if(useCDF_){
         double cdf_value = rng->Uniform();
@@ -159,24 +156,23 @@ double Distribution::SampleFromDistr()const{
         up = std::upper_bound(cdf_.begin(), cdf_.end(), cdf_value);
         return  rangeMin + ((up - cdf_.begin()) + rng->Uniform() ) * binWidth_;//rng->Uniform()
    }
-   else{
+   double x;
+   double y = 0;
 
-        //If the inverse CDF isn't defined we use the 'accept and reject'
-        //method to throw an event from the distribution PDF.
-        do{
-            x = rangeMin + rng->Uniform() * range_;
-            y = rng->Uniform() * pdfMax;
+    //If the inverse CDF isn't defined we use the 'accept and reject'
+    //method to throw an event from the distribution PDF.
+    do{
+        x = rangeMin + rng->Uniform() * range_;
+        y = rng->Uniform() * pdfMax;
 
-        }while(PDF(x) <= y);
-   }
+    }while(PDF(x) <= y);
+
    return x;
 }
 
 
 //_____________________________________________________________________________
 double Distribution::SampleFromDistrI()const{
-   double x;
-   double y = 0;
    double cdf_value = rng->Uniform();
    std::vector<double>::const_iterator up;
    return  std::upper_bound(cdf_.begin(), cdf_.end(), cdf_value) - cdf_.begin();

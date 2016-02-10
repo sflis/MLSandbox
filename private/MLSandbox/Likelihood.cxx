@@ -14,8 +14,7 @@ double ShapeLikelihood::EvaluateLLH(double xi) const{
     uint64_t n = usedBins_.size();
     // Loop over the bins of the event histogram to evaluate the likelihood.
     for (std::set<uint64_t>::iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
-    //for(uint64_t i = 0; i < n; i++){
-        uint64_t index = *it;//usedBins_[i];
+        uint64_t index = *it;
         llhSum += observation_[index] *
         log( xi * signalPdf_[index] +
             bgFraction * bgPdf_[index]);
@@ -115,12 +114,10 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
 
     // Loop over the bins of the event histogram to evaluate the likelihood.
     for (std::set<uint64_t>::iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
-        //for(uint64_t i = 0; i < n; i++){
-        uint64_t index = *it;//usedBins_[i];
+        uint64_t index = *it;
         llhSum += observation_[index]
         * log( w * signalPdf_[index] + bgPdf_[index] - w*signalPdfScrambled_[index] );
-        //    +  w_bg * ( (1+w) * bgPdf_[index] - w*signalPdfScrambled_[index]) )
-        //);
+
     }
 
     // Adding poisson or binomial factor to the likelihood if enabled.

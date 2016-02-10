@@ -20,7 +20,6 @@
 #define FELDMAN_COUSINS_LIKELIHOOD_H
 
 #include "Distribution.h"
-#include "Histogram1D.h"
 
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_spline.h>
@@ -61,7 +60,6 @@ class Likelihood{
             return (ret || changed_);
         }
 
-        //{return changed_; changed_=false;}
 
         virtual uint32_t ChangedHash() =  0;
         /// Number of events in the current sample
@@ -80,8 +78,6 @@ public:
         BinnedLikelihood(int seed, uint64_t pdfBins):
         nPDFBins_(pdfBins),
         nTotalLLHEvaluations_(0)
-        //eventsHistogramed_(false),
-        //histogramEvents_(false)
         {
             rng_ = boost::shared_ptr<RNG>(new RNG(seed));
             changed_ = true;
@@ -109,7 +105,6 @@ public:
         void SetEvents(std::vector<uint64_t> &events){
 
             observation_ = events;
-            //events_ = events;
             //FIXME: Count the number of events!!!
             totEvents_ = events.size();
             changed_ = true;
@@ -202,7 +197,6 @@ class ShapeLikelihood: public BinnedLikelihood{
         mixed_(backgroundSample,boost::shared_ptr<RNG>(rng_)),
         poissonSampling_(false)
         {
-            //histogramEvents_ = false;
             N_ = N;
             totEvents_ = N_;
             observation_.resize(signalPdf_.GetNBins());
