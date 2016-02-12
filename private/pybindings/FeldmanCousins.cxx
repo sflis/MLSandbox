@@ -13,14 +13,16 @@ namespace bn=boost::numpy;
 
 namespace mlsandbox{
     namespace python{
-        
+
         static bp::tuple GenerateLimitsEnsemble(FeldmanCousinsAnalysis &self, double xi,double cl, uint64_t nExperiments){
-            std::vector<double> up;
-            std::vector<double> down; 
-            self.GenerateLimitsEnsemble(xi, up, down, cl, nExperiments);
-            return bp::make_tuple(0.0,0.0);
+            std::vector<intptr_t> shape(1,nExperiments);
+            bn::dtype dt = bn::dtype::get_builtin<double>();
+            bn::ndarray up = bn::zeros(shape,dt);
+            bn::ndarray down = bn::zeros(shape,dt);
+            self.GenerateLimitsEnsemble(xi, up, down, nExperiments, cl);
+            return bp::make_tuple(up,down);
         }
-        
+
        static bp::tuple ComputeLimits(FeldmanCousinsAnalysis &self){
             double up,down;
             self.ComputeLimits(up,down);
@@ -60,6 +62,7 @@ void register_FeldmanCousins()
         )
        .def("SetFCRanks",&FeldmanCousinsAnalysis::SetFCRanks)
        .def("ComputeLimits",&mlsandbox::python::ComputeLimits)
+       .def("GenerateLimitsEnsemble",&mlsandbox::python::GenerateLimitsEnsemble)
        .def_readwrite("ranks",&FeldmanCousinsAnalysis::ranks_)
        .def_readwrite("minimizer",&FeldmanCousinsAnalysis::minimizer_)
        ;

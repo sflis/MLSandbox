@@ -125,6 +125,7 @@ class FCRanks{
             Smooth(x, y, ranks_.size());
             gsl_spline_init (spline_, x, y, ranks_.size());
         }
+
         ///Returns the ln(Rank) at the preset confidence level
         ///\param xi
         double rCB(double xi, bool assumeChiSquareDistr=false){
