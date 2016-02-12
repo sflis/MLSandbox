@@ -19,11 +19,9 @@
 #ifndef MLSANDBOX_FCRANKS_H
 #define MLSANDBOX_FCRANKS_H
 
-#include "Likelihood.h"
-#include "Minimizer.h"
 #include <boost/shared_ptr.hpp>
 
-// #include <boost/serialization/base_object.hpp>
+
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/version.hpp>
@@ -31,12 +29,12 @@
 
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_spline.h>
+#include <gsl/gsl_cdf.h>
 
 #include <inttypes.h>
 #include <vector>
 #include <map>
 #include <string>
-#include <math.h>
 #include <iostream>
 #include <algorithm>
 const unsigned int FCRANKS_VERSION = 1;

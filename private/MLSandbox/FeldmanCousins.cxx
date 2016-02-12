@@ -153,7 +153,7 @@ void FeldmanCousinsAnalysis::ComputeRanks(uint64_t nExperiments,
     //There ought to be a better way to set up the xi values queue
     std::vector<double> llh_xis(nSteps);
     double stepSize= (maxXi-minXi)/nSteps;
-    for(int64_t i = 0; i < nSteps; i++){
+    for(uint64_t i = 0; i < nSteps; i++){
         llh_xis[i] = i*stepSize;
     }
     std::queue<double, std::deque<double> > llh_hypos(
@@ -216,19 +216,28 @@ void FeldmanCousinsAnalysis::ComputeRanks(uint64_t nExperiments,
     }
 }
 //_____________________________________________________________________________
-void FeldmanCousinsAnalysis::GenerateLimitsEnsemble(double xi, std::vector<double> &up, std::vector<double> &down, uint64_t nExperiments, double cl ){
+void FeldmanCousinsAnalysis::GenerateLimitsEnsemble(double xi, bn::ndarray &up, bn::ndarray &down, uint64_t nExperiments, double cl ){
     if(cl != -1)
         cl_ = cl;
-
-    up.resize(nExperiments);
-    down.resize(nExperiments);
+    ranks_.SetConfidenceLevel(cl_);
+    if(!bn::dtype::equivalent(up.get_dtype(),bn::dtype::get_builtin<double>()))
+        throw std::invalid_argument("dtype of the up numpy array must be double");
+    if(!bn::dtype::equivalent(down.get_dtype(),bn::dtype::get_builtin<double>()))
+        throw std::invalid_argument("dtype of the down numpy array must be double");
+    if(up.shape(0)!=nExperiments)
+        throw std::invalid_argument("Size of the up numpy array does not match nExperiments");
+    if(down.shape(0)!=nExperiments)
+        throw std::invalid_argument("Size of the down numpy array does not match nExperiments");
+    double *upit = reinterpret_cast<double*>( up.get_data());
+    double *downit = reinterpret_cast<double*>(down.get_data());
     double res_up, res_down;
 
-    for(uint64_t i = 0; i < nExperiments; i++){
+    for(uint64_t i = 0; i < nExperiments; i++,upit++,downit++){
             Sample(xi);
             ComputeLimits(res_up, res_down);
-            up[i] = res_up;
-            down[i] = res_down;
+
+            *upit =res_up; //.getitem(i) = res_up;
+            *downit = res_down;
     }
 
 }

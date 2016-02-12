@@ -33,10 +33,11 @@
 #include <string>
 #include <math.h>
 #include <iostream>
-
+#include <boost/numpy.hpp>
 /**class: FeldmanCousinsAnalysis is a class which encapsulates the
 *         FC analysis proceedures.
 **/
+namespace bn=boost::numpy;
 
 class  FeldmanCousinsAnalysis{
     public:
@@ -82,8 +83,8 @@ class  FeldmanCousinsAnalysis{
         ///\param cl
         ///\param nExperiments
         void GenerateLimitsEnsemble(double xi,
-                                    std::vector<double> &up,
-                                    std::vector<double> &down,
+                                    bn::ndarray &up,
+                                    bn::ndarray &down,
                                     uint64_t nExperiments,
                                     double cl = -1
                                     );
