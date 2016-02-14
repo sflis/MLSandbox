@@ -168,4 +168,4 @@ endif(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
 #add_subdirectory(private/pybindings)
 
 #Quick fix to link to thread library
-#add_definitions(-pthread )#-std=c++11
+add_definitions(-pthread -O3)#-std=c++11

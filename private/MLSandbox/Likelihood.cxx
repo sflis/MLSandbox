@@ -13,7 +13,7 @@ double ShapeLikelihood::EvaluateLLH(double xi) const{
 
     uint64_t n = usedBins_.size();
     // Loop over the bins of the event histogram to evaluate the likelihood.
-    for (std::set<uint64_t>::iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
+    for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
         llhSum += observation_[index] *
         log( xi * signalPdf_[index] +
@@ -50,7 +50,7 @@ double ShapeLikelihood::likelihoodEval(double xi, void *params){
             uint64_t events = rng_->Poisson(pdf[i]*N_);
             observation_[i] = events;
             if(events!=0){
-                usedBins_.insert(i);
+                usedBins_.push_back(i);
             }
         }
     }
@@ -59,7 +59,12 @@ double ShapeLikelihood::likelihoodEval(double xi, void *params){
         for(uint64_t j = 0; j < totEvents_; j++){
             uint64_t i = mixed_.SampleFromDistrI();
             observation_[i] +=1;
-            usedBins_.insert(i);
+            std::vector<uint64_t>::iterator  it = std::lower_bound(usedBins_.begin(), usedBins_.end(), i);
+            if(it != usedBins_.end()){
+                usedBins_.insert(it,i);
+            }
+
+            //usedBins_.insert(i);
         }
     }
 }
@@ -113,7 +118,7 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
     uint64_t n = usedBins_.size();
 
     // Loop over the bins of the event histogram to evaluate the likelihood.
-    for (std::set<uint64_t>::iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
+    for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
         llhSum += observation_[index]
         * log( w * signalPdf_[index] + bgPdf_[index] - w*signalPdfScrambled_[index] );
@@ -162,7 +167,10 @@ void SignalContaminatedLH::SampleEvents(double xi){
            for(uint64_t j = 0; j < current_n; j++){
                uint64_t i = mixed_.SampleFromDistrI();
                observation_[i] +=1;
-               usedBins_.insert(i);
+               std::vector<uint64_t>::iterator  it = std::lower_bound(usedBins_.begin(), usedBins_.end(), i);
+               if(it != usedBins_.end()){
+                   usedBins_.insert(it,i);
+               }
            }
 
         }
@@ -177,7 +185,10 @@ void SignalContaminatedLH::SampleEvents(double xi){
            for(uint64_t j = 0; j < current_bg+current_mu; j++){
                uint64_t i = mixed_.SampleFromDistrI();
                observation_[i] +=1;
-               usedBins_.insert(i);
+               std::vector<uint64_t>::iterator  it = std::lower_bound(usedBins_.begin(), usedBins_.end(), i);
+               if(it != usedBins_.end()){
+                   usedBins_.insert(it,i);
+               }
            }
         }
             break;
@@ -192,7 +203,7 @@ void SignalContaminatedLH::SampleEvents(double xi){
                 uint64_t events = rng_->Poisson(pdf[i]*N_);
                 observation_[i] = events;
                 if(events!=0){
-                    usedBins_.insert(i);
+                    usedBins_.push_back(i);
                 }
             }
 

@@ -122,7 +122,7 @@ protected:
 
     mutable uint64_t nTotalLLHEvaluations_;
 
-    std::set<uint64_t> usedBins_;
+    std::vector<uint64_t> usedBins_;
 };
 
 

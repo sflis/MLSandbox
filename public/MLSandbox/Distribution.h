@@ -21,7 +21,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "RNG.h"
-
+#include <algorithm>
 typedef double(*ptDFctD)(double);
 /**class: Distribution
 *\brief A class that provides a common interface for distributions which can be used to build up
@@ -49,7 +49,9 @@ class Distribution{
 
         double SampleFromDistr() const;
 
-        double SampleFromDistrI() const;
+        double SampleFromDistrI()const{
+           return  std::upper_bound(cdf_.begin(), cdf_.end(), rng->Uniform()) - cdf_.begin();
+        }
 
         uint64_t GetNBins()const {return nBins_;}
         uint64_t ValueToBin(double x){return (x - rangeMin) * invBinWidth_ + 1;}
@@ -86,13 +88,13 @@ inline void addDistributions(double w1, Distribution const &dst1, double w2, Dis
         uint64_t n = dst1.nBins_;
         target.pdf_[0] = w1*dst1.pdf_[0] + w2*dst2.pdf_[0];
         target.cdf_[0] = target.pdf_[0];
-        target.pdfMax = 0;
+        //target.pdfMax = 0;
         for(uint64_t i = 1; i<n; i++){
             target.pdf_[i] = w1*dst1.pdf_[i] + w2*dst2.pdf_[i];
             target.cdf_[i] = target.cdf_[i-1] + target.pdf_[i];
-            target.pdfMax = target.pdf_[i]>target.pdfMax ? target.pdf_[i]: target.pdfMax;
         }
-
+        target.pdfMax = *std::max_element(target.pdf_.begin(),target.pdf_.end());
+        //target.pdfMax = target.pdf_[i]>target.pdfMax ? target.pdf_[i]: target.pdfMax;
 }
 
 
