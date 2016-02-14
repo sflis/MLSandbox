@@ -88,13 +88,12 @@ inline void addDistributions(double w1, Distribution const &dst1, double w2, Dis
         uint64_t n = dst1.nBins_;
         target.pdf_[0] = w1*dst1.pdf_[0] + w2*dst2.pdf_[0];
         target.cdf_[0] = target.pdf_[0];
-        //target.pdfMax = 0;
+
         for(uint64_t i = 1; i<n; i++){
             target.pdf_[i] = w1*dst1.pdf_[i] + w2*dst2.pdf_[i];
             target.cdf_[i] = target.cdf_[i-1] + target.pdf_[i];
         }
         target.pdfMax = *std::max_element(target.pdf_.begin(),target.pdf_.end());
-        //target.pdfMax = target.pdf_[i]>target.pdfMax ? target.pdf_[i]: target.pdfMax;
 }
 
 

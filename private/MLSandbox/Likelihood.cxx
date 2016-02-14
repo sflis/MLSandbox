@@ -60,11 +60,9 @@ double ShapeLikelihood::likelihoodEval(double xi, void *params){
             uint64_t i = mixed_.SampleFromDistrI();
             observation_[i] +=1;
             std::vector<uint64_t>::iterator  it = std::lower_bound(usedBins_.begin(), usedBins_.end(), i);
-            if(it != usedBins_.end()){
+            if(it == usedBins_.end() || i < *it){
                 usedBins_.insert(it,i);
             }
-
-            //usedBins_.insert(i);
         }
     }
 }
@@ -157,6 +155,7 @@ void SignalContaminatedLH::SampleEvents(double xi){
     if(xi<0 or xi>1.0){
         throw std::invalid_argument("Signal fraction xi out of bounds [0,1]");
     }
+    usedBins_.clear();
     //FIXME: All sampling are broken except the None model
     switch(usedModel_){
         case Poisson:
@@ -168,7 +167,7 @@ void SignalContaminatedLH::SampleEvents(double xi){
                uint64_t i = mixed_.SampleFromDistrI();
                observation_[i] +=1;
                std::vector<uint64_t>::iterator  it = std::lower_bound(usedBins_.begin(), usedBins_.end(), i);
-               if(it != usedBins_.end()){
+               if(it == usedBins_.end() || i < *it){
                    usedBins_.insert(it,i);
                }
            }
@@ -186,7 +185,7 @@ void SignalContaminatedLH::SampleEvents(double xi){
                uint64_t i = mixed_.SampleFromDistrI();
                observation_[i] +=1;
                std::vector<uint64_t>::iterator  it = std::lower_bound(usedBins_.begin(), usedBins_.end(), i);
-               if(it != usedBins_.end()){
+               if(it == usedBins_.end() || i < *it){
                    usedBins_.insert(it,i);
                }
            }
