@@ -160,7 +160,6 @@ void SignalContaminatedLH::SampleEvents(double xi){
     switch(usedModel_){
         case Poisson:
         {
-           std::cout<<"Poisson model used\n";
            uint64_t current_n = rng_->Poisson(N_ * ((1 - xi) * bg_sample_prob_ + xi * sig_sample_prob_));
            std::fill(observation_.begin(), observation_.end(), 0);
            for(uint64_t j = 0; j < current_n; j++){
@@ -176,7 +175,6 @@ void SignalContaminatedLH::SampleEvents(double xi){
             break;
         case Binomial:
         {
-           std::cout<<"Binomial model used\n";
            double p = sig_prob_*xi + bg_prob_*(1 - xi);
            uint64_t current_bg = rng_->Binomial(bg_sample_prob_*(1 - xi), N_);
            uint64_t current_mu = rng_->Binomial(sig_sample_prob_*xi, N_);
