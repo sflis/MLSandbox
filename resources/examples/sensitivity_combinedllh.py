@@ -2,18 +2,18 @@
 
 import pickle, math
 import numpy as np
-from icecube import MLSandboxPythonAccess
+import MLSandbox
 from optparse import OptionParser
 from scipy import stats, integrate
 
 
 def setup_llh(sig, bg, x,  N, seed):
     print(len(sig), min(x)-.5, max(x)+.5)
-    sig_exp = MLSandboxPythonAccess.Distribution(sig, min(x), max(x), 1)
-    bg_exp = MLSandboxPythonAccess.Distribution(bg, min(x), max(x), 1)
+    sig_exp = MLSandbox.Distribution(sig, min(x), max(x), 1)
+    bg_exp = MLSandbox.Distribution(bg, min(x), max(x), 1)
     sig_exp.SetCDFSampling(True)
     bg_exp.SetCDFSampling(True)
-    llh = MLSandboxPythonAccess.Likelihood.BinnedLikelihood.ShapeLikelihood(sig_exp, bg_exp, sig_exp, bg_exp, N, seed)
+    llh = MLSandbox.Likelihood.BinnedLikelihood.ShapeLikelihood(sig_exp, bg_exp, sig_exp, bg_exp, N, seed)
     return llh
 
 def load_expectations(sig_file, bg_file):
@@ -30,44 +30,44 @@ def load_expectations(sig_file, bg_file):
 def compute_sensitivity(options):
     import pylab
     import matplotlib.pyplot as plt
-    data_pdf1 = "../data/data_WINTER_IC_Up_020_pdf_U0.pkl"
-    sig_pdf1 = "../data/wimp_m500ch5_WINTER_IC_Up_020_pdf_U0.pkl"
+    data_pdf1 = "../data/data_psi_hist_summer_psi.pkl"
+    sig_pdf1 = "../data/wim_m50ch11_psi_hist_summer_psi.pkl"
     #sig_pdf1 = "../data/wimp_m250ch11_WINTER_IC_Up_020_pdf_U0.pkl"
-    data_pdf2 = "../data/data_WINTER_DC_Up_020_pdf_U0.pkl"
-    sig_pdf2 = "../data/wimp_m500ch5_WINTER_DC_Up_020_pdf_U0.pkl"
+    data_pdf2 = "../data/data_psi_hist_winter_psi.pkl"
+    sig_pdf2 = "../data/wim_m50ch11_psi_hist_winter_psi.pkl"
     #sig_pdf2 = "../data/wimp_m250ch11_WINTER_DC_Up_020_pdf_U0.pkl"
-    weights = [0.8,0.2]
 
-    s = 0.0079+0.0055
-    weights = [0.0079/s,0.0055/s]
+
+    w1 = 3.276e-34
+    w2 = 1.405e-33
+    s = w1+w2
+    weights = [w1/s,w2/s]
     print(weights)
-    #weights = [0.5,0.5]
+
     #or we load some
     (sig1,bg1,x1) = load_expectations(sig_pdf1, data_pdf1)
-    (sig2,bg2,x2) = load_expectations(sig_pdf1, data_pdf1)
+    (sig2,bg2,x2) = load_expectations(sig_pdf2, data_pdf2)
 
 
-    N1 = 21055
-    N2 = 6126
+    N1 = 908
+    N2 = 2428
     N = N1+N2
     llh1 = setup_llh(sig1, bg1, x1,  N1, 1)
     llh2 = setup_llh(sig2, bg2, x2,  N2, 2)
     #Since it's a binned likelihood we can histogram the events to
     #speed up llh evaluations
-    llh1.EnableHistogramedEvents()
     llh1.EnablePoissonSampling()
 
-    llh2.EnableHistogramedEvents()
     llh2.EnablePoissonSampling()
-    llhc = MLSandboxPythonAccess.Likelihood.CombinedLikelihood([llh1,llh2],weights)
+    llhc = MLSandbox.Likelihood.CombinedLikelihood([llh1,llh2],weights)
 
     #setting up the analysis
-    analysis = MLSandboxPythonAccess.FeldmanCousinsAnalysis(llh = llhc,
+    analysis = MLSandbox.FeldmanCousinsAnalysis(llh = llhc,
                                                             cl = 0.9, #confidence level (not really important yet)
                                                            )
 
     if (options.RANKS != None): #there are precomputed values available
-        ranks = MLSandboxPythonAccess.FCRanks()
+        ranks = MLSandbox.FCRanks()
         ranks.load(options.RANKS)
         analysis.SetFCRanks(ranks)
     else: #everything needs to be recomputed
