@@ -3,7 +3,7 @@ if [ -z "$1" ]
     then # user did not specify a shell
     NEW_SHELL=$SHELL
     # only exit if no shell specified on command line *and* env already loaded
-    if [ -n "$I3_SHELL" ]
+    if [ -n "$MLSANDBOX_SHELL" ]
 	then
 	echo "******************************************************************"
 	echo "You are currently in a shell with an MLSandbox environment loaded."
