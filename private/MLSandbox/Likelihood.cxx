@@ -148,15 +148,15 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
 void SignalContaminatedLH::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);
     double w = Xi2W(xi);
-
-    addDistributions(w, signalPdfScrambled_, 1.0 - w, backgroundSample_, bgPdf_);
-    addDistributions(w, signalPdf_, 1.0 - w, backgroundSample_, mixed_);
+    //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
+    addDistributions(w, signalPdfScrambled_, 1-w, backgroundSample_, bgPdf_);
+    addDistributions(w, signalSample_, - w, signalScrambledSample_, mixed_);
+    addDistributions(1.0, mixed_, 1.0, backgroundSample_, mixed_);
     std::vector<double> &s  = mixed_.GetPDFVector();
     if(xi<0 or xi>1.0){
         throw std::invalid_argument("Signal fraction xi out of bounds [0,1]");
     }
     usedBins_.clear();
-    //FIXME: All sampling are broken except the None model
     switch(usedModel_){
         case Poisson:
         {
@@ -193,8 +193,8 @@ void SignalContaminatedLH::SampleEvents(double xi){
         default:
         {
             totEvents_ = rng_->Poisson(N_);
-            usedBins_.clear();
-            //*
+            //usedBins_.clear();
+            /*
             std::vector<double> &pdf =  mixed_.GetPDFVector();
             for(uint64_t i = 0, n = pdf.size(); i<n; i++){
                 uint64_t events = rng_->Poisson(pdf[i]*N_);
@@ -204,12 +204,15 @@ void SignalContaminatedLH::SampleEvents(double xi){
                 }
             }
 
-            /* //
+            /*/
             std::fill(observation_.begin(), observation_.end(), 0);
             for(uint64_t j = 0; j < totEvents_; j++){
                 uint64_t i = mixed_.SampleFromDistrI();
                 observation_[i] +=1;
-                usedBins_.insert(i);
+                std::vector<uint64_t>::iterator  it = std::lower_bound(usedBins_.begin(), usedBins_.end(), i);
+                if(it == usedBins_.end() || i < *it){
+                    usedBins_.insert(it,i);
+                }
             }
             //*/
         }
@@ -218,7 +221,6 @@ void SignalContaminatedLH::SampleEvents(double xi){
 
     changed_ = true;
 }
-
 //_____________________________________________________________________________
 double SignalContaminatedLH::likelihoodEval(double xi, void *params){
     return -((SignalContaminatedLH*) params)->EvaluateLLH(xi);
