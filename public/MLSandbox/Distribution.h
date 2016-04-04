@@ -85,7 +85,7 @@ class Distribution{
 
 
 inline void addDistributions(double w1, Distribution const &dst1, double w2, Distribution const &dst2, Distribution & target){
-        uint64_t n = dst1.nBins_;
+        const uint64_t n = dst1.nBins_;
         target.pdf_[0] = w1*dst1.pdf_[0] + w2*dst2.pdf_[0];
         target.cdf_[0] = target.pdf_[0];
 

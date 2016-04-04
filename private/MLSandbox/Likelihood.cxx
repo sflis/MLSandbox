@@ -110,17 +110,14 @@ SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal 
 //_____________________________________________________________________________
 double SignalContaminatedLH::EvaluateLLH(double xi) const{
     double llhSum = 0;
-    const double bgFraction = (1-xi);
     const double w = Xi2W(xi);
-    const double w_bg = 1-w;
     uint64_t n = usedBins_.size();
 
     // Loop over the bins of the event histogram to evaluate the likelihood.
     for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
         llhSum += observation_[index]
-        * log( w * signalPdf_[index] + bgPdf_[index] - w*signalPdfScrambled_[index] );
-
+        * log( w * signalPdf_[index] + (1-w)/(1-xi)*(bgPdf_[index] - xi*signalPdfScrambled_[index] ));
     }
 
     // Adding poisson or binomial factor to the likelihood if enabled.
@@ -149,9 +146,10 @@ void SignalContaminatedLH::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);
     double w = Xi2W(xi);
     //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
-    addDistributions(w, signalPdfScrambled_, 1-w, backgroundSample_, bgPdf_);
-    addDistributions(w, signalSample_, - w, signalScrambledSample_, mixed_);
-    addDistributions(1.0, mixed_, 1.0, backgroundSample_, mixed_);
+    addDistributions(xi, signalScrambledSample_, 1-xi, backgroundSample_, bgPdf_);
+    addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
+    addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
+
     std::vector<double> &s  = mixed_.GetPDFVector();
     if(xi<0 or xi>1.0){
         throw std::invalid_argument("Signal fraction xi out of bounds [0,1]");
@@ -193,8 +191,7 @@ void SignalContaminatedLH::SampleEvents(double xi){
         default:
         {
             totEvents_ = rng_->Poisson(N_);
-            //usedBins_.clear();
-            /*
+
             std::vector<double> &pdf =  mixed_.GetPDFVector();
             for(uint64_t i = 0, n = pdf.size(); i<n; i++){
                 uint64_t events = rng_->Poisson(pdf[i]*N_);
@@ -218,7 +215,8 @@ void SignalContaminatedLH::SampleEvents(double xi){
         }
             break;
     }
-
+    //should be more efficient to sum this up while filling the bins
+    totEvents_ = std::accumulate(observation_.begin(), observation_.end(), 0);
     changed_ = true;
 }
 //_____________________________________________________________________________
