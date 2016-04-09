@@ -9,6 +9,7 @@ using namespace std;
 //_____________________________________________________________________________
 double CombinedLikelihood::EvaluateLLH(double xi) const{
     double llhValue=0;
+
     for(uint64_t i = 0; i < likelihoods_.size(); i++){
         double xi_i = xi / likelihoods_[i]->totEvents_ * weights_[i] * totEvents_;
         llhValue += likelihoods_[i]->EvaluateLLH(xi_i);

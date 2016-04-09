@@ -66,6 +66,8 @@ if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
 		    private/MLSandbox/FCRanks.cxx
 			private/MLSandbox/CombinedLikelihood.cxx
 			private/MLSandbox/NeymanAnalysis.cxx
+            private/MLSandbox/SignalContaminatedLH.cxx
+            private/MLSandbox/OSignalContaminatedLH.cxx
 	)
 
 	include_directories(${${PROJECT_NAME}_INCLUDE_DIRS})

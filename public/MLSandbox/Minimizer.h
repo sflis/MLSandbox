@@ -16,6 +16,8 @@
 #ifndef MLSANDBOX_MINIMIZER_H
 #define MLSANDBOX_MINIMIZER_H
 
+
+
 #include <inttypes.h>
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_min.h>
@@ -27,27 +29,27 @@
 *
 */
 class Minimizer{
-        
+
 public:
-    
+
     Minimizer():nIterations_(0){
         const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
         ms_ = gsl_min_fminimizer_alloc (T);
     }
-    
+
     ~Minimizer(){gsl_min_fminimizer_free (ms_);}
-    
+
     ///Computes the best fit given a Likelihood
     ///\param lh a likelihood object
-    ///\return best fit 
+    ///\return best fit
     double ComputeBestFit(Likelihood &lh);
     ///Best fit of the likelihood parameter from the last fit
     double bestFit_;
-    ///Log of the likelihood value at the best fit 
+    ///Log of the likelihood value at the best fit
     double bestFitLLH_;
-    
+
     uint64_t nIterations_;
-    
+
 private:
     gsl_min_fminimizer *ms_;
 

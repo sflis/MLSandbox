@@ -29,7 +29,9 @@
 #include <string>
 #include <math.h>
 #include <iostream>
-#include <set>
+//#include <set>
+#include <numeric>
+
 uint32_t SuperFastHash (const char * data, int len);
 typedef double(*likelihoodCallback)(double,void*);
 /**class: Likelihood
@@ -101,12 +103,20 @@ public:
         //virtual bool EnableHistogramedEvents(){histogramEvents_ = false; return false;}
 
         /// This function is used to set the event sample for the likelihood to be computed.
-        /// \param events a vector containing the event sample that the analysis should run on.
+        /// \param events a vector containing the binned event sample that the analysis should run on.
         void SetEvents(std::vector<uint64_t> &events){
 
             observation_ = events;
-            //FIXME: Count the number of events!!!
-            totEvents_ = events.size();
+            totEvents_ =0;
+            usedBins_.clear();
+            for(uint64_t i = 0; i<observation_.size();i++){
+                totEvents_ += observation_[i];
+                if(observation_[i]>0)
+                    usedBins_.push_back(i);
+            }
+            //std::accumulate(observation_.begin(), observation_.end(), 0);
+            
+            //totEvents_ = events.size();
             changed_ = true;
         }
 
@@ -258,105 +268,6 @@ class ShapeLikelihood: public BinnedLikelihood{
 
         bool poissonSampling_;
 };
-
-class SignalContaminatedLH : public BinnedLikelihood{
-    public:
-    enum Model{None,Poisson,Binomial};
-
-    SignalContaminatedLH(const Distribution &signal, //Signal expectation
-                         const Distribution &background, //background expectation
-                         const Distribution &signalScrambled, //Scrambled signal expectation
-                         const Distribution &signalSample, //Signal sample
-                         const Distribution &backgroundSample, //background sample
-                         const Distribution &signalScrambledSample, //Scrambled signal sample
-                         double N,
-                         double sig_prob = 1.0,
-                         double bg_prob = 1.0,
-                         SignalContaminatedLH::Model model = SignalContaminatedLH::None,
-                         double sig_sample_prob = 1.0,
-                         double bg_sample_prob = 1.0,
-                         int seed = 1
-                     );
-
-
-        ///Evaluates the log likelihood sum
-        ///\param xi the signal fraction for which the likelihood should be evaulated.
-        double EvaluateLLH(double xi)const;
-
-        Model GetModel(){return usedModel_;}
-
-        const Distribution& GetSignalPDF()const {return signalPdf_;}
-        const Distribution& GetBgPDF()const {return bgPdf_;}
-
-        void SampleEvents(double xi);
-
-        uint64_t GetNEvents(){return totEvents_;}
-
-
-        double Xi2W(double xi) const {
-            return sig_prob_ * xi / (sig_prob_ * xi + bg_prob_*(1.0 - xi));
-        }
-
-        double W2Xi(double w) const {
-            return w * bg_prob_ / (sig_prob_ + w*(bg_prob_ - sig_prob_));
-        }
-
-        double W2Mu(double w) const {
-            return Xi2Mu(W2Xi(w));
-        }
-
-        double Xi2Mu(double xi) const{
-            return xi*N_;
-        }
-
-        double Mu2Xi(double mu) const{
-            return mu/N_;
-        }
-
-        likelihoodCallback CallBackFcn(){return &likelihoodEval;}
-        SignalContaminatedLH * Clone(int seed) const {
-            return new SignalContaminatedLH(signalPdf_,
-                                            bgPdf_,
-                                            signalPdfScrambled_,
-                                            signalSample_,
-                                            backgroundSample_,
-                                            signalScrambledSample_,
-                                            N_,
-                                            sig_prob_,
-                                            bg_prob_,
-                                            usedModel_,
-                                            sig_sample_prob_,
-                                            bg_sample_prob_,
-                                            seed);
-        }
-    private:
-        ///Callback function for the minimizer
-        static double likelihoodEval(double xi, void *params);
-
-        Distribution signalPdf_;
-        /// Pointer to a distribution describing the signal pdf.
-        Distribution signalPdfScrambled_;
-
-        /// Pointer to a distribution describing the background pdf.
-        Distribution bgPdf_;
-
-        /// Pointer to a distribution describing the background pdf.
-        Distribution bgPdfOriginal_;
-        Distribution signalSample_;
-        Distribution backgroundSample_; //background sample
-        Distribution signalScrambledSample_; //Scrambled signal sample
-        Distribution mixed_;
-        Model usedModel_;
-        double N_;
-
-        double sig_prob_;
-        double bg_prob_;
-
-        double sig_sample_prob_;
-        double bg_sample_prob_;
-
-};
-
 
 #include "stdint.h" /* Replace with <stdint.h> if appropriate */
 #undef get16bits

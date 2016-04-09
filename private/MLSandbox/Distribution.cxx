@@ -9,6 +9,7 @@
 #include <cfloat>
 #include <algorithm>
 #include <numeric>
+#include <limits>
 using namespace std;
 
 Distribution::Distribution(Distribution const &base, boost::shared_ptr<RNG> rng):
@@ -129,6 +130,19 @@ seed(rSeed){
 
         useCDF_ = true;
 
+    //Special case to handle '0-probability distributions'
+    if(sum == 0){
+        cout<<"Special case"<<endl;
+        for(uint64_t i = 1; i < nBins_; i++){
+            pdf_[i] = 0;
+            cdf_[i] = 0;
+        }
+        invBinWidth_=0;
+        rangeMin = 1;
+        rangeMax = 0;
+        pdfMax=-1;
+        range_ = std::numeric_limits<double>::quiet_NaN();
+    }
 }
 //_____________________________________________________________________________
 double Distribution::PDF(double x)const{

@@ -1,9 +1,10 @@
 #include "MLSandbox/Likelihood.h"
 #include "MLSandbox/Distribution.h"
 #include "MLSandbox/CombinedLikelihood.h"
+#include "MLSandbox/SignalContaminatedLH.h"
+#include "MLSandbox/OSignalContaminatedLH.h"
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include "bindingutils.h"
-// #include "bindingutils.h"
 
 #include <boost/numpy.hpp>
 #include <numpy/arrayobject.h>
@@ -117,6 +118,38 @@ void register_Likelihood()
         .value("Binomial", SignalContaminatedLH::Binomial)
         .export_values();
     }//SignalContaminatedLH scope
+
+    {
+        bp::scope OSignalContaminatedLH_scope =
+        bp::class_<OSignalContaminatedLH, boost::shared_ptr<OSignalContaminatedLH>,bp::bases<BinnedLikelihood> >
+        ("OSignalContaminatedLH","DocString",
+        bp::init<Distribution &,
+                    Distribution &,
+                    Distribution &,
+                    Distribution &,
+                    Distribution &,
+                    Distribution &,
+                    double,
+                    double,
+                    double,
+                    OSignalContaminatedLH::Model,
+                    double,
+                    double,
+                    int>(
+                    "Constructor for signal contaminated likelihood"
+                    )
+        )
+        .def("SampleEvents",&OSignalContaminatedLH::SampleEvents)
+        .def("EvaluateLLH",&OSignalContaminatedLH::EvaluateLLH)
+        //.def("EnableHistogramedEvents",&OSignalContaminatedLH::EnableHistogramedEvents)
+        ;
+
+        bp::enum_<OSignalContaminatedLH::Model>("Model")
+        .value("None", OSignalContaminatedLH::None)
+        .value("Poisson", OSignalContaminatedLH::Poisson)
+        .value("Binomial", OSignalContaminatedLH::Binomial)
+        .export_values();
+    }//OSignalContaminatedLH scope
 
     {
         bp::scope ShapeLikelihood_scope =
