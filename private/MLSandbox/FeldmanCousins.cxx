@@ -2,6 +2,9 @@
 
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_min.h>
+#include <gsl/gsl_errno.h>
+#include <exception>
+#include <stdexcept>
 
 #include <pthread.h>
 #include <string>
@@ -80,16 +83,32 @@ void FeldmanCousinsAnalysis::ComputeLimits(double &upper, double &lower){
     //This is only done if the best fit mu>0 and current likelihood ratio is smaller than the corresponding critical
     //value (so it can cross the critical boundary).
     if(minimizer_.bestFit_!=0 && currentR < currentRCritical){
-        gsl_root_fsolver_set (s, &llhrCross, x_lo, x_hi);
+        status = gsl_root_fsolver_set (s, &llhrCross, x_lo, x_hi);
+        if(status != 0 && status != GSL_CONTINUE){
+            std::string error(gsl_strerror (status));
+            throw std::runtime_error(error);
+        }
         do{
             iter++;
             status = gsl_root_fsolver_iterate (s);
+            
+            if(status != 0 && status != GSL_CONTINUE){
+                std::string error(gsl_strerror (status));
+                throw std::runtime_error(error);
+            }
+            
             r = gsl_root_fsolver_root (s);
             x_lo = gsl_root_fsolver_x_lower (s);
             x_hi = gsl_root_fsolver_x_upper (s);
             status = gsl_root_test_interval (x_lo, x_hi,0, 1e-10);
-                                             if(r<0)
-                                                 break;
+            
+            if(status != 0 && status != GSL_CONTINUE){
+                std::string error(gsl_strerror (status));
+                throw std::runtime_error(error);
+            }
+            
+            if(r<0)
+                break;
         }while ((status == GSL_CONTINUE && iter < max_iter));
     }
 

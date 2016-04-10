@@ -3,7 +3,8 @@
 #include <gsl/gsl_errno.h>
 #include <exception>
 #include <stdexcept>
-
+#include <stdio.h>
+#include <cmath>
 #include "MLSandbox/Minimizer.h"
 
 
@@ -23,7 +24,9 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     double mPoint = interval/2 + lPoint; //Middle slope
     double f_1 = lh.EvaluateLLH(lPoint);
     double f_2 = lh.EvaluateLLH((1e-5));
-    
+    char error_str[300]; 
+
+
     // For the boundary case best fit mu = 0 the slope is always negative and we only need to compute
     // one slope.
     if( (f_2 - f_1) < 0){
@@ -56,6 +59,17 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     // or b.
     double f_max = llh.function(rPoint, &lh);
     double f_lower = llh.function(lPoint, &lh); 
+    
+    if(f_max!=f_max){
+        sprintf(error_str,"Likelihood evaluation returns NaN\n error caught at at line %d in file %s",__LINE__,__FILE__);
+        throw std::runtime_error(std::string(error_str));
+    }
+
+    if(std::isinf(f_max)){
+        sprintf(error_str,"Likelihood evaluation returns inf\n error caught at at line %d in file %s",__LINE__,__FILE__);
+        throw std::runtime_error(std::string(error_str));
+    }
+
     if(f_max < f_lower)
         f_max = f_lower;
     
@@ -65,15 +79,21 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
                                        rPoint, f_max);
     if(status != 0 && status != GSL_CONTINUE){
             std::string error(gsl_strerror (status));
-            throw std::runtime_error(error);
+            sprintf(error_str,"\n error caught at at line %d in file %s with error code %d",__LINE__,__FILE__,status);
+            std::string error_continued(error_str);
+            throw std::runtime_error(error+error_continued);
     }
+
     do{
         nIterations_++;
         status = gsl_min_fminimizer_iterate (ms_);
         
         if(status != 0 && status != GSL_CONTINUE){
             std::string error(gsl_strerror (status));
-            throw std::runtime_error(error);
+            sprintf(error_str,"\n error caught at at line %d in file %s with error code %d",__LINE__,__FILE__,status);
+            std::string error_continued(error_str);
+            throw std::runtime_error(error+error_continued);
+        
         }
         
         lPoint = gsl_min_fminimizer_x_lower(ms_);
@@ -85,8 +105,11 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
 
     if(status!=0){
         std::string error(gsl_strerror (status));
-        throw std::runtime_error(error);
+        sprintf(error_str,"error code %d, at line %d in file %s",status,__LINE__,__FILE__);
+        std::string error_continued(error_str);
+        throw std::runtime_error(error+error_continued);
     }
+
     bestFit_ = gsl_min_fminimizer_x_minimum(ms_);
 
     //evaluating the likelihood at the best fit point.
