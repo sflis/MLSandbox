@@ -35,6 +35,7 @@ public:
     Minimizer():nIterations_(0){
         const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
         ms_ = gsl_min_fminimizer_alloc (T);
+        gsl_set_error_handler_off();
     }
 
     ~Minimizer(){gsl_min_fminimizer_free (ms_);}

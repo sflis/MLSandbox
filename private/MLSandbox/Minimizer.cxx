@@ -1,11 +1,14 @@
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_min.h>
-
+#include <gsl/gsl_errno.h>
+#include <exception>
+#include <stdexcept>
 
 #include "MLSandbox/Minimizer.h"
 
 
 #include <iostream>
+#include <string>
 using namespace std;
 //_____________________________________________________________________________
 double Minimizer::ComputeBestFit(Likelihood &lh){
@@ -56,14 +59,22 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     if(f_max < f_lower)
         f_max = f_lower;
     
-    gsl_min_fminimizer_set_with_values(ms_, &llh,
+    status = gsl_min_fminimizer_set_with_values(ms_, &llh,
                                        mPoint, llh.function(mPoint, &lh),
                                        lPoint, f_max,
                                        rPoint, f_max);
+    if(status != 0 && status != GSL_CONTINUE){
+            std::string error(gsl_strerror (status));
+            throw std::runtime_error(error);
+    }
     do{
         nIterations_++;
         status = gsl_min_fminimizer_iterate (ms_);
-
+        
+        if(status != 0 && status != GSL_CONTINUE){
+            std::string error(gsl_strerror (status));
+            throw std::runtime_error(error);
+        }
         
         lPoint = gsl_min_fminimizer_x_lower(ms_);
         rPoint = gsl_min_fminimizer_x_upper(ms_);
@@ -72,6 +83,10 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
 
     }while (status == GSL_CONTINUE && nIterations_ < max_iter);
 
+    if(status!=0){
+        std::string error(gsl_strerror (status));
+        throw std::runtime_error(error);
+    }
     bestFit_ = gsl_min_fminimizer_x_minimum(ms_);
 
     //evaluating the likelihood at the best fit point.
