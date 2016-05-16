@@ -68,8 +68,8 @@ void register_Likelihood()
 //            bp::args("weight_list")
 //            )
         )
-        .def("SampleEvents",&ShapeLikelihood::SampleEvents)
-        .def("EvaluateLLH",&ShapeLikelihood::EvaluateLLH)
+        .def("SampleEvents",&CombinedLikelihood::SampleEvents)
+        .def("EvaluateLLH",&CombinedLikelihood::EvaluateLLH)
         ;
 
     }//CombinedLikelihood

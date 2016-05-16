@@ -16,8 +16,9 @@ double ShapeLikelihood::EvaluateLLH(double xi) const{
         uint64_t index = *it;
         llhSum += observation_[index] *
         log( xi * signalPdf_[index] + bgFraction * bgPdf_[index]);
+
     }
-    //cout<<llhSum<<endl;
+
     // Counting the number of llh evaluations.
     nTotalLLHEvaluations_++;
 

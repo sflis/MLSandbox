@@ -36,9 +36,11 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     }
     //Searching for the right interval
     rPoint = searchInterval/2;
-    while(lh.EvaluateLLH(rPoint) > f_1){
+    while(rPoint < 1.0 && lh.EvaluateLLH(rPoint) > f_1){
         rPoint += searchInterval;
     }
+    if(rPoint>1.0)
+        rPoint=1.0;
     interval = rPoint - lPoint;
     mPoint = interval/2 + lPoint;
     // Variables needed for the gsl minimizer
