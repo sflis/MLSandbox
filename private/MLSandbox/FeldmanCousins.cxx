@@ -173,7 +173,7 @@ void FeldmanCousinsAnalysis::ComputeRanks(uint64_t nExperiments,
     std::vector<double> llh_xis(nSteps);
     double stepSize= (maxXi-minXi)/nSteps;
     for(uint64_t i = 0; i < nSteps; i++){
-        llh_xis[i] = i*stepSize;
+        llh_xis[i] = minXi+i*stepSize;
     }
     std::queue<double, std::deque<double> > llh_hypos(
         std::deque<double>(llh_xis.begin(), llh_xis.end())
