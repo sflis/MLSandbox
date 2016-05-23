@@ -21,6 +21,7 @@
 
 #include "Distribution.h"
 
+
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_spline.h>
 
@@ -29,8 +30,10 @@
 #include <string>
 #include <math.h>
 #include <iostream>
-//#include <set>
+
 #include <numeric>
+
+class Minimizer;
 
 uint32_t SuperFastHash (const char * data, int len);
 typedef double(*likelihoodCallback)(double,void*);
@@ -56,6 +59,8 @@ class Likelihood{
         ///safe.
         virtual Likelihood * Clone(int seed)const = 0;
 
+        virtual void MinimizerConditions(Minimizer &min){}
+        
         virtual bool Changed(){
             bool ret = (stateHash_ == ChangedHash());
             stateHash_ = ChangedHash();

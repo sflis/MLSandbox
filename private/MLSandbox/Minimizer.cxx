@@ -16,8 +16,8 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     /// Determining the best fit (maximizing the likelihood) with the gsl library minimizer 
     /// using brent's method.
     /// domain mu=[0,nObs].
-    
-    double searchInterval = 1e-2;
+    lh.MinimizerConditions(*this);
+    double searchInterval = 5e-3;
     double lPoint = 0; //Left starting point of the search interval method
     double rPoint = searchInterval;//Right starting point of the search interval
     double interval = rPoint - lPoint;
@@ -25,7 +25,6 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     double f_1 = lh.EvaluateLLH(lPoint);
     double f_2 = lh.EvaluateLLH((1e-5));
     char error_str[300]; 
-
 
     // For the boundary case best fit mu = 0 the slope is always negative and we only need to compute
     // one slope.
@@ -36,13 +35,18 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     }
     //Searching for the right interval
     rPoint = searchInterval/2;
-    while(rPoint < 1.0 && lh.EvaluateLLH(rPoint) > f_1){
+    while(rPoint < 1.0 && f_2 > f_1 && rPoint<maxXi_){
         rPoint += searchInterval;
+        f_1 = f_2;
+        f_2 = lh.EvaluateLLH(rPoint);
     }
     if(rPoint>1.0)
         rPoint=1.0;
-    interval = rPoint - lPoint;
-    mPoint = interval/2 + lPoint;
+    if(rPoint>maxXi_)
+        rPoint=maxXi_;
+    lPoint = rPoint - searchInterval*2;
+    mPoint = rPoint - searchInterval;
+
     // Variables needed for the gsl minimizer
     int status;
     int  max_iter = 30;
