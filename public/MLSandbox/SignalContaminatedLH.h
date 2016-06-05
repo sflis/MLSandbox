@@ -19,6 +19,8 @@
 #ifndef MLSANDBOX_SIGNALCONTAMINATEDLH_H
 #define MLSANDBOX_SIGNALCONTAMINATEDLH_H
 
+class Minimizer;
+
 class SignalContaminatedLH : public BinnedLikelihood{
     public:
     enum Model{None,Poisson,Binomial};
@@ -72,6 +74,8 @@ class SignalContaminatedLH : public BinnedLikelihood{
         double Mu2Xi(double mu) const{
             return mu/N_;
         }
+        
+        void MinimizerConditions(Minimizer &min);
 
         likelihoodCallback CallBackFcn(){return &likelihoodEval;}
         SignalContaminatedLH * Clone(int seed) const {
@@ -92,6 +96,8 @@ class SignalContaminatedLH : public BinnedLikelihood{
     private:
         ///Callback function for the minimizer
         static double likelihoodEval(double xi, void *params);
+        
+        void ComputeMaxSFrac();
 
         Distribution signalPdf_;
         /// Pointer to a distribution describing the signal pdf.
@@ -114,6 +120,9 @@ class SignalContaminatedLH : public BinnedLikelihood{
         double sig_sample_prob_;
         double bg_sample_prob_;
 
+        double maxSFractionFit_;
+
+        double lastInjXi_;
 };
 
 #endif

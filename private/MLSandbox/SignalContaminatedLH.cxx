@@ -1,10 +1,12 @@
 #include "MLSandbox/Likelihood.h"
 #include "MLSandbox/SignalContaminatedLH.h"
+#include "MLSandbox/Minimizer.h"
 #include <math.h>
 #include <iostream>
 #include <cfloat>
 #include <numeric>
 #include <stdexcept>
+#include <limits>
 using namespace std;
 
 
@@ -46,19 +48,38 @@ SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal 
                     }
                 }
                 observation_.resize(signalPdf_.GetNBins());
-
+                ComputeMaxSFrac();
             }
 
 //_____________________________________________________________________________
 double SignalContaminatedLH::EvaluateLLH(double xi) const{
     double llhSum = 0;
+    double illhSum = 0;
     const double w = Xi2W(xi);
 
     // Loop over the binned events to evaluate the likelihood.
     for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
-        llhSum += observation_[index]
-        * log( w * signalPdf_[index] + (1-w)/(1-xi)*(bgPdf_[index] - xi*signalPdfScrambled_[index] ));
+        double bg_prob = bgPdf_[index] - xi*signalPdfScrambled_[index];
+        //if(bg_prob<0)
+        //    bg_prob = 0;
+        double t_prob = w * signalPdf_[index] + (1-w)/(1-xi)*( bg_prob);
+        //t_prob = (t_prob+1)/(-(1e6-2)*t_prob+1e6)*fabs(t_prob); 
+        //cout<<t_prob<<endl;
+        if(t_prob<=0){
+            //cout<<w<<" "<<xi<<" "<<bg_prob<<" "<<t_prob<<endl;
+            t_prob = std::numeric_limits<double>::min();
+        }
+        /*
+        if(t_prob<0){
+            llhSum += observation_[index]
+            * log(-t_prob);
+            illhSum += M_PI/2 +log(1-t_prob);// 1-w;
+        }
+        else{//*/    
+            llhSum += observation_[index]
+            * log(t_prob);
+        //}
     }
 
     // Adding poisson or binomial factor to the likelihood if enabled.
@@ -80,17 +101,19 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
     // Counting the number of llh evaluations.
     nTotalLLHEvaluations_++;
 
-    return llhSum;
+    return llhSum;//-sqrt(llhSum*llhSum+illhSum*illhSum);
 }
 //_____________________________________________________________________________
 void SignalContaminatedLH::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);
     double w = Xi2W(xi);
-    //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
-    addDistributions(xi, signalScrambledSample_, 1-xi, backgroundSample_, bgPdf_);
-    addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
-    addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
-
+    if(xi!= lastInjXi_){
+        //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
+        addDistributions(xi, signalScrambledSample_, 1-xi, backgroundSample_, bgPdf_);
+        addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
+        addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
+        lastInjXi_ = xi;
+    }
     std::vector<double> &s  = mixed_.GetPDFVector();
     if(xi<0 or xi>1.0){
         throw std::invalid_argument("Signal fraction xi out of bounds [0,1]");
@@ -158,7 +181,20 @@ void SignalContaminatedLH::SampleEvents(double xi){
     }
     //should be more efficient to sum this up while filling the bins
     totEvents_ = std::accumulate(observation_.begin(), observation_.end(), 0);
+    ComputeMaxSFrac();
     changed_ = true;
+}
+//_____________________________________________________________________________
+void SignalContaminatedLH::MinimizerConditions(Minimizer &min){
+     min.SetBoundaries(0.0,maxSFractionFit_);
+}
+//_____________________________________________________________________________
+void SignalContaminatedLH::ComputeMaxSFrac(){
+    maxSFractionFit_ = N_;
+    for(uint64_t i = 0; i<signalPdf_.GetNBins(); i++){
+        if(maxSFractionFit_< bgPdf_[i]/(signalPdfScrambled_[i]-signalPdf_[i]))
+            maxSFractionFit_ = bgPdf_[i]/(signalPdfScrambled_[i]-signalPdf_[i]);
+    }
 }
 //_____________________________________________________________________________
 double SignalContaminatedLH::likelihoodEval(double xi, void *params){

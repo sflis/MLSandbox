@@ -11,7 +11,7 @@ double ShapeLikelihood::EvaluateLLH(double xi) const{
     double llhSum = 0;
     const double bgFraction = (1-xi);
 
-    // Loop over the binned events to evaluate the likelihood.
+    // Only loop over the bins which contain events to evaluate the likelihood.
     for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
         llhSum += observation_[index] *
