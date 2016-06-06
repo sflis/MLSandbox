@@ -43,7 +43,34 @@ find_boostnumpy()
 find_gsl()
 
 set(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY TRUE)
+
+
+if(NOT (GSL_FOUND AND BOOSTNUMPY_FOUND) AND DEFINED ENV{I3_PORTS})
+      message("GSL and/or boost-numpy not found in usual location looking for I3_PORTS and cvmfs") 
+      foreach(v 1.8 1.14 1.15 1.16)
+        if(IS_DIRECTORY $ENV{I3_PORTS}/include/gsl-${v})
+          set(GSL_VERSION "${v}")
+          set(GSL_SUBDIR "gsl-${v}")
+        endif(IS_DIRECTORY $ENV{I3_PORTS}/include/gsl-${v})
+      endforeach(v 1.8 1.14 1.15 1.16)
+      set(GSL_FOUND ON)
+      set(GSL_INCLUDE_DIRS $ENV{I3_PORTS}/include/${GSL_SUBDIR})
+      set(GSL_LIBRARIES $ENV{I3_PORTS}/lib/${GSL_SUBDIR}/libgsl.so)
+      message("GSL FOUND")
+      message("gsl path " ${GSL_INCLUDE_DIRS})
+      
+      set(BOOSTNUMPY_LIBRARIES $ENV{SROOT}/lib/libboost_numpy.so)# CACHE FILEPATH "boost::numpy library")
+      set(BOOSTNUMPY_INCLUDE_DIRS $ENV{SROOT}/include)# CACHE PATH "Path to boost::numpy include dir")
+      set(BOOSTNUMPY_FOUND TRUE)# "boost::numpy found")
+      message("bn include" ${BOOSTNUMPY_INCLUDE_DIR})
+      # boost::numpy can't work without the Numpy C API
+      LIST(APPEND BOOSTNUMPY_INCLUDE_DIR ${NUMPY_INCLUDE_DIR})
+      LIST(APPEND BOOSTNUMPY_LIBRARIES ${NUMPY_LIBRARIES})
+      
+    
+endif()
 if(NOT (BOOST_FOUND AND PYTHON_FOUND AND NUMPY_FOUND AND BOOSTNUMPY_FOUND AND GSL_FOUND))
+    message("" ${BOOSTNUMPY_FOUND} "  " ${GSL_FOUND})
     set(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY FALSE)
 endif()
 
@@ -53,10 +80,12 @@ if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
 		${PYTHON_INCLUDE_DIRS}
 		${NUMPY_INCLUDE_DIRS}
 		${BOOST_INCLUDE_DIRS}
-        ${BOOSTNUMPY_INCLUDE_DIRS}
+                ${BOOSTNUMPY_INCLUDE_DIRS}
+		${GSL_INCLUDE_DIRS}
 		${PROJECT_SOURCE_DIR}/public/
 		${PROJECT_SOURCE_DIR}/private/
-	)
+		
+    )
 
 	SET(LIBRARY_SRC
 		    private/MLSandbox/Distribution.cxx
