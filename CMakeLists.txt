@@ -56,6 +56,7 @@ if(NOT (GSL_FOUND AND BOOSTNUMPY_FOUND) AND DEFINED ENV{I3_PORTS})
       set(GSL_FOUND ON)
       set(GSL_INCLUDE_DIRS $ENV{I3_PORTS}/include/${GSL_SUBDIR})
       set(GSL_LIBRARIES $ENV{I3_PORTS}/lib/${GSL_SUBDIR}/libgsl.so)
+      set(GSL_LIBRARIES $ENV{I3_PORTS}/lib/${GSL_SUBDIR}/libgsl.so $ENV{I3_PORTS}/lib/${GSL_SUBDIR}/libgslcblas.so)
       message("GSL FOUND")
       message("gsl path " ${GSL_INCLUDE_DIRS})
       
