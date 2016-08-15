@@ -55,8 +55,14 @@ SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal 
 double SignalContaminatedLH::EvaluateLLH(double xi) const{
     double llhSum = 0;
     double illhSum = 0;
-    const double w = Xi2W(xi);
 
+    //Just in case to avert
+    //NaNs in the likelihood
+    if(xi == 1)
+        xi = 1.0 - std::numeric_limits<double>::epsilon();
+    
+    const double w = Xi2W(xi);
+    const uint64_t nbins = mixed_.GetNBins();
     // Loop over the binned events to evaluate the likelihood.
     for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
@@ -76,9 +82,14 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
             * log(-t_prob);
             illhSum += M_PI/2 +log(1-t_prob);// 1-w;
         }
-        else{//*/    
+        else{//*/
+        //if(bg_prob<0){
+        //    llhSum -= std::numeric_limits<double>::max()/mixed_.GetNBins();
+        //}
+        //else{    
             llhSum += observation_[index]
             * log(t_prob);
+        //}
         //}
     }
 
