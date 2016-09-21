@@ -67,6 +67,8 @@ class Likelihood{
             return (ret || changed_);
         }
 
+        virtual double MinXiBound(){return 0.0;}
+        virtual double MaxXiBound(){return 1.0;}
 
         virtual uint32_t ChangedHash() =  0;
         /// Number of events in the current sample
@@ -104,8 +106,8 @@ public:
         ///Return the callback function of the likelihood for the minimizer
         virtual likelihoodCallback CallBackFcn() = 0;
 
-        ///Enables histogramming of events (must set the pdfBins_ variable)
-        //virtual bool EnableHistogramedEvents(){histogramEvents_ = false; return false;}
+        virtual double MinXiBound(){return 0.0;}    
+        virtual double MaxXiBound(){return 1.0;}
 
         /// This function is used to set the event sample for the likelihood to be computed.
         /// \param events a vector containing the binned event sample that the analysis should run on.

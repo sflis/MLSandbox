@@ -1,4 +1,4 @@
-#include "MLSandbox/Likelihood.h"
+
 #include "MLSandbox/SignalContaminatedLH.h"
 #include "MLSandbox/Minimizer.h"
 #include <math.h>
@@ -70,10 +70,8 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
         //if(bg_prob<0)
         //    bg_prob = 0;
         double t_prob = w * signalPdf_[index] + (1-w)/(1-xi)*( bg_prob);
-        //t_prob = (t_prob+1)/(-(1e6-2)*t_prob+1e6)*fabs(t_prob); 
-        //cout<<t_prob<<endl;
+
         if(t_prob<=0){
-            //cout<<w<<" "<<xi<<" "<<bg_prob<<" "<<t_prob<<endl;
             t_prob = std::numeric_limits<double>::min();
         }
         /*
@@ -83,13 +81,13 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
             illhSum += M_PI/2 +log(1-t_prob);// 1-w;
         }
         else{//*/
-        //if(bg_prob<0){
-        //    llhSum -= std::numeric_limits<double>::max()/mixed_.GetNBins();
-        //}
-        //else{    
+        if(bg_prob<0){
+            llhSum -= std::numeric_limits<double>::max()/mixed_.GetNBins();
+        }
+        else{    
             llhSum += observation_[index]
             * log(t_prob);
-        //}
+        }
         //}
     }
 
@@ -197,15 +195,17 @@ void SignalContaminatedLH::SampleEvents(double xi){
 }
 //_____________________________________________________________________________
 void SignalContaminatedLH::MinimizerConditions(Minimizer &min){
-     min.SetBoundaries(0.0,maxSFractionFit_);
+     //min.SetBoundaries(0.0,maxSFractionFit_);
 }
 //_____________________________________________________________________________
 void SignalContaminatedLH::ComputeMaxSFrac(){
-    maxSFractionFit_ = N_;
+    maxSFractionFit_ = 1.0;
     for(uint64_t i = 0; i<signalPdf_.GetNBins(); i++){
-        if(maxSFractionFit_< bgPdf_[i]/(signalPdfScrambled_[i]-signalPdf_[i]))
-            maxSFractionFit_ = bgPdf_[i]/(signalPdfScrambled_[i]-signalPdf_[i]);
+        if(observation_[i]>0 && maxSFractionFit_> bgPdf_[i]/(signalPdfScrambled_[i])){
+            maxSFractionFit_ = bgPdf_[i]/(signalPdfScrambled_[i]);
+        }
     }
+    //std::cout<<"max fraction "<<maxSFractionFit_<<std::endl;
 }
 //_____________________________________________________________________________
 double SignalContaminatedLH::likelihoodEval(double xi, void *params){

@@ -49,6 +49,8 @@ class  NeymanAnalysis{
           , ranksCompSet_(false)
           {
           }
+        
+        NeymanAnalysis(NeymanAnalysis &analysis, int64_t seed);
 
         ///Returns the log value of the FC test-statistic for a given likelihood parameter
         ///\param xi likelihood parameter for which the test statistic should be calculated

@@ -31,11 +31,17 @@ class Minimizer{
 
 public:
 
-    Minimizer():nIterations_(0),minXi_(0),maxXi_(1.0){
+    Minimizer():nIterations_(0),minXi_(1e-15),maxXi_(1.0){
         const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
         ms_ = gsl_min_fminimizer_alloc (T);
         gsl_set_error_handler_off();
         
+    }
+
+    Minimizer(const Minimizer &min):nIterations_(min.nIterations_),minXi_(min.minXi_),maxXi_(min.maxXi_){
+        const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
+        ms_ = gsl_min_fminimizer_alloc (T);
+        gsl_set_error_handler_off();    
     }
 
     ~Minimizer(){gsl_min_fminimizer_free (ms_);}
@@ -58,6 +64,7 @@ public:
 
 private:
     gsl_min_fminimizer *ms_;
+
 
 };
 

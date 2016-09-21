@@ -58,7 +58,14 @@ void *tsComputationThread(void *data);
 pthread_mutex_t mutexNeymanFetchHypothesis = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexNeymanWriteRanks = PTHREAD_MUTEX_INITIALIZER;
 
+NeymanAnalysis::NeymanAnalysis(NeymanAnalysis &analysis, int64_t seed): 
+            computedBestFit_(false)
+          , ranksCompSet_(false)
+          , minimizer_(analysis.minimizer_)
+{
+    llh_ = boost::shared_ptr<Likelihood>(analysis.llh_->Clone(seed));
 
+}
 
 std::vector<double> NeymanAnalysis::TestStatisticDistribution(double xi, uint64_t n){
 
@@ -76,12 +83,10 @@ std::vector<double> NeymanAnalysis::TestStatisticDistribution(double xi, uint64_
 double NeymanAnalysis::ComputeLimit(double ts, double cl, double prec){
     std::map<double, std::vector<double> > &tsDistrMap = tsDistributions_.ranks_;
     double up_lim = 0;
-    std::map<double, std::vector<double> >::iterator tsDistr = tsDistrMap.begin();
-    //for (auto tsDistr: tsDistrMap) {
-    for(;tsDistr != tsDistrMap.end(); ++tsDistr){
-        double tsAtCL = tsDistr->second[tsDistr->second.size() * cl];
-        if(ts>tsAtCL){
-            up_lim = tsDistr->first;
+    for (const auto & tsDistr: tsDistrMap) {
+        double tsAtCL = tsDistr.second[tsDistr.second.size() * (1-cl)];
+        if(ts<tsAtCL){
+            up_lim = tsDistr.first;
             break;
         }
     }
@@ -145,7 +150,7 @@ void NeymanAnalysis::ComputeRanks(uint64_t nExperiments,
     std::vector<double> llh_xis(nSteps);
     double stepSize= (maxXi-minXi)/nSteps;
     for(int64_t i = 0; i < nSteps; i++){
-        llh_xis[i] = i*stepSize;
+        llh_xis[i] = minXi+i*stepSize;
     }
     std::queue<double, std::deque<double> > llh_hypos(
         std::deque<double>(llh_xis.begin(), llh_xis.end())
@@ -155,7 +160,7 @@ void NeymanAnalysis::ComputeRanks(uint64_t nExperiments,
         threadData.push_back(
             new NeymanThreadData(
                 boost::shared_ptr<NeymanAnalysis>(
-                    new NeymanAnalysis( boost::shared_ptr<Likelihood>( llh_->Clone(i) ))
+                    new NeymanAnalysis(*this,i)// boost::shared_ptr<Likelihood>( llh_->Clone(i) ))
                 ),
                 tsDistributions_,
                 globalBestFits,

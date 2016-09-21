@@ -18,7 +18,8 @@
 
 #ifndef MLSANDBOX_SIGNALCONTAMINATEDLH_H
 #define MLSANDBOX_SIGNALCONTAMINATEDLH_H
-
+#include "MLSandbox/Likelihood.h"
+#include <iostream>
 class Minimizer;
 
 class SignalContaminatedLH : public BinnedLikelihood{
@@ -93,6 +94,9 @@ class SignalContaminatedLH : public BinnedLikelihood{
                                             bg_sample_prob_,
                                             seed);
         }
+
+        double MaxXiBound(){return  maxSFractionFit_;}
+
     private:
         ///Callback function for the minimizer
         static double likelihoodEval(double xi, void *params);

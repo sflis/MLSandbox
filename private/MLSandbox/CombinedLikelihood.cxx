@@ -32,3 +32,14 @@ void CombinedLikelihood::SampleEvents(double xi){
     }
     changed_ = true;
 }
+//_____________________________________________________________________________
+double CombinedLikelihood::MaxXiBound(){
+    double xi =1.0;
+    for(uint64_t i = 0; i < likelihoods_.size(); i++){
+        double xi_ = likelihoods_[i]->MaxXiBound()*likelihoods_[i]->totEvents_ /(weights_[i] * totEvents_);
+        if(xi>xi_)
+            xi = xi_;
+    }
+    return xi;
+
+}

@@ -45,10 +45,8 @@ void register_NeymanAnalysis()
                     )
         )
        .def("EvaluateTestStatistic",&NeymanAnalysis::EvaluateTestStatistic,("xi"))
-/*       .def("Sample",&FeldmanCousinsAnalysis::Sample,("xi"))
-
-       .def("SetFCRanks",&FeldmanCousinsAnalysis::SetFCRanks)
-       */
+       .def("Sample",&NeymanAnalysis::Sample,("xi"))
+       .def("SetFCRanks",&NeymanAnalysis::SetFCRanks)
        .def("ComputeRanks",&NeymanAnalysis::ComputeRanks,(
             bp::args("n_experiments")
             ,bp::args("min_xi")
