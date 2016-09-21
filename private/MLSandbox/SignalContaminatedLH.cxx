@@ -205,7 +205,7 @@ void SignalContaminatedLH::ComputeMaxSFrac(){
             maxSFractionFit_ = bgPdf_[i]/(signalPdfScrambled_[i]);
         }
     }
-    //std::cout<<"max fraction "<<maxSFractionFit_<<std::endl;
+
 }
 //_____________________________________________________________________________
 double SignalContaminatedLH::likelihoodEval(double xi, void *params){

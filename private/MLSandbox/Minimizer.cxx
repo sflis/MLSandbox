@@ -96,9 +96,6 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
         sprintf(error_str,"Likelihood evaluation returns inf\n error caught at at line %d in file %s",__LINE__,__FILE__);
         throw std::runtime_error(std::string(error_str));
     }
-
-    //if(f_max < f_lower)
-    //    f_max = f_lower;
     
     
     if(mllh!=mllh){
@@ -119,12 +116,6 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
             std::string error(gsl_strerror (status));
             sprintf(error_str,"\n error caught at at line %d in file %s with error code %d",__LINE__,__FILE__,status);
             std::string error_continued(error_str);
-            cout<<lh.MaxXiBound()<<"  "<<mPoint-lh.MaxXiBound()<<endl;
-            cout<<lPoint<<" "<<mPoint<<" "<<rPoint<<endl;
-            cout<<f_lower<<" "<<mllh<<" "<<f_max<<endl;
-            for(uint i = 0; i<100;i++){
-                cout<<i/100.0*0.1<<"  "<<llh.function(i/100.0*0.2, &lh)<<endl;
-            }
             throw std::runtime_error(error+error_continued);
     }
 
