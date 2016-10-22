@@ -69,7 +69,8 @@ class  NeymanAnalysis{
                 double minXi,
                 double maxXi,
                 uint64_t nSteps,
-                uint64_t nThreads);
+                uint64_t nThreads,
+                uint64_t maxExperimentsPerThread);
 
 
         void SetFCRanks(FCRanks const &tsDistributions){
