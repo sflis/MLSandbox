@@ -38,7 +38,8 @@ SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal 
             sig_prob_(sig_prob),
             bg_prob_(bg_prob),
             sig_sample_prob_(sig_sample_prob),
-            bg_sample_prob_(bg_sample_prob){
+            bg_sample_prob_(bg_sample_prob),
+            lastInjXi_(std::numeric_limits<double>::quiet_NaN()){
                 N_ = N;
                 if(usedModel_ == Binomial){
                     double p = sig_prob_*0.5 + bg_prob_*(1 - 0.5);
@@ -116,17 +117,19 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
 void SignalContaminatedLH::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);
     double w = Xi2W(xi);
-    if(xi!= lastInjXi_){
+    if(xi != lastInjXi_){
         //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
         addDistributions(xi, signalScrambledSample_, 1-xi, backgroundSample_, bgPdf_);
         addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
         addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
         lastInjXi_ = xi;
     }
+
     std::vector<double> &s  = mixed_.GetPDFVector();
     if(xi<0 or xi>1.0){
         throw std::invalid_argument("Signal fraction xi out of bounds [0,1]");
     }
+    
     usedBins_.clear();
     switch(usedModel_){
         case Poisson:
@@ -164,12 +167,12 @@ void SignalContaminatedLH::SampleEvents(double xi){
         default:
         {
             totEvents_ = rng_->Poisson(N_);
-            //*
+            /*
             std::vector<double> &pdf =  mixed_.GetPDFVector();
             for(uint64_t i = 0, n = pdf.size(); i<n; i++){
                 uint64_t events = rng_->Poisson(pdf[i]*N_);
                 observation_[i] = events;
-                if(events!=0){
+                if(events != 0){
                     usedBins_.push_back(i);
                 }
             }
