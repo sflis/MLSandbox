@@ -84,9 +84,19 @@ class FCRanks{
         ///\param ranks a vector with ranks
         ///\param set if true the critical boundary is interpolated at the preset confidence
         ///           level cl_
-        void Fill(double xi, std::vector<double> &ranks, bool set = true){
-            std::sort(ranks.begin(),ranks.end());
-            ranks_[xi] = ranks;
+        void Fill(double xi, std::vector<double> &ranks, bool set = true, bool overwrite = false){
+            
+            auto it =ranks_.find(xi);
+            if( it!= ranks_.end() && overwrite == false){
+
+                it->second.insert(std::end(it->second), std::begin(ranks), std::end(ranks));
+                std::sort(it->second.begin(),it->second.end());
+            }
+            else{
+                std::sort(ranks.begin(),ranks.end());
+                ranks_[xi] = ranks;
+            }
+            
             if(set)
                 SetConfidenceLevel(cl_);
         }
