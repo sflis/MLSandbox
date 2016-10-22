@@ -6,6 +6,16 @@
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include "bindingutils.h"
 
+#include <boost/python.hpp>
+
+
+#include <boost/python/tuple.hpp>
+#include <boost/python/module.hpp>
+#include <boost/python/def.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/tuple.hpp>
+#include <boost/python/dict.hpp>
+
 #include <boost/numpy.hpp>
 #include <numpy/arrayobject.h>
 namespace bp = boost::python;
@@ -13,6 +23,17 @@ namespace bn = boost::numpy;
 
 namespace mlsandbox{
     namespace python{
+
+        bn::ndarray get_events(BinnedLikelihood &self){
+            std::vector<uint64_t> &sample = self.GetEventSample();
+            std::vector<intptr_t> shape(1,sample.size());
+            bn::dtype dt = bn::dtype::get_builtin<uint64_t>();
+            bn::ndarray sample_array = bn::zeros(shape,dt);
+            std::copy(&sample[0],&sample[0]+sample.size(),(uint64_t*)sample_array.get_data());
+            return sample_array;
+
+        }
+
         void set_events(BinnedLikelihood &self,  bp::object obj){
             bn::ndarray arr = bn::from_object(obj,bn::dtype::get_builtin<uint64_t>(), 1, 1, bn::ndarray::CARRAY_RO);
             std::vector<uint64_t> vec(arr.get_size());
@@ -51,6 +72,9 @@ void register_Likelihood()
     bp::scope Likelihood_scope = bp::class_<Likelihood, boost::shared_ptr<Likelihood>, boost::noncopyable>("Likelihood",
         "Likelihood base class                                                    \n",
         bp::no_init)
+        .def_readwrite("N",&Likelihood::N_)
+        .def_readonly("totEvents",&Likelihood::totEvents_)
+
     ;
 
     {
@@ -70,7 +94,7 @@ void register_Likelihood()
         )
         .def("SampleEvents",&CombinedLikelihood::SampleEvents)
         .def("EvaluateLLH",&CombinedLikelihood::EvaluateLLH)
-        ;
+                ;
 
     }//CombinedLikelihood
 
@@ -84,6 +108,7 @@ void register_Likelihood()
         "BinnedLikelihood base class                                                    \n",
         bp::no_init)
     .def("SetEvents",&mlsandbox::python::set_events)
+    .def("GetEvents",&mlsandbox::python::get_events)
     ;
 
 
