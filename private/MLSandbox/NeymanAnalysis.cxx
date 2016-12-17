@@ -251,7 +251,7 @@ void * tsComputationThread(void *data){
             pthread_mutex_lock( &mutexNeymanWriteRanks );
             neymanThreadData->nTestedHypotheses++;
             cout<<"=====Thread:"<<setw(2)<<neymanThreadData->threadNumber<<"====="<<endl;
-            cout<<"Signal :"<<currentHypothesis<<endl;
+            cout<<"Signal :"<<currentJob.hypo<<endl;
             //cout<<"Rank (@"<<cl*100<<"%CL and "<<n<<" experiments): "<<currentRankAtCL<<endl;
             cout<<"Hypotheses tested "<<neymanThreadData->nTestedHypotheses<<"/"<<neymanThreadData->totalHypotheses<<endl;
             cout<<"==================="<<endl;
@@ -267,7 +267,7 @@ void * tsComputationThread(void *data){
             pthread_mutex_lock( &mutexNeymanWriteRanks );
             //neymanThreadData->nTestedHypotheses++;
             cout<<"=====Thread:"<<setw(2)<<neymanThreadData->threadNumber<<"====="<<endl;
-            cout<<"Signal :"<<currentHypothesis<<endl;
+            cout<<"Signal :"<<currentJob.hypo<<endl;
             cout<<"Computed :"<<n<<" trials"<<endl;
             //cout<<"Rank (@"<<cl*100<<"%CL and "<<n<<" experiments): "<<currentRankAtCL<<endl;
             //cout<<"Hypotheses tested "<<neymanThreadData->nTestedHypotheses<<"/"<<neymanThreadData->totalHypotheses<<endl;

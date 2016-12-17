@@ -16,17 +16,17 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 
-#ifndef MLSANDBOX_OSignalContaminatedLH_H
-#define MLSANDBOX_OSignalContaminatedLH_H
+#ifndef MLSANDBOX_PSIGNALCONTAMINATEDLH_H
+#define MLSANDBOX_PSIGNALCONTAMINATEDLH_H
 #include "MLSandbox/Likelihood.h"
 #include <iostream>
 class Minimizer;
 
-class OSignalContaminatedLH : public BinnedLikelihood{
+class PSignalContaminatedLH : public BinnedLikelihood{
     public:
     enum Model{None,Poisson,Binomial};
 
-    OSignalContaminatedLH(const Distribution &signal, //Signal expectation
+    PSignalContaminatedLH(const Distribution &signal, //Signal expectation
                          const Distribution &background, //background expectation
                          const Distribution &signalScrambled, //Scrambled signal expectation
                          const Distribution &signalSample, //Signal sample
@@ -35,7 +35,7 @@ class OSignalContaminatedLH : public BinnedLikelihood{
                          double N,
                          double sig_prob = 1.0,
                          double bg_prob = 1.0,
-                         OSignalContaminatedLH::Model model = OSignalContaminatedLH::None,
+                         PSignalContaminatedLH::Model model = PSignalContaminatedLH::None,
                          double sig_sample_prob = 1.0,
                          double bg_sample_prob = 1.0,
                          int seed = 1
@@ -55,6 +55,7 @@ class OSignalContaminatedLH : public BinnedLikelihood{
 
         uint64_t GetNEvents(){return totEvents_;}
 
+        void SetW2Xi(double w2xi){w2xi_ = w2xi;}
 
         double Xi2W(double xi) const {
             return sig_prob_ * xi / (sig_prob_ * xi + bg_prob_*(1.0 - xi));
@@ -79,8 +80,8 @@ class OSignalContaminatedLH : public BinnedLikelihood{
         void MinimizerConditions(Minimizer &min);
 
         likelihoodCallback CallBackFcn(){return &likelihoodEval;}
-        OSignalContaminatedLH * Clone(int seed) const {
-            return new OSignalContaminatedLH(signalPdf_,
+        PSignalContaminatedLH * Clone(int seed) const {
+            return new PSignalContaminatedLH(signalPdf_,
                                             bgPdf_,
                                             signalPdfScrambled_,
                                             signalSample_,
@@ -127,6 +128,8 @@ class OSignalContaminatedLH : public BinnedLikelihood{
         double maxSFractionFit_;
 
         double lastInjXi_;
+
+        double w2xi_; 
 };
 
 #endif

@@ -114,6 +114,10 @@ public:
         void SetEvents(std::vector<uint64_t> &events){
 
             observation_ = events;
+            if(observation_.size()!= nPDFBins_)
+                throw std::invalid_argument("Event histogram has the wrong length");
+
+    
             totEvents_ =0;
             usedBins_.clear();
             for(uint64_t i = 0; i<observation_.size();i++){
@@ -121,6 +125,7 @@ public:
                 if(observation_[i]>0)
                     usedBins_.push_back(i);
             }
+
             //std::accumulate(observation_.begin(), observation_.end(), 0);
             
             //totEvents_ = events.size();

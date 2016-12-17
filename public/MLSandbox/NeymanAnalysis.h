@@ -56,10 +56,10 @@ class  NeymanAnalysis{
         ///\param xi likelihood parameter for which the test statistic should be calculated
         ///\return the log of the FC test-statistic = log(L(xi)/L(xi_best))
         double EvaluateTestStatistic(double xi){
-            if(!computedBestFit_){
+            //if(!computedBestFit_){
                 minimizer_.ComputeBestFit(*llh_);
                 computedBestFit_ = true;
-            }
+            //}
             return minimizer_.bestFitLLH_ - (*llh_).EvaluateLLH(0);
         }
 

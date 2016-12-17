@@ -1,5 +1,5 @@
 
-#include "MLSandbox/OSignalContaminatedLH.h"
+#include "MLSandbox/PSignalContaminatedLH.h"
 #include "MLSandbox/Minimizer.h"
 #include <math.h>
 #include <iostream>
@@ -11,7 +11,7 @@ using namespace std;
 
 
 //_____________________________________________________________________________
-OSignalContaminatedLH::OSignalContaminatedLH(const Distribution &signal, //Signal expectation
+PSignalContaminatedLH::PSignalContaminatedLH(const Distribution &signal, //Signal expectation
                      const Distribution &background, //background expectation
                      const Distribution &signalScrambled, //Scrambled signal expectation
                      const Distribution &signalSample, //Signal sample
@@ -20,7 +20,7 @@ OSignalContaminatedLH::OSignalContaminatedLH(const Distribution &signal, //Signa
                      double N,
                      double sig_prob ,
                      double bg_prob,
-                     OSignalContaminatedLH::Model model,
+                     PSignalContaminatedLH::Model model,
                      double sig_sample_prob,
                      double bg_sample_prob,
                      int seed
@@ -53,7 +53,7 @@ OSignalContaminatedLH::OSignalContaminatedLH(const Distribution &signal, //Signa
             }
 
 //_____________________________________________________________________________
-double OSignalContaminatedLH::EvaluateLLH(double xi) const{
+double PSignalContaminatedLH::EvaluateLLH(double xi) const{
     double llhSum = 0;
     double illhSum = 0;
 
@@ -67,11 +67,10 @@ double OSignalContaminatedLH::EvaluateLLH(double xi) const{
     // Loop over the binned events to evaluate the likelihood.
     for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
-        double bg_prob = (1+w)*bgPdf_[index] - w*signalPdfScrambled_[index];
-
-        double t_prob = w * signalPdf_[index] + (1-w)*( bg_prob);
-
-            llhSum += observation_[index]
+        double v = xi + (w-xi)*w2xi_; 
+        double bg_prob = (1+v)*bgPdf_[index] - v*signalPdfScrambled_[index];        
+        double t_prob = w * signalPdf_[index] + (1-w)*bg_prob;
+        llhSum += observation_[index]
             * log(t_prob);
     }
 
@@ -99,7 +98,7 @@ double OSignalContaminatedLH::EvaluateLLH(double xi) const{
     return llhSum;
 }
 //_____________________________________________________________________________
-void OSignalContaminatedLH::SampleEvents(double xi){
+void PSignalContaminatedLH::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);
     double w = Xi2W(xi);
 
@@ -113,18 +112,9 @@ void OSignalContaminatedLH::SampleEvents(double xi){
     switch(usedModel_){
         case Poisson:
         {
-           /*uint64_t current_n = rng_->Poisson(N_ * ((1 - xi) * bg_sample_prob_ + xi * sig_sample_prob_));
-           std::fill(observation_.begin(), observation_.end(), 0);
-           for(uint64_t j = 0; j < current_n; j++){
-               uint64_t i = mixed_.SampleFromDistrI();
-               observation_[i] +=1;
-               std::vector<uint64_t>::iterator  it = std::lower_bound(usedBins_.begin(), usedBins_.end(), i);
-               if(it == usedBins_.end() || i < *it){
-                   usedBins_.insert(it,i);
-               }
-           }
-          */
+
             if(xi != lastInjXi_){
+              //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
                 addDistributions(w, signalScrambledSample_, 1-w, bgPdfOriginal_, bgPdf_);
                 addDistributions(xi, signalSample_,  (1-xi), backgroundSample_, mixed_);
                 lastInjXi_ = xi;
@@ -147,8 +137,8 @@ void OSignalContaminatedLH::SampleEvents(double xi){
         case Binomial:
         {
            if(xi != lastInjXi_){
-              
-                addDistributions(xi, signalScrambledSample_, 1-xi, bgPdfOriginal_, bgPdf_);
+              //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
+                addDistributions(xi, signalScrambledSample_, 1-xi, backgroundSample_, bgPdf_);
                 addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
                 addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
                 lastInjXi_ = xi;
@@ -209,11 +199,11 @@ void OSignalContaminatedLH::SampleEvents(double xi){
     changed_ = true;
 }
 //_____________________________________________________________________________
-void OSignalContaminatedLH::MinimizerConditions(Minimizer &min){
+void PSignalContaminatedLH::MinimizerConditions(Minimizer &min){
      //min.SetBoundaries(0.0,maxSFractionFit_);
 }
 //_____________________________________________________________________________
-void OSignalContaminatedLH::ComputeMaxSFrac(){
+void PSignalContaminatedLH::ComputeMaxSFrac(){
     maxSFractionFit_ = 1.0;
     for(uint64_t i = 0; i<signalPdf_.GetNBins(); i++){
         if(observation_[i]>0 && maxSFractionFit_> bgPdf_[i]/(signalPdfScrambled_[i])){
@@ -223,6 +213,6 @@ void OSignalContaminatedLH::ComputeMaxSFrac(){
 
 }
 //_____________________________________________________________________________
-double OSignalContaminatedLH::likelihoodEval(double xi, void *params){
-    return -((OSignalContaminatedLH*) params)->EvaluateLLH(xi);
+double PSignalContaminatedLH::likelihoodEval(double xi, void *params){
+    return -((PSignalContaminatedLH*) params)->EvaluateLLH(xi);
 }

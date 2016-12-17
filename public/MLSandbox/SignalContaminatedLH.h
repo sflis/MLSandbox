@@ -95,7 +95,10 @@ class SignalContaminatedLH : public BinnedLikelihood{
                                             seed);
         }
 
-        double MaxXiBound(){return  maxSFractionFit_;}
+        double MaxXiBound(){
+            if(changed_) ComputeMaxSFrac();
+                return  maxSFractionFit_;
+        }
 
     private:
         ///Callback function for the minimizer

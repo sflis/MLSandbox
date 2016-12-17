@@ -45,7 +45,7 @@ SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal 
                     double p = sig_prob_*0.5 + bg_prob_*(1 - 0.5);
                     double epsilon = 1e-21;
                     if(p<epsilon or (1-p)< epsilon){
-                        throw std::invalid_argument("Binomial model invalid with given signal and background probabilities. Try modle `None'.");
+                        throw std::invalid_argument("Binomial model invalid with given signal and background probabilities. Try model `None'.");
                     }
                 }
                 observation_.resize(signalPdf_.GetNBins());
@@ -68,20 +68,12 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
     for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
         double bg_prob = bgPdf_[index] - xi*signalPdfScrambled_[index];
-        //if(bg_prob<0)
-        //    bg_prob = 0;
         double t_prob = w * signalPdf_[index] + (1-w)/(1-xi)*( bg_prob);
 
         if(t_prob<=0){
             t_prob = std::numeric_limits<double>::min();
         }
-        /*
-        if(t_prob<0){
-            llhSum += observation_[index]
-            * log(-t_prob);
-            illhSum += M_PI/2 +log(1-t_prob);// 1-w;
-        }
-        else{//*/
+
         if(bg_prob<0){
             llhSum -= std::numeric_limits<double>::max()/mixed_.GetNBins();
         }
@@ -89,7 +81,6 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
             llhSum += observation_[index]
             * log(t_prob);
         }
-        //}
     }
 
     // Adding poisson or binomial factor to the likelihood if enabled.
@@ -118,8 +109,7 @@ void SignalContaminatedLH::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);
     double w = Xi2W(xi);
     if(xi != lastInjXi_){
-        //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
-        addDistributions(xi, signalScrambledSample_, 1-xi, backgroundSample_, bgPdf_);
+        addDistributions(xi, signalScrambledSample_, 1-xi, bgPdfOriginal_, bgPdf_);
         addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
         addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
         lastInjXi_ = xi;

@@ -113,6 +113,7 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
                                        rPoint, f_max);
     
     if(status != 0 && status != GSL_CONTINUE){
+            
             std::string error(gsl_strerror (status));
             sprintf(error_str,"\n error caught at at line %d in file %s with error code %d",__LINE__,__FILE__,status);
             std::string error_continued(error_str);
