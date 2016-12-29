@@ -48,6 +48,22 @@ SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal 
                         throw std::invalid_argument("Binomial model invalid with given signal and background probabilities. Try model `None'.");
                     }
                 }
+
+                if(background.GetNBins()!=nPDFBins_)
+                    throw std::invalid_argument("Background pdf has wrong number of bins");
+
+                if(signalScrambled.GetNBins()!=nPDFBins_)
+                    throw std::invalid_argument("Scrambled signal pdf has wrong number of bins");
+
+                if(signalSample.GetNBins()!=nPDFBins_)
+                    throw std::invalid_argument("Signal sample pdf has wrong number of bins");
+
+                if(backgroundSample.GetNBins()!=nPDFBins_)
+                    throw std::invalid_argument("Background sample pdf has wrong number of bins");
+
+                if(signalScrambledSample.GetNBins()!=nPDFBins_)
+                    throw std::invalid_argument("Scrambled signal sample pdf has wrong number of bins");
+
                 observation_.resize(signalPdf_.GetNBins());
                 ComputeMaxSFrac();
             }
