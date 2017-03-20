@@ -19,7 +19,7 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     lh.MinimizerConditions(*this);
     double searchInterval = 5e-3;
     double lPoint = minXi_; //Left starting point of the search interval method
-    double rPoint = lPoint+searchInterval;//Right starting point of the search interval
+    double rPoint = lPoint + searchInterval;//Right starting point of the search interval
     double interval = rPoint - lPoint;
     double mPoint = interval/2 + lPoint; //Middle slope
     double f_1 = lh.EvaluateLLH(lPoint);
@@ -28,23 +28,35 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
 
     // For the boundary case best fit mu = 0 the slope is always negative and we only need to compute
     // one slope.
+    uint i = 0;
     if( (f_2 - f_1) <= 0){
         bestFit_ = minXi_;
         bestFitLLH_ = f_1;
         return bestFitLLH_;
+        //Searching for the right interval
+        /*
+        rPoint = lPoint;
+        lPoint = -searchInterval/2;
+        f_2 = lh.EvaluateLLH(lPoint);
+        while(f_2 > f_1 && lPoint > -1.0 ){//&& lPoint<maxXi_
+            lPoint -= searchInterval;
+            f_1 = f_2;
+            f_2 = lh.EvaluateLLH(lPoint);
+            i++;
+        }*/
     }
-    
-    //Searching for the right interval
-    rPoint = lPoint+searchInterval/2;
-    f_2 = lh.EvaluateLLH(rPoint);
-    uint i = 0;
-    while(f_2 > f_1 && rPoint < 1.0 && rPoint<maxXi_){
-        rPoint += searchInterval;
-        f_1 = f_2;
+    //else{
+        //Searching for the right interval
+        rPoint = lPoint+searchInterval/2;
         f_2 = lh.EvaluateLLH(rPoint);
-        i++;
-    }
-    
+        
+        while(f_2 > f_1 && rPoint < 1.0 && rPoint<maxXi_){
+            rPoint += searchInterval;
+            f_1 = f_2;
+            f_2 = lh.EvaluateLLH(rPoint);
+            i++;
+        }
+    //}
     if(rPoint>1.0)
         rPoint=1.0;
     

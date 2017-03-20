@@ -26,7 +26,6 @@ void CombinedLikelihood::SampleEvents(double xi){
     totEvents_ = 0;
     for(uint64_t i = 0; i<likelihoods_.size(); i++){
         double xi_i = xi / likelihoods_[i]->N_ * weights_[i] * N_;
-        //double xi_i = xi  * weights_[i];
         likelihoods_[i]->SampleEvents(xi_i);
         totEvents_ += likelihoods_[i]->totEvents_;
     }

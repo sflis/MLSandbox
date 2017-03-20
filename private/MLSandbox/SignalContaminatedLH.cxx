@@ -126,8 +126,9 @@ void SignalContaminatedLH::SampleEvents(double xi){
     double w = Xi2W(xi);
     if(xi != lastInjXi_){
         addDistributions(xi, signalScrambledSample_, 1-xi, bgPdfOriginal_, bgPdf_);
-        addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
-        addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
+        //addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
+        //addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
+        addDistributions(w, signalSample_, (1-w), backgroundSample_, mixed_);
         lastInjXi_ = xi;
     }
 
@@ -172,7 +173,8 @@ void SignalContaminatedLH::SampleEvents(double xi){
         case None:
         default:
         {
-            totEvents_ = rng_->Poisson(N_);
+            totEvents_ = N_;//rng_->Poisson(N_);
+
             /*
             std::vector<double> &pdf =  mixed_.GetPDFVector();
             for(uint64_t i = 0, n = pdf.size(); i<n; i++){

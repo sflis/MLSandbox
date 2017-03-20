@@ -236,6 +236,7 @@ void * tsComputationThread(void *data){
 
     uint64_t n = currentJob.nExperiments;//neymanThreadData->nExperiments;
     ranks.resize(n);
+    
     double cl = 0.9;
     while(!muQueueEmpty){
 
@@ -252,7 +253,6 @@ void * tsComputationThread(void *data){
             neymanThreadData->nTestedHypotheses++;
             cout<<"=====Thread:"<<setw(2)<<neymanThreadData->threadNumber<<"====="<<endl;
             cout<<"Signal :"<<currentJob.hypo<<endl;
-            //cout<<"Rank (@"<<cl*100<<"%CL and "<<n<<" experiments): "<<currentRankAtCL<<endl;
             cout<<"Hypotheses tested "<<neymanThreadData->nTestedHypotheses<<"/"<<neymanThreadData->totalHypotheses<<endl;
             cout<<"==================="<<endl;
 
@@ -269,8 +269,6 @@ void * tsComputationThread(void *data){
             cout<<"=====Thread:"<<setw(2)<<neymanThreadData->threadNumber<<"====="<<endl;
             cout<<"Signal :"<<currentJob.hypo<<endl;
             cout<<"Computed :"<<n<<" trials"<<endl;
-            //cout<<"Rank (@"<<cl*100<<"%CL and "<<n<<" experiments): "<<currentRankAtCL<<endl;
-            //cout<<"Hypotheses tested "<<neymanThreadData->nTestedHypotheses<<"/"<<neymanThreadData->totalHypotheses<<endl;
             cout<<"==================="<<endl;
 
             //Transfering the computed ranks to the global ranks object in the main thread
