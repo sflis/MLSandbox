@@ -132,7 +132,7 @@ seed(rSeed){
 
     //Special case to handle '0-probability distributions'
     if(sum == 0){
-        cout<<"Special case"<<endl;
+        //cout<<"Special case"<<endl;
         for(uint64_t i = 1; i < nBins_; i++){
             pdf_[i] = 0;
             cdf_[i] = 0;

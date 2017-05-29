@@ -1,5 +1,5 @@
 
-#include "MLSandbox/SignalContaminatedLH.h"
+#include "MLSandbox/PSignalContaminatedLH.h"
 #include "MLSandbox/Minimizer.h"
 #include <math.h>
 #include <iostream>
@@ -11,7 +11,7 @@ using namespace std;
 
 
 //_____________________________________________________________________________
-SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal expectation
+PSignalContaminatedLH::PSignalContaminatedLH(const Distribution &signal, //Signal expectation
                      const Distribution &background, //background expectation
                      const Distribution &signalScrambled, //Scrambled signal expectation
                      const Distribution &signalSample, //Signal sample
@@ -20,7 +20,7 @@ SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal 
                      double N,
                      double sig_prob ,
                      double bg_prob,
-                     SignalContaminatedLH::Model model,
+                     PSignalContaminatedLH::Model model,
                      double sig_sample_prob,
                      double bg_sample_prob,
                      int seed
@@ -48,28 +48,12 @@ SignalContaminatedLH::SignalContaminatedLH(const Distribution &signal, //Signal 
                         throw std::invalid_argument("Binomial model invalid with given signal and background probabilities. Try model `None'.");
                     }
                 }
-
-                if(background.GetNBins()!=nPDFBins_)
-                    throw std::invalid_argument("Background pdf has wrong number of bins");
-
-                if(signalScrambled.GetNBins()!=nPDFBins_)
-                    throw std::invalid_argument("Scrambled signal pdf has wrong number of bins");
-
-                if(signalSample.GetNBins()!=nPDFBins_)
-                    throw std::invalid_argument("Signal sample pdf has wrong number of bins");
-
-                if(backgroundSample.GetNBins()!=nPDFBins_)
-                    throw std::invalid_argument("Background sample pdf has wrong number of bins");
-
-                if(signalScrambledSample.GetNBins()!=nPDFBins_)
-                    throw std::invalid_argument("Scrambled signal sample pdf has wrong number of bins");
-
                 observation_.resize(signalPdf_.GetNBins());
                 ComputeMaxSFrac();
             }
 
 //_____________________________________________________________________________
-double SignalContaminatedLH::EvaluateLLH(double xi) const{
+double PSignalContaminatedLH::EvaluateLLH(double xi) const{
     double llhSum = 0;
     double illhSum = 0;
 
@@ -83,27 +67,20 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
     // Loop over the binned events to evaluate the likelihood.
     for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
-        double bg_prob = bgPdf_[index] - xi*signalPdfScrambled_[index];
-        double t_prob = w * signalPdf_[index] + (1-w)/(1-xi)*( bg_prob);
-
-        if(t_prob<=0){
-            t_prob = std::numeric_limits<double>::min();
-        }
-
-        if(bg_prob<0){
-            llhSum -= std::numeric_limits<double>::max()/mixed_.GetNBins();
-        }
-        else{    
-            llhSum += observation_[index]
+        double v = xi + (w-xi)*w2xi_; 
+        double bg_prob = (1+v)*bgPdf_[index] - v*signalPdfScrambled_[index];        
+        double t_prob = w * signalPdf_[index] + (1-w)*bg_prob;
+        llhSum += observation_[index]
             * log(t_prob);
-        }
     }
 
     // Adding poisson or binomial factor to the likelihood if enabled.
     switch(usedModel_){
         case Poisson:
-            llhSum += -(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_)) +
-            totEvents_*log(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_));
+        {
+            double p = sig_prob_*xi + bg_prob_*(1 - xi);
+            llhSum += log(gsl_ran_binomial_pdf(totEvents_, p, N_));
+        }
             break;
         case Binomial:
         {
@@ -118,19 +95,13 @@ double SignalContaminatedLH::EvaluateLLH(double xi) const{
     // Counting the number of llh evaluations.
     nTotalLLHEvaluations_++;
 
-    return llhSum;//-sqrt(llhSum*llhSum+illhSum*illhSum);
+    return llhSum;
 }
 //_____________________________________________________________________________
-void SignalContaminatedLH::SampleEvents(double xi){
+void PSignalContaminatedLH::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);
     double w = Xi2W(xi);
-    if(xi != lastInjXi_){
-        addDistributions(xi, signalScrambledSample_, 1-xi, bgPdfOriginal_, bgPdf_);
-        //addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
-        //addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
-        addDistributions(w, signalSample_, (1-w), backgroundSample_, mixed_);
-        lastInjXi_ = xi;
-    }
+
 
     std::vector<double> &s  = mixed_.GetPDFVector();
     if(xi<0 or xi>1.0){
@@ -141,9 +112,18 @@ void SignalContaminatedLH::SampleEvents(double xi){
     switch(usedModel_){
         case Poisson:
         {
-           uint64_t current_n = rng_->Poisson(N_ * ((1 - xi) * bg_sample_prob_ + xi * sig_sample_prob_));
+
+            if(xi != lastInjXi_){
+              //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
+                addDistributions(w, signalScrambledSample_, 1-w, bgPdfOriginal_, bgPdf_);
+                addDistributions(xi, signalSample_,  (1-xi), backgroundSample_, mixed_);
+                lastInjXi_ = xi;
+           }
+           double p = sig_prob_*xi + bg_prob_*(1 - xi);
+           uint64_t current_bg = rng_->Binomial(bg_sample_prob_*(1 - xi), N_);
+           uint64_t current_mu = rng_->Binomial(sig_sample_prob_*xi, N_);
            std::fill(observation_.begin(), observation_.end(), 0);
-           for(uint64_t j = 0; j < current_n; j++){
+           for(uint64_t j = 0; j < current_bg + current_mu; j++){
                uint64_t i = mixed_.SampleFromDistrI();
                observation_[i] +=1;
                std::vector<uint64_t>::iterator  it = std::lower_bound(usedBins_.begin(), usedBins_.end(), i);
@@ -156,6 +136,13 @@ void SignalContaminatedLH::SampleEvents(double xi){
             break;
         case Binomial:
         {
+           if(xi != lastInjXi_){
+              //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
+                addDistributions(xi, signalScrambledSample_, 1-xi, backgroundSample_, bgPdf_);
+                addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
+                addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
+                lastInjXi_ = xi;
+           }
            double p = sig_prob_*xi + bg_prob_*(1 - xi);
            uint64_t current_bg = rng_->Binomial(bg_sample_prob_*(1 - xi), N_);
            uint64_t current_mu = rng_->Binomial(sig_sample_prob_*xi, N_);
@@ -173,8 +160,15 @@ void SignalContaminatedLH::SampleEvents(double xi){
         case None:
         default:
         {
-            totEvents_ = N_;//rng_->Poisson(N_);
-
+            
+            if(xi != lastInjXi_){
+              //FIXME: probably wrong to use backgroundSample_ to create new bgPdf_
+                addDistributions(xi, signalScrambledSample_, 1-xi, backgroundSample_, bgPdf_);
+                addDistributions(w, signalSample_, - xi*(1-w)/(1-xi), signalScrambledSample_, mixed_);
+                addDistributions(1.0, mixed_, (1-w)/(1-xi), backgroundSample_, mixed_);
+                lastInjXi_ = xi;
+           }
+            totEvents_ = rng_->Poisson(N_);
             /*
             std::vector<double> &pdf =  mixed_.GetPDFVector();
             for(uint64_t i = 0, n = pdf.size(); i<n; i++){
@@ -205,11 +199,11 @@ void SignalContaminatedLH::SampleEvents(double xi){
     changed_ = true;
 }
 //_____________________________________________________________________________
-void SignalContaminatedLH::MinimizerConditions(Minimizer &min){
+void PSignalContaminatedLH::MinimizerConditions(Minimizer &min){
      //min.SetBoundaries(0.0,maxSFractionFit_);
 }
 //_____________________________________________________________________________
-void SignalContaminatedLH::ComputeMaxSFrac(){
+void PSignalContaminatedLH::ComputeMaxSFrac(){
     maxSFractionFit_ = 1.0;
     for(uint64_t i = 0; i<signalPdf_.GetNBins(); i++){
         if(observation_[i]>0 && maxSFractionFit_> bgPdf_[i]/(signalPdfScrambled_[i])){
@@ -219,6 +213,6 @@ void SignalContaminatedLH::ComputeMaxSFrac(){
 
 }
 //_____________________________________________________________________________
-double SignalContaminatedLH::likelihoodEval(double xi, void *params){
-    return -((SignalContaminatedLH*) params)->EvaluateLLH(xi);
+double PSignalContaminatedLH::likelihoodEval(double xi, void *params){
+    return -((PSignalContaminatedLH*) params)->EvaluateLLH(xi);
 }

@@ -49,7 +49,7 @@ class Distribution{
 
         double SampleFromDistr() const;
 
-        double SampleFromDistrI()const{
+        uint64_t SampleFromDistrI()const{
            return  std::upper_bound(cdf_.begin(), cdf_.end(), rng->Uniform()) - cdf_.begin();
         }
 

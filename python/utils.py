@@ -3,8 +3,10 @@
 
 def pval(uplim, uplim_dist):
     from scipy import stats
+    import numpy as np
     i = 0
-    while(uplim_dist[i]< uplim and (i-1<len(uplim_dist))):
+    uplim_dist = np.sort(uplim_dist)
+    while(((i+1)<len(uplim_dist)) and uplim_dist[i]< uplim):
         i +=1
     #Computing the p-value
     p_value = 1-float(i)/len(uplim_dist)

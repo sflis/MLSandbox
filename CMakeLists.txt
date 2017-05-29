@@ -78,37 +78,38 @@ endif()
 if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
     #set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
     list(APPEND ${PROJECT_NAME}_INCLUDE_DIRS
-		${PYTHON_INCLUDE_DIRS}
-		${NUMPY_INCLUDE_DIRS}
-		${BOOST_INCLUDE_DIRS}
+        ${PYTHON_INCLUDE_DIRS}
+        ${NUMPY_INCLUDE_DIRS}
+        ${BOOST_INCLUDE_DIRS}
                 ${BOOSTNUMPY_INCLUDE_DIRS}
-		${GSL_INCLUDE_DIRS}
-		${PROJECT_SOURCE_DIR}/public/
-		${PROJECT_SOURCE_DIR}/private/
-		
+        ${GSL_INCLUDE_DIRS}
+        ${PROJECT_SOURCE_DIR}/public/
+        ${PROJECT_SOURCE_DIR}/private/
+        
     )
 
-	SET(LIBRARY_SRC
-		    private/MLSandbox/Distribution.cxx
-		    private/MLSandbox/Likelihood.cxx
-		    private/MLSandbox/Minimizer.cxx
-		    private/MLSandbox/FeldmanCousins.cxx
-		    private/MLSandbox/FCRanks.cxx
-			private/MLSandbox/CombinedLikelihood.cxx
-			private/MLSandbox/NeymanAnalysis.cxx
+    SET(LIBRARY_SRC
+            private/MLSandbox/Distribution.cxx
+            private/MLSandbox/Likelihood.cxx
+            private/MLSandbox/Minimizer.cxx
+            private/MLSandbox/FeldmanCousins.cxx
+            private/MLSandbox/FCRanks.cxx
+            private/MLSandbox/CombinedLikelihood.cxx
+            private/MLSandbox/NeymanAnalysis.cxx
             private/MLSandbox/SignalContaminatedLH.cxx
             private/MLSandbox/OSignalContaminatedLH.cxx
-	)
+            private/MLSandbox/PSignalContaminatedLH.cxx
+    )
 
-	include_directories(${${PROJECT_NAME}_INCLUDE_DIRS})
-	add_library(mlsandbox ${LIBRARY_SRC})
+    include_directories(${${PROJECT_NAME}_INCLUDE_DIRS})
+    add_library(mlsandbox ${LIBRARY_SRC})
 
-	target_link_libraries(mlsandbox
-		${PYTHON_LIBRARIES}
-		${BOOST_LIBRARIES}
+    target_link_libraries(mlsandbox
+        ${PYTHON_LIBRARIES}
+        ${BOOST_LIBRARIES}
         ${BOOSTNUMPY_LIBRARIES}
-		${GSL_LIBRARIES}
-	)
+        ${GSL_LIBRARIES}
+    )
 
 # Copy some cmake files over to the build directory.
     add_custom_command(TARGET mlsandbox
@@ -147,13 +148,13 @@ if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
     #list(APPEND ${PROJECT}_core_LIBRARY_LIST ${BOOSTNUMPY_LIBRARIES})
 
     add_python_module(MLSandbox ${${PROJECT}_python}
-		private/pybindings/module.cxx
-		private/pybindings/Distribution.cxx
-		private/pybindings/Likelihood.cxx
-		private/pybindings/Minimizer.cxx
-		private/pybindings/FCRanks.cxx
-		private/pybindings/FeldmanCousins.cxx
-		private/pybindings/NeymanAnalysis.cxx
+        private/pybindings/module.cxx
+        private/pybindings/Distribution.cxx
+        private/pybindings/Likelihood.cxx
+        private/pybindings/Minimizer.cxx
+        private/pybindings/FCRanks.cxx
+        private/pybindings/FeldmanCousins.cxx
+        private/pybindings/NeymanAnalysis.cxx
     )
 
     configure_file(
@@ -200,4 +201,4 @@ endif(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
 #add_subdirectory(private/pybindings)
 
 #Quick fix to link to thread library
-add_definitions(-pthread -O3)#-std=c++11
+add_definitions(-pthread -O3 -std=c++11)

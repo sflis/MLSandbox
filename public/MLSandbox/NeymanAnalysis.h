@@ -49,15 +49,17 @@ class  NeymanAnalysis{
           , ranksCompSet_(false)
           {
           }
+        
+        NeymanAnalysis(NeymanAnalysis &analysis, int64_t seed);
 
         ///Returns the log value of the FC test-statistic for a given likelihood parameter
         ///\param xi likelihood parameter for which the test statistic should be calculated
         ///\return the log of the FC test-statistic = log(L(xi)/L(xi_best))
         double EvaluateTestStatistic(double xi){
-            if(!computedBestFit_){
+            //if(!computedBestFit_){
                 minimizer_.ComputeBestFit(*llh_);
                 computedBestFit_ = true;
-            }
+            //}
             return minimizer_.bestFitLLH_ - (*llh_).EvaluateLLH(0);
         }
 
@@ -67,7 +69,8 @@ class  NeymanAnalysis{
                 double minXi,
                 double maxXi,
                 uint64_t nSteps,
-                uint64_t nThreads);
+                uint64_t nThreads,
+                uint64_t maxExperimentsPerThread);
 
 
         void SetFCRanks(FCRanks const &tsDistributions){
@@ -88,6 +91,8 @@ class  NeymanAnalysis{
 
         Minimizer minimizer_;
         FCRanks tsDistributions_;
+        //this is where the calculated best fit distributions are stored. NOTE:not implemented yet
+        FCRanks globalBestFits_;
 private:
 
         boost::shared_ptr<Likelihood> llh_;

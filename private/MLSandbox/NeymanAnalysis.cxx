@@ -19,12 +19,12 @@ using namespace std;
 //    return ts_distr[ts_distr[current_xi].size() * cl];
 //}
 
-
+struct job;
 struct NeymanThreadData{
     NeymanThreadData(boost::shared_ptr<NeymanAnalysis> ana,
                      FCRanks &globalRanks,
                      FCRanks &globalBestFits,
-                     std::queue<double> &testHypothesisSet,
+                     std::queue<job> &jobQueue,//std::queue<double> &testHypothesisSet,
                      uint64_t nExperiments,
                      uint64_t threadNumber,
                      double cl,
@@ -34,7 +34,7 @@ struct NeymanThreadData{
                      ana(ana),
                      globalRanks(globalRanks),
                      globalBestFits(globalBestFits),
-                     testHypothesisSet(testHypothesisSet),
+                     jobQueue(jobQueue),
                      nExperiments(nExperiments),
                      threadNumber(threadNumber),
                      cl(cl),
@@ -45,7 +45,7 @@ struct NeymanThreadData{
         boost::shared_ptr<NeymanAnalysis> ana;
         FCRanks &globalRanks;
         FCRanks &globalBestFits;
-        std::queue<double> &testHypothesisSet;
+        std::queue<job> &jobQueue;
         uint64_t nExperiments;
         uint64_t threadNumber;
         double cl;
@@ -58,7 +58,14 @@ void *tsComputationThread(void *data);
 pthread_mutex_t mutexNeymanFetchHypothesis = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexNeymanWriteRanks = PTHREAD_MUTEX_INITIALIZER;
 
+NeymanAnalysis::NeymanAnalysis(NeymanAnalysis &analysis, int64_t seed): 
+            computedBestFit_(false)
+          , ranksCompSet_(false)
+          , minimizer_(analysis.minimizer_)
+{
+    llh_ = boost::shared_ptr<Likelihood>(analysis.llh_->Clone(seed));
 
+}
 
 std::vector<double> NeymanAnalysis::TestStatisticDistribution(double xi, uint64_t n){
 
@@ -76,12 +83,10 @@ std::vector<double> NeymanAnalysis::TestStatisticDistribution(double xi, uint64_
 double NeymanAnalysis::ComputeLimit(double ts, double cl, double prec){
     std::map<double, std::vector<double> > &tsDistrMap = tsDistributions_.ranks_;
     double up_lim = 0;
-    std::map<double, std::vector<double> >::iterator tsDistr = tsDistrMap.begin();
-    //for (auto tsDistr: tsDistrMap) {
-    for(;tsDistr != tsDistrMap.end(); ++tsDistr){
-        double tsAtCL = tsDistr->second[tsDistr->second.size() * cl];
-        if(ts>tsAtCL){
-            up_lim = tsDistr->first;
+    for (const auto & tsDistr: tsDistrMap) {
+        double tsAtCL = tsDistr.second[tsDistr.second.size() * (1-cl)];
+        if(ts<tsAtCL){
+            up_lim = tsDistr.first;
             break;
         }
     }
@@ -125,41 +130,61 @@ double NeymanAnalysis::ComputeLimit(double ts, double cl, double prec){
 }
 */
 
+struct job
+{
+    job(double hypo =0, uint64_t nExperiments= 0,bool last=false):hypo(hypo),nExperiments(nExperiments),last(last){}
+
+    double hypo;
+    uint64_t nExperiments;
+    bool last;
+};
+
 //_____________________________________________________________________________
 void NeymanAnalysis::ComputeRanks(uint64_t nExperiments,
                 double minXi,
                 double maxXi,
                 uint64_t nSteps,
-                uint64_t nThreads){
+                uint64_t nThreads,
+                uint64_t maxExperimentsPerThread){
     //initializing thread variables
     vector<pthread_t> threadHandels;
     vector<NeymanThreadData*> threadData;
     vector<int> threadId;
     threadHandels.resize(nThreads);
 
-    //this is where the calculated best fit distributions are stored. NOTE:not implemented yet
-    FCRanks globalBestFits;
+
 
     uint64_t globalnTestedHyptheses = 0;
     //There ought to be a better way to set up the xi values queue
     std::vector<double> llh_xis(nSteps);
     double stepSize= (maxXi-minXi)/nSteps;
     for(int64_t i = 0; i < nSteps; i++){
-        llh_xis[i] = i*stepSize;
+        llh_xis[i] = minXi+i*stepSize;
     }
     std::queue<double, std::deque<double> > llh_hypos(
         std::deque<double>(llh_xis.begin(), llh_xis.end())
     );
+
+    std::queue<job> jobQueue;
+    for(auto xi: llh_xis){
+        int64_t N = nExperiments;
+
+        while(N>maxExperimentsPerThread){
+            jobQueue.push(job(xi,maxExperimentsPerThread,false));
+            N -=maxExperimentsPerThread;
+        }
+        jobQueue.push(job(xi,maxExperimentsPerThread,true));
+    }
     //Initiating the threads
     for(uint32_t i = 0; i < nThreads; i++){
         threadData.push_back(
             new NeymanThreadData(
                 boost::shared_ptr<NeymanAnalysis>(
-                    new NeymanAnalysis( boost::shared_ptr<Likelihood>( llh_->Clone(i) ))
+                    new NeymanAnalysis(*this,i)// boost::shared_ptr<Likelihood>( llh_->Clone(i) ))
                 ),
                 tsDistributions_,
-                globalBestFits,
-                llh_hypos,
+                globalBestFits_,
+                jobQueue,
                 nExperiments,
                 i,
                 0.9,
@@ -193,54 +218,75 @@ void * tsComputationThread(void *data){
     vector<double> muFits;
     double currentHypothesis = 0;
     double currentRankAtCL = 0;
-
+    job currentJob;
 
     //Fetch first mu value to be computed
     //===Lock Fetch Hypothesis===++++++++++++++++++++++++
     pthread_mutex_lock( &mutexNeymanFetchHypothesis );
     cout<<"Starting Thread:"<<setw(2)<<neymanThreadData->threadNumber<<endl;
-    bool muQueueEmpty = neymanThreadData->testHypothesisSet.empty();
+    bool muQueueEmpty = neymanThreadData->jobQueue.empty();
     if(!muQueueEmpty){
-        currentHypothesis = neymanThreadData->testHypothesisSet.front();
-        neymanThreadData->testHypothesisSet.pop();
+        currentJob = neymanThreadData->jobQueue.front();
+        neymanThreadData->jobQueue.pop();
     }
     pthread_mutex_unlock( &mutexNeymanFetchHypothesis );
     //===UnLock Fetch Hypothesis===----------------------
 
 
-    uint64_t n = neymanThreadData->nExperiments;
+    uint64_t n = currentJob.nExperiments;//neymanThreadData->nExperiments;
     ranks.resize(n);
+    muFits.resize(n);
+
     double cl = 0.9;
     while(!muQueueEmpty){
 
         for(uint64_t i = 0; i < n; i++){
-            analysis.Sample(currentHypothesis);
-            ranks[i] = analysis.EvaluateTestStatistic(currentHypothesis);
+            analysis.Sample(currentJob.hypo);
+            ranks[i] = analysis.EvaluateTestStatistic(currentJob.hypo);
+            muFits[i] = analysis.minimizer_.bestFit_;
+
         }
         std::sort(ranks.begin(), ranks.end());
         currentRankAtCL = ranks[(1-cl)*(n-1)];
-        //===Lock Write Ranks===++++++++++++++++
-        pthread_mutex_lock( &mutexNeymanWriteRanks );
-        neymanThreadData->nTestedHypotheses++;
-        cout<<"=====Thread:"<<setw(2)<<neymanThreadData->threadNumber<<"====="<<endl;
-        cout<<"Signal :"<<currentHypothesis<<endl;
-        cout<<"Rank (@"<<cl*100<<"%CL and "<<n<<" experiments): "<<currentRankAtCL<<endl;
-        cout<<"Hypotheses tested "<<neymanThreadData->nTestedHypotheses<<"/"<<neymanThreadData->totalHypotheses<<endl;
-        cout<<"==================="<<endl;
+        if(currentJob.last){    
 
-        //Transfering the computed ranks to the global ranks object in the main thread
-        neymanThreadData->globalRanks.Fill(currentHypothesis,ranks,false);
+            //===Lock Write Ranks===++++++++++++++++
+            pthread_mutex_lock( &mutexNeymanWriteRanks );
+            neymanThreadData->nTestedHypotheses++;
+            cout<<"=====Thread:"<<setw(2)<<neymanThreadData->threadNumber<<"====="<<endl;
+            cout<<"Signal :"<<currentJob.hypo<<endl;
+            cout<<"Hypotheses tested "<<neymanThreadData->nTestedHypotheses<<"/"<<neymanThreadData->totalHypotheses<<endl;
+            cout<<"==================="<<endl;
 
-        pthread_mutex_unlock( &mutexNeymanWriteRanks );
-        //===UnLock Write Ranks===--------------
+            //Transfering the computed ranks to the global ranks object in the main thread
+            neymanThreadData->globalRanks.Fill(currentJob.hypo,ranks,false);
+            neymanThreadData->globalBestFits.Fill(currentJob.hypo,muFits,false);
+            pthread_mutex_unlock( &mutexNeymanWriteRanks );
+            //===UnLock Write Ranks===--------------
+        }
+        else{
+            //===Lock Write Ranks===++++++++++++++++
+            pthread_mutex_lock( &mutexNeymanWriteRanks );
+            //neymanThreadData->nTestedHypotheses++;
+            cout<<"=====Thread:"<<setw(2)<<neymanThreadData->threadNumber<<"====="<<endl;
+            cout<<"Signal :"<<currentJob.hypo<<endl;
+            cout<<"Computed :"<<n<<" trials"<<endl;
+            cout<<"==================="<<endl;
+
+            //Transfering the computed ranks to the global ranks object in the main thread
+            neymanThreadData->globalRanks.Fill(currentJob.hypo,ranks,false);
+            neymanThreadData->globalBestFits.Fill(currentJob.hypo,muFits,false);
+            pthread_mutex_unlock( &mutexNeymanWriteRanks );
+            //===UnLock Write Ranks===--------------  
+        }   
 
         //===Lock Fetch Hypothesis===+++++++++++++++++++
         pthread_mutex_lock( &mutexNeymanFetchHypothesis );
 
-        muQueueEmpty = neymanThreadData->testHypothesisSet.empty();
+        muQueueEmpty = neymanThreadData->jobQueue.empty();
         if(!muQueueEmpty){
-            currentHypothesis = neymanThreadData->testHypothesisSet.front();
-            neymanThreadData->testHypothesisSet.pop();
+            currentJob = neymanThreadData->jobQueue.front();
+            neymanThreadData->jobQueue.pop();
         }
 
         pthread_mutex_unlock( &mutexNeymanFetchHypothesis );

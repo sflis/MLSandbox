@@ -63,6 +63,15 @@ class CombinedLikelihood: public Likelihood{
             }
             return SuperFastHash((const char*) &hashes_[0],sizeof(uint32_t)*hashes_.size());
         }
+
+        double MaxXiBound();
+        void Update(){
+            totEvents_ = 0;
+            for(uint64_t i = 0; i<likelihoods_.size(); i++){
+                totEvents_ += likelihoods_[i]->totEvents_;
+            }
+            changed_ = true;
+        }
     private:
         static double likelihoodEval(double xi, void *params);
         std::vector<boost::shared_ptr<Likelihood> > likelihoods_;
