@@ -152,8 +152,7 @@ void NeymanAnalysis::ComputeRanks(uint64_t nExperiments,
     vector<int> threadId;
     threadHandels.resize(nThreads);
 
-    //this is where the calculated best fit distributions are stored. NOTE:not implemented yet
-    FCRanks globalBestFits;
+
 
     uint64_t globalnTestedHyptheses = 0;
     //There ought to be a better way to set up the xi values queue
@@ -184,7 +183,7 @@ void NeymanAnalysis::ComputeRanks(uint64_t nExperiments,
                     new NeymanAnalysis(*this,i)// boost::shared_ptr<Likelihood>( llh_->Clone(i) ))
                 ),
                 tsDistributions_,
-                globalBestFits,
+                globalBestFits_,
                 jobQueue,
                 nExperiments,
                 i,
@@ -236,13 +235,16 @@ void * tsComputationThread(void *data){
 
     uint64_t n = currentJob.nExperiments;//neymanThreadData->nExperiments;
     ranks.resize(n);
-    
+    muFits.resize(n);
+
     double cl = 0.9;
     while(!muQueueEmpty){
 
         for(uint64_t i = 0; i < n; i++){
             analysis.Sample(currentJob.hypo);
             ranks[i] = analysis.EvaluateTestStatistic(currentJob.hypo);
+            muFits[i] = analysis.minimizer_.bestFit_;
+
         }
         std::sort(ranks.begin(), ranks.end());
         currentRankAtCL = ranks[(1-cl)*(n-1)];
@@ -258,7 +260,7 @@ void * tsComputationThread(void *data){
 
             //Transfering the computed ranks to the global ranks object in the main thread
             neymanThreadData->globalRanks.Fill(currentJob.hypo,ranks,false);
-
+            neymanThreadData->globalBestFits.Fill(currentJob.hypo,muFits,false);
             pthread_mutex_unlock( &mutexNeymanWriteRanks );
             //===UnLock Write Ranks===--------------
         }
@@ -273,7 +275,7 @@ void * tsComputationThread(void *data){
 
             //Transfering the computed ranks to the global ranks object in the main thread
             neymanThreadData->globalRanks.Fill(currentJob.hypo,ranks,false);
-
+            neymanThreadData->globalBestFits.Fill(currentJob.hypo,muFits,false);
             pthread_mutex_unlock( &mutexNeymanWriteRanks );
             //===UnLock Write Ranks===--------------  
         }   

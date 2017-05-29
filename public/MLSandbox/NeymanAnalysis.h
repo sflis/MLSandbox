@@ -91,6 +91,8 @@ class  NeymanAnalysis{
 
         Minimizer minimizer_;
         FCRanks tsDistributions_;
+        //this is where the calculated best fit distributions are stored. NOTE:not implemented yet
+        FCRanks globalBestFits_;
 private:
 
         boost::shared_ptr<Likelihood> llh_;
