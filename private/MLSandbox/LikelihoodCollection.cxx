@@ -51,6 +51,8 @@ LikelihoodCollection::LikelihoodCollection(const Distribution &signal, //Signal 
                 observation_.resize(signalPdf_.GetNBins());
                 ComputeMaxSFrac();
                 current_llh_ = standardSigSub;
+                callbackMap_["standardSigSub"] = standardSigSub;
+                callbackMap_["noSigSubCorr"] = noSigSubCorr;
             }
 
 //_____________________________________________________________________________
@@ -261,6 +263,16 @@ void LikelihoodCollection::SampleEvents(double xi){
     totEvents_ = std::accumulate(observation_.begin(), observation_.end(), 0);
     ComputeMaxSFrac();
     changed_ = true;
+}
+//_____________________________________________________________________________
+void LikelihoodCollection::SetLLHFunction(std::string fc_name){ 
+    auto search = callbackMap_.find(fc_name);  
+    if(search != callbackMap_.end()){
+        current_llh_ = search->second;
+        changed_ = true;
+    }
+    else
+        std::cout<<"Likelihood was not found"<<std::endl;
 }
 //_____________________________________________________________________________
 void LikelihoodCollection::MinimizerConditions(Minimizer &min){

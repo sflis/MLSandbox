@@ -168,7 +168,7 @@ double Distribution::SampleFromDistr()const{
         double cdf_value = rng->Uniform();
         std::vector<double>::const_iterator up;
         up = std::upper_bound(cdf_.begin(), cdf_.end(), cdf_value);
-        return  rangeMin + ((up - cdf_.begin()) + rng->Uniform() ) * binWidth_;//rng->Uniform()
+        return  rangeMin + ((up - cdf_.begin()) + rng->Uniform()*0.5 ) * binWidth_;//rng->Uniform()
    }
    double x;
    double y = 0;

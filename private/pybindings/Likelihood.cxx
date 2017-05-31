@@ -50,6 +50,15 @@ namespace mlsandbox{
             std::vector<double> weights = toStdVector<double>(weight_list);
             return boost::shared_ptr<CombinedLikelihood>(new CombinedLikelihood(likelihoods,weights));
         }
+
+
+        // void set_call(LikelihoodCollection &self,  bp::object obj){
+        //    double (func)(const LikelihoodCollection &, double);
+        //    func =  bp::extract<double ()(const LikelihoodCollection &, double)>(object)
+            
+        //     self.SetLLHFunction(func);
+        // }
+
     }//name space PYTHON
 }//name space MLSANDBOX
 
@@ -174,7 +183,7 @@ void register_Likelihood()
         .staticmethod( "standardSigSub" )
         .def("noSigSubCorr",&LikelihoodCollection::noSigSubCorr)
         .staticmethod( "noSigSubCorr" )
-        .def('SetLLHFunction',&LikelihoodCollection::SetLLHFunction)
+        .def("SetLLHFunction",&LikelihoodCollection::SetLLHFunction)
         ;
 
         bp::enum_<LikelihoodCollection::Model>("Model")

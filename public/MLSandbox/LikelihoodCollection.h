@@ -20,6 +20,9 @@
 #define MLSANDBOX_LikelihoodCollection_H
 #include "MLSandbox/Likelihood.h"
 #include <iostream>
+#include <string>
+#include <map>
+
 class Minimizer;
 
 class LikelihoodCollection : public BinnedLikelihood{
@@ -107,7 +110,8 @@ class LikelihoodCollection : public BinnedLikelihood{
 
         double MaxXiBound(){return  maxSFractionFit_;}
 
-        void SetLLHFunction(double (*fcpt)(const LikelihoodCollection &, double) ){current_llh_ = fcpt; changed_ = true; }
+        void SetLLHFunction2(double (*fcpt)(const LikelihoodCollection &, double) ){current_llh_ = fcpt; changed_ = true; }
+        void SetLLHFunction(std::string fc_name);
 
         static double noSigSubCorr(const LikelihoodCollection &likelihood, double xi);
 
@@ -125,7 +129,7 @@ class LikelihoodCollection : public BinnedLikelihood{
         
 
         void ComputeMaxSFrac();
-
+        std::map<std::string, double (*)(const LikelihoodCollection & , double)> callbackMap_;
         
         
         Distribution signalPdf_;
