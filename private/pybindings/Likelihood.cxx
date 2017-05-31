@@ -3,6 +3,8 @@
 #include "MLSandbox/CombinedLikelihood.h"
 #include "MLSandbox/SignalContaminatedLH.h"
 #include "MLSandbox/PSignalContaminatedLH.h"
+#include "MLSandbox/LikelihoodCollection.h"
+
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include "bindingutils.h"
 
@@ -144,6 +146,43 @@ void register_Likelihood()
         .value("Binomial", SignalContaminatedLH::Binomial)
         .export_values();
     }//SignalContaminatedLH scope
+
+
+    {
+        bp::scope LikelihoodCollection_scope =
+        bp::class_<LikelihoodCollection, boost::shared_ptr<LikelihoodCollection>,bp::bases<BinnedLikelihood> >
+        ("LikelihoodCollection","DocString",
+        bp::init<Distribution &,
+                    Distribution &,
+                    Distribution &,
+                    Distribution &,
+                    Distribution &,
+                    Distribution &,
+                    double,
+                    double,
+                    double,
+                    LikelihoodCollection::Model,
+                    double,
+                    double,
+                    int>(
+                    "Constructor for signal contaminated likelihood"
+                    )
+        )
+        .def("SampleEvents",&LikelihoodCollection::SampleEvents)
+        .def("EvaluateLLH",&LikelihoodCollection::EvaluateLLH)
+        .def("standardSigSub",&LikelihoodCollection::standardSigSub)
+        .staticmethod( "standardSigSub" )
+        .def("noSigSubCorr",&LikelihoodCollection::noSigSubCorr)
+        .staticmethod( "noSigSubCorr" )
+        .def('SetLLHFunction',&LikelihoodCollection::SetLLHFunction)
+        ;
+
+        bp::enum_<LikelihoodCollection::Model>("Model")
+        .value("None", LikelihoodCollection::None)
+        .value("Poisson", LikelihoodCollection::Poisson)
+        .value("Binomial", LikelihoodCollection::Binomial)
+        .export_values();
+    }//LikelihoodCollection
 
 
     {
