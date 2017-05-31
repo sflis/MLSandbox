@@ -97,7 +97,6 @@ if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
             private/MLSandbox/CombinedLikelihood.cxx
             private/MLSandbox/NeymanAnalysis.cxx
             private/MLSandbox/SignalContaminatedLH.cxx
-            private/MLSandbox/OSignalContaminatedLH.cxx
             private/MLSandbox/PSignalContaminatedLH.cxx
     )
 
