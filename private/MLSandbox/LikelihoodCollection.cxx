@@ -266,11 +266,11 @@ double LikelihoodCollection::noSigSubCorr(const LikelihoodCollection &likelihood
 double LikelihoodCollection::standardSigSub(const LikelihoodCollection & likelihood, double xi){
     return likelihood.StandardSigSub(xi);
 }
-double nonTerminatedSigSub(const LikelihoodCollection & likelihood, double xi){
+double LikelihoodCollection::nonTerminatedSigSub(const LikelihoodCollection & likelihood, double xi){
     return likelihood.NonTerminatedSigSub(xi);
 }
 //_____________________________________________________________________________
-double hybridSigSub(const LikelihoodCollection & likelihood, double xi){
+double LikelihoodCollection::hybridSigSub(const LikelihoodCollection & likelihood, double xi){
     return likelihood.HybridSigSub(xi);   
 }
 

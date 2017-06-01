@@ -117,9 +117,10 @@ def setup_sc_llh(pdfs, seed=1):
         llh_shape.EnablePoissonSampling()
         #print(sum(pdfs['data_binned']))
         #print(pdfs['sig_fract'],pdfs['bg_fract'])
-        return {'correct_correction':llh,
+        return {#'correct_correction':llh,
                 'collection':llh_plain,
-                'plain_shape':llh_shape}
+                #'plain_shape':llh_shape
+                }
 
 
 def run_test(ns,n_trials,selection,bias_col):
@@ -138,7 +139,7 @@ def run_test(ns,n_trials,selection,bias_col):
         for k,llh in llhs.iteritems():
             if(k == 'collection'):
                 #continue
-                for l in ['standardSigSub','noSigSubCorr']:
+                for l in ['standardSigSub','noSigSubCorr','NonTerminatedSigSub','HybridSigSub']:
                     llh.SetLLHFunction(l)
                     llh.SetEvents(pdfs['data_binned'])
                     mini.ComputeBestFit(llh)
@@ -182,11 +183,13 @@ if (__name__ == "__main__"):
     bias = dict()
     #for w2xi in w2xis:
     #    bias[w2xi] = dict()
-    bias['plain_shape'] = dict()
+    #bias['plain_shape'] = dict()
     #bias['original_correction'] = dict()
-    bias['correct_correction'] = dict()
+    #bias['correct_correction'] = dict()
     bias['standardSigSub'] = dict()
     bias['noSigSubCorr'] = dict()
+    bias['NonTerminatedSigSub'] = dict()
+    bias['HybridSigSub'] = dict()
     #bias['no_correction'] = dict()
     def d(x):
         return x

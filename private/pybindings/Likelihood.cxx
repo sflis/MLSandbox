@@ -183,6 +183,10 @@ void register_Likelihood()
         .staticmethod( "standardSigSub" )
         .def("noSigSubCorr",&LikelihoodCollection::noSigSubCorr)
         .staticmethod( "noSigSubCorr" )
+        .def("nonTerminatedSigSub",&LikelihoodCollection::nonTerminatedSigSub)
+        .staticmethod( "nonTerminatedSigSub" )
+        .def("hybridSigSub",&LikelihoodCollection::hybridSigSub)
+        .staticmethod( "hybridSigSub" )
         .def("SetLLHFunction",&LikelihoodCollection::SetLLHFunction)
         ;
 
