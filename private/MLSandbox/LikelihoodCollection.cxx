@@ -57,7 +57,7 @@ LikelihoodCollection::LikelihoodCollection(const Distribution &signal, //Signal 
 
 //_____________________________________________________________________________
 double LikelihoodCollection::EvaluateLLH(double xi) const{
-    current_llh_(*this,xi);
+    return current_llh_(*this,xi);
 }
 //_____________________________________________________________________________
 double LikelihoodCollection::StandardSigSub(double xi)const{
