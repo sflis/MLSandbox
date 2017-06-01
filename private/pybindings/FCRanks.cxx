@@ -1,6 +1,6 @@
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include "MLSandbox/FCRanks.h"
 #include "bindingutils.h"
-
 #include <boost/numpy.hpp>
 #include <string>
 #include <iostream>
