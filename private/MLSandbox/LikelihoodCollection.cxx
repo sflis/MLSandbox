@@ -53,6 +53,8 @@ LikelihoodCollection::LikelihoodCollection(const Distribution &signal, //Signal 
                 current_llh_ = standardSigSub;
                 callbackMap_["standardSigSub"] = standardSigSub;
                 callbackMap_["noSigSubCorr"] = noSigSubCorr;
+                callbackMap_["NonTerminatedSigSub"] = nonTerminatedSigSub; 
+                callbackMap_["HybridSigSub"] = hybridSigSub; 
             }
 
 //_____________________________________________________________________________
@@ -146,14 +148,132 @@ double LikelihoodCollection::NoSigSubCorr(double xi)const{
     return llhSum;
 
 }
+//_____________________________________________________________________________
+double LikelihoodCollection::NonTerminatedSigSub(double xi)const{
+    double llhSum = 0;
+    //Just in case to avert
+    //NaNs in the likelihood
+    if(xi == 1)
+        xi = 1.0 - std::numeric_limits<double>::epsilon();
+    
+    const double w = Xi2W(xi);
+    const uint64_t nbins = mixed_.GetNBins();
+    // Loop over the binned events to evaluate the likelihood.
+    for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
+        uint64_t index = *it;
+        double bg_prob = bgPdf_[index] - xi*signalPdfScrambled_[index];
+        double t_prob = w * signalPdf_[index] + (1-w)/(1-xi)*( bg_prob);
 
+        // if(t_prob<=0){
+        //     t_prob = std::numeric_limits<double>::min();
+        // }
+
+        if(bg_prob<0){
+            llhSum -= observation_[index] * log(w * signalPdf_[index]);//std::numeric_limits<double>::max()/mixed_.GetNBins();
+        }
+        else{    
+            llhSum += observation_[index]
+            * log(t_prob);
+        }
+    }
+
+    // Adding poisson or binomial factor to the likelihood if enabled.
+    switch(usedModel_){
+        case Poisson:
+            llhSum += -(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_)) +
+            totEvents_*log(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_));
+            break;
+        case Binomial:
+        {
+            double p = sig_prob_*xi + bg_prob_*(1 - xi);
+            llhSum += log(gsl_ran_binomial_pdf(totEvents_, p, N_));
+        }
+            break;
+        case None:
+        default:
+            break;
+    }
+    // Counting the number of llh evaluations.
+    nTotalLLHEvaluations_++;
+
+    return llhSum;
+}
+//_____________________________________________________________________________
+double LikelihoodCollection::HybridSigSub(double xi)const{
+     double llhSum = 0;
+     double llhSumUC = 0;
+     
+     //Just in case to avert
+    //NaNs in the likelihood
+    if(xi == 1)
+        xi = 1.0 - std::numeric_limits<double>::epsilon();
+    const double bgFraction = (1-xi);
+    const double w = Xi2W(xi);
+    const uint64_t nbins = mixed_.GetNBins();
+    // Loop over the binned events to evaluate the likelihood.
+    for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
+        uint64_t index = *it;
+        double bg_prob = bgPdf_[index] - xi*signalPdfScrambled_[index];
+        double t_prob = w * signalPdf_[index] + (1-w)/(1-xi)*( bg_prob);
+        //no signal subtraction
+        llhSumUC += observation_[index] *
+        log( xi * signalPdf_[index] + bgFraction * bgPdf_[index]);
+
+        if(t_prob<=0){
+            t_prob = std::numeric_limits<double>::min();
+        }
+
+        if(bg_prob<0){
+            llhSum -= std::numeric_limits<double>::max()/mixed_.GetNBins();
+        }
+        else{    
+            llhSum += observation_[index]
+            * log(t_prob);
+        }
+    }
+
+    // Adding poisson or binomial factor to the likelihood if enabled.
+    switch(usedModel_){
+        case Poisson:
+            llhSum += -(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_)) +
+            totEvents_*log(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_));
+            llhSumUC += -(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_)) +
+            totEvents_*log(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_));
+            break;
+        case Binomial:
+        {
+            double p = sig_prob_*xi + bg_prob_*(1 - xi);
+            llhSum += log(gsl_ran_binomial_pdf(totEvents_, p, N_));
+            llhSumUC += log(gsl_ran_binomial_pdf(totEvents_, p, N_));
+        }
+            break;
+        case None:
+        default:
+            break;
+    }
+    // Counting the number of llh evaluations.
+    nTotalLLHEvaluations_++;
+    if(llhSum>llhSumUC)
+        return llhSum;
+    else
+        return llhSumUC;
+}
+//_____________________________________________________________________________
 double LikelihoodCollection::noSigSubCorr(const LikelihoodCollection &likelihood, double xi){
-  return likelihood.NoSigSubCorr(xi);
+    return likelihood.NoSigSubCorr(xi);
+}
+//_____________________________________________________________________________
+double LikelihoodCollection::standardSigSub(const LikelihoodCollection & likelihood, double xi){
+    return likelihood.StandardSigSub(xi);
+}
+double nonTerminatedSigSub(const LikelihoodCollection & likelihood, double xi){
+    return likelihood.NonTerminatedSigSub(xi);
+}
+//_____________________________________________________________________________
+double hybridSigSub(const LikelihoodCollection & likelihood, double xi){
+    return likelihood.HybridSigSub(xi);   
 }
 
-double LikelihoodCollection::standardSigSub(const LikelihoodCollection & likelihood, double xi){
-  return likelihood.StandardSigSub(xi);
-}
 //_____________________________________________________________________________
 void LikelihoodCollection::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);

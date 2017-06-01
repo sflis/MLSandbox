@@ -54,9 +54,9 @@ class LikelihoodCollection : public BinnedLikelihood{
 
         double StandardSigSub(double xi)const;
 
-        // double NonTerminatedSigSub(double xi)const;
+        double NonTerminatedSigSub(double xi)const;
 
-        // double HybridSigSub(double xi)const;
+        double HybridSigSub(double xi)const;
 
 
         Model GetModel(){return usedModel_;}
@@ -117,9 +117,9 @@ class LikelihoodCollection : public BinnedLikelihood{
 
         static double standardSigSub(const LikelihoodCollection & likelihood, double xi);
 
-        // static double nonTerminatedSigSub(LikelihoodCollection & likelihood, double xi);
+        static double nonTerminatedSigSub(const LikelihoodCollection & likelihood, double xi);
 
-        // static double hybridSigSub(LikelihoodCollection & likelihood, double xi);
+        static double hybridSigSub(const LikelihoodCollection & likelihood, double xi);
 
         double (*current_llh_)(const LikelihoodCollection & , double);
 
