@@ -17,6 +17,18 @@ namespace mlsandbox{
             std::copy((double*)arr.get_data(), (double*)arr.get_data()+arr.get_size(), &distribution_vec[0]);
             return boost::shared_ptr<Distribution>( new Distribution(distribution_vec, rMin, rMax, rSeed) );
         }
+
+        bn::ndarray sample(Distribution &self, int N){
+            std::vector<intptr_t> shape(1,N);
+            bn::dtype dt = bn::dtype::get_builtin<double>();
+            bn::ndarray sample_array = bn::empty(shape,dt);
+            double* data = (double*) sample_array.get_data();
+            for(uint i = 0; i<N; ++i){
+                *data = self.SampleFromDistr();
+                data++;
+            }
+            return sample_array;            
+        }
     }
 }
 
@@ -35,6 +47,7 @@ void register_Distribution()
        .def("PDF",&Distribution::PDF)
        .def("CDF",&Distribution::CDF)
        .def("SetCDFSampling",&Distribution::SetCDFSampling)
+       .def("SampleN",mlsandbox::python::sample)
        ;
   }
 }

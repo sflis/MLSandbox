@@ -1,5 +1,5 @@
 
-#include "MLSandbox/OSignalContaminatedLH.h"
+#include "MLSandbox/LikelihoodCollection.h"
 #include "MLSandbox/Minimizer.h"
 #include <math.h>
 #include <iostream>
@@ -11,7 +11,7 @@ using namespace std;
 
 
 //_____________________________________________________________________________
-OSignalContaminatedLH::OSignalContaminatedLH(const Distribution &signal, //Signal expectation
+LikelihoodCollection::LikelihoodCollection(const Distribution &signal, //Signal expectation
                      const Distribution &background, //background expectation
                      const Distribution &signalScrambled, //Scrambled signal expectation
                      const Distribution &signalSample, //Signal sample
@@ -20,7 +20,7 @@ OSignalContaminatedLH::OSignalContaminatedLH(const Distribution &signal, //Signa
                      double N,
                      double sig_prob ,
                      double bg_prob,
-                     OSignalContaminatedLH::Model model,
+                     LikelihoodCollection::Model model,
                      double sig_sample_prob,
                      double bg_sample_prob,
                      int seed
@@ -50,14 +50,19 @@ OSignalContaminatedLH::OSignalContaminatedLH(const Distribution &signal, //Signa
                 }
                 observation_.resize(signalPdf_.GetNBins());
                 ComputeMaxSFrac();
+                current_llh_ = standardSigSub;
+                callbackMap_["standardSigSub"] = standardSigSub;
+                callbackMap_["noSigSubCorr"] = noSigSubCorr;
             }
 
 //_____________________________________________________________________________
-double OSignalContaminatedLH::EvaluateLLH(double xi) const{
+double LikelihoodCollection::EvaluateLLH(double xi) const{
+    return current_llh_(*this,xi);
+}
+//_____________________________________________________________________________
+double LikelihoodCollection::StandardSigSub(double xi)const{
     double llhSum = 0;
-    double illhSum = 0;
-
-    //Just in case to avert
+     //Just in case to avert
     //NaNs in the likelihood
     if(xi == 1)
         xi = 1.0 - std::numeric_limits<double>::epsilon();
@@ -67,21 +72,27 @@ double OSignalContaminatedLH::EvaluateLLH(double xi) const{
     // Loop over the binned events to evaluate the likelihood.
     for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
-        double bg_prob = (1+w)*bgPdf_[index] - w*signalPdfScrambled_[index];
+        double bg_prob = bgPdf_[index] - xi*signalPdfScrambled_[index];
+        double t_prob = w * signalPdf_[index] + (1-w)/(1-xi)*( bg_prob);
 
-        double t_prob = w * signalPdf_[index] + (1-w)*( bg_prob);
+        if(t_prob<=0){
+            t_prob = std::numeric_limits<double>::min();
+        }
 
+        if(bg_prob<0){
+            llhSum -= std::numeric_limits<double>::max()/mixed_.GetNBins();
+        }
+        else{    
             llhSum += observation_[index]
             * log(t_prob);
+        }
     }
 
     // Adding poisson or binomial factor to the likelihood if enabled.
     switch(usedModel_){
         case Poisson:
-        {
-            double p = sig_prob_*xi + bg_prob_*(1 - xi);
-            llhSum += log(gsl_ran_binomial_pdf(totEvents_, p, N_));
-        }
+            llhSum += -(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_)) +
+            totEvents_*log(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_));
             break;
         case Binomial:
         {
@@ -97,9 +108,54 @@ double OSignalContaminatedLH::EvaluateLLH(double xi) const{
     nTotalLLHEvaluations_++;
 
     return llhSum;
+
 }
 //_____________________________________________________________________________
-void OSignalContaminatedLH::SampleEvents(double xi){
+double LikelihoodCollection::NoSigSubCorr(double xi)const{
+    double llhSum = 0;
+    const double bgFraction = (1-xi);
+
+    // Only loop over the bins which contain events to evaluate the likelihood.
+    for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
+        uint64_t index = *it;
+        llhSum += observation_[index] *
+        log( xi * signalPdf_[index] + bgFraction * bgPdf_[index]);
+
+    }
+
+    // Adding poisson or binomial factor to the likelihood if enabled.
+    switch(usedModel_){
+        case Poisson:
+            llhSum += -(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_)) +
+            totEvents_*log(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_));
+            break;
+        case Binomial:
+        {
+            double p = sig_prob_*xi + bg_prob_*(1 - xi);
+            llhSum += log(gsl_ran_binomial_pdf(totEvents_, p, N_));
+        }
+            break;
+        case None:
+        default:
+            break;
+    }
+
+    // Counting the number of llh evaluations.
+    nTotalLLHEvaluations_++;
+
+    return llhSum;
+
+}
+
+double LikelihoodCollection::noSigSubCorr(const LikelihoodCollection &likelihood, double xi){
+  return likelihood.NoSigSubCorr(xi);
+}
+
+double LikelihoodCollection::standardSigSub(const LikelihoodCollection & likelihood, double xi){
+  return likelihood.StandardSigSub(xi);
+}
+//_____________________________________________________________________________
+void LikelihoodCollection::SampleEvents(double xi){
     double injectedSignal = Xi2Mu(xi);
     double w = Xi2W(xi);
 
@@ -209,11 +265,21 @@ void OSignalContaminatedLH::SampleEvents(double xi){
     changed_ = true;
 }
 //_____________________________________________________________________________
-void OSignalContaminatedLH::MinimizerConditions(Minimizer &min){
+void LikelihoodCollection::SetLLHFunction(std::string fc_name){ 
+    auto search = callbackMap_.find(fc_name);  
+    if(search != callbackMap_.end()){
+        current_llh_ = search->second;
+        changed_ = true;
+    }
+    else
+        std::cout<<"Likelihood was not found"<<std::endl;
+}
+//_____________________________________________________________________________
+void LikelihoodCollection::MinimizerConditions(Minimizer &min){
      //min.SetBoundaries(0.0,maxSFractionFit_);
 }
 //_____________________________________________________________________________
-void OSignalContaminatedLH::ComputeMaxSFrac(){
+void LikelihoodCollection::ComputeMaxSFrac(){
     maxSFractionFit_ = 1.0;
     for(uint64_t i = 0; i<signalPdf_.GetNBins(); i++){
         if(observation_[i]>0 && maxSFractionFit_> bgPdf_[i]/(signalPdfScrambled_[i])){
@@ -223,6 +289,6 @@ void OSignalContaminatedLH::ComputeMaxSFrac(){
 
 }
 //_____________________________________________________________________________
-double OSignalContaminatedLH::likelihoodEval(double xi, void *params){
-    return -((OSignalContaminatedLH*) params)->EvaluateLLH(xi);
+double LikelihoodCollection::likelihoodEval(double xi, void *params){
+    return -((LikelihoodCollection*) params)->EvaluateLLH(xi);
 }

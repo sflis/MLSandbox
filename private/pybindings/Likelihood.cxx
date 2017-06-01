@@ -2,8 +2,9 @@
 #include "MLSandbox/Distribution.h"
 #include "MLSandbox/CombinedLikelihood.h"
 #include "MLSandbox/SignalContaminatedLH.h"
-#include "MLSandbox/OSignalContaminatedLH.h"
 #include "MLSandbox/PSignalContaminatedLH.h"
+#include "MLSandbox/LikelihoodCollection.h"
+
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include "bindingutils.h"
 
@@ -49,6 +50,15 @@ namespace mlsandbox{
             std::vector<double> weights = toStdVector<double>(weight_list);
             return boost::shared_ptr<CombinedLikelihood>(new CombinedLikelihood(likelihoods,weights));
         }
+
+
+        // void set_call(LikelihoodCollection &self,  bp::object obj){
+        //    double (func)(const LikelihoodCollection &, double);
+        //    func =  bp::extract<double ()(const LikelihoodCollection &, double)>(object)
+            
+        //     self.SetLLHFunction(func);
+        // }
+
     }//name space PYTHON
 }//name space MLSANDBOX
 
@@ -146,10 +156,11 @@ void register_Likelihood()
         .export_values();
     }//SignalContaminatedLH scope
 
+
     {
-        bp::scope OSignalContaminatedLH_scope =
-        bp::class_<OSignalContaminatedLH, boost::shared_ptr<OSignalContaminatedLH>,bp::bases<BinnedLikelihood> >
-        ("OSignalContaminatedLH","DocString",
+        bp::scope LikelihoodCollection_scope =
+        bp::class_<LikelihoodCollection, boost::shared_ptr<LikelihoodCollection>,bp::bases<BinnedLikelihood> >
+        ("LikelihoodCollection","DocString",
         bp::init<Distribution &,
                     Distribution &,
                     Distribution &,
@@ -159,24 +170,29 @@ void register_Likelihood()
                     double,
                     double,
                     double,
-                    OSignalContaminatedLH::Model,
+                    LikelihoodCollection::Model,
                     double,
                     double,
                     int>(
                     "Constructor for signal contaminated likelihood"
                     )
         )
-        .def("SampleEvents",&OSignalContaminatedLH::SampleEvents)
-        .def("EvaluateLLH",&OSignalContaminatedLH::EvaluateLLH)
-        //.def("EnableHistogramedEvents",&OSignalContaminatedLH::EnableHistogramedEvents)
+        .def("SampleEvents",&LikelihoodCollection::SampleEvents)
+        .def("EvaluateLLH",&LikelihoodCollection::EvaluateLLH)
+        .def("standardSigSub",&LikelihoodCollection::standardSigSub)
+        .staticmethod( "standardSigSub" )
+        .def("noSigSubCorr",&LikelihoodCollection::noSigSubCorr)
+        .staticmethod( "noSigSubCorr" )
+        .def("SetLLHFunction",&LikelihoodCollection::SetLLHFunction)
         ;
 
-        bp::enum_<OSignalContaminatedLH::Model>("Model")
-        .value("None", OSignalContaminatedLH::None)
-        .value("Poisson", OSignalContaminatedLH::Poisson)
-        .value("Binomial", OSignalContaminatedLH::Binomial)
+        bp::enum_<LikelihoodCollection::Model>("Model")
+        .value("None", LikelihoodCollection::None)
+        .value("Poisson", LikelihoodCollection::Poisson)
+        .value("Binomial", LikelihoodCollection::Binomial)
         .export_values();
-    }//OSignalContaminatedLH scope
+    }//LikelihoodCollection
+
 
     {
         bp::scope PSignalContaminatedLH_scope =

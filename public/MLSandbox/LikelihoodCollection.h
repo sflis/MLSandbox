@@ -16,17 +16,20 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 
-#ifndef MLSANDBOX_OSignalContaminatedLH_H
-#define MLSANDBOX_OSignalContaminatedLH_H
+#ifndef MLSANDBOX_LikelihoodCollection_H
+#define MLSANDBOX_LikelihoodCollection_H
 #include "MLSandbox/Likelihood.h"
 #include <iostream>
+#include <string>
+#include <map>
+
 class Minimizer;
 
-class OSignalContaminatedLH : public BinnedLikelihood{
+class LikelihoodCollection : public BinnedLikelihood{
     public:
     enum Model{None,Poisson,Binomial};
 
-    OSignalContaminatedLH(const Distribution &signal, //Signal expectation
+    LikelihoodCollection(const Distribution &signal, //Signal expectation
                          const Distribution &background, //background expectation
                          const Distribution &signalScrambled, //Scrambled signal expectation
                          const Distribution &signalSample, //Signal sample
@@ -35,7 +38,7 @@ class OSignalContaminatedLH : public BinnedLikelihood{
                          double N,
                          double sig_prob = 1.0,
                          double bg_prob = 1.0,
-                         OSignalContaminatedLH::Model model = OSignalContaminatedLH::None,
+                         LikelihoodCollection::Model model = LikelihoodCollection::None,
                          double sig_sample_prob = 1.0,
                          double bg_sample_prob = 1.0,
                          int seed = 1
@@ -45,6 +48,16 @@ class OSignalContaminatedLH : public BinnedLikelihood{
         ///Evaluates the log likelihood sum
         ///\param xi the signal fraction for which the likelihood should be evaulated.
         double EvaluateLLH(double xi)const;
+
+
+        double NoSigSubCorr(double xi)const;
+
+        double StandardSigSub(double xi)const;
+
+        // double NonTerminatedSigSub(double xi)const;
+
+        // double HybridSigSub(double xi)const;
+
 
         Model GetModel(){return usedModel_;}
 
@@ -79,8 +92,8 @@ class OSignalContaminatedLH : public BinnedLikelihood{
         void MinimizerConditions(Minimizer &min);
 
         likelihoodCallback CallBackFcn(){return &likelihoodEval;}
-        OSignalContaminatedLH * Clone(int seed) const {
-            return new OSignalContaminatedLH(signalPdf_,
+        LikelihoodCollection * Clone(int seed) const {
+            return new LikelihoodCollection(signalPdf_,
                                             bgPdf_,
                                             signalPdfScrambled_,
                                             signalSample_,
@@ -97,12 +110,28 @@ class OSignalContaminatedLH : public BinnedLikelihood{
 
         double MaxXiBound(){return  maxSFractionFit_;}
 
+        void SetLLHFunction2(double (*fcpt)(const LikelihoodCollection &, double) ){current_llh_ = fcpt; changed_ = true; }
+        void SetLLHFunction(std::string fc_name);
+
+        static double noSigSubCorr(const LikelihoodCollection &likelihood, double xi);
+
+        static double standardSigSub(const LikelihoodCollection & likelihood, double xi);
+
+        // static double nonTerminatedSigSub(LikelihoodCollection & likelihood, double xi);
+
+        // static double hybridSigSub(LikelihoodCollection & likelihood, double xi);
+
+        double (*current_llh_)(const LikelihoodCollection & , double);
+
     private:
         ///Callback function for the minimizer
         static double likelihoodEval(double xi, void *params);
         
-        void ComputeMaxSFrac();
 
+        void ComputeMaxSFrac();
+        std::map<std::string, double (*)(const LikelihoodCollection & , double)> callbackMap_;
+        
+        
         Distribution signalPdf_;
         /// Pointer to a distribution describing the signal pdf.
         Distribution signalPdfScrambled_;
