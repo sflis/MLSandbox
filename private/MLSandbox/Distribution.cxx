@@ -98,14 +98,14 @@ seed(rSeed){
 
 
 
-    binWidth_ = range_/(nBins_-1);
+    binWidth_ = range_/(nBins_);
     invBinWidth_ = 1/binWidth_;
     pdf_ = distribution;
     cdf_.resize(nBins_,0);
 
-    range_ = rangeMax+binWidth_ - rangeMin;
-    rangeMax += binWidth_*.5;
-    rangeMin -= binWidth_*.5;
+    range_ = rangeMax-binWidth_ - rangeMin;
+    //rangeMax += binWidth_*.5;
+    //rangeMin -= binWidth_*.5;
     double sum = std::accumulate(pdf_.begin(), pdf_.end(),0.0);
     pdf_[0] /= sum;
     cdf_[0] += pdf_[0];
