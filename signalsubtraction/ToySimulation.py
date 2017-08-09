@@ -47,6 +47,7 @@ class bg_model(object):
         x = np.linspace(0,1,1000)
         y = decl_dep(x)
         ddec = Distribution(y,-decl_band/2,decl_band/2,seed)
+        self.ddec = ddec
         self.z = ddec.SampleN#vectorize_distr(ddec)
         self.decl_band = decl_band
     def generate(self, n = None):
@@ -111,8 +112,35 @@ class sig_model(object):
             ra -- The bin centers in right ascension
         '''
         from scipy import stats
-        return stats.norm.pdf(decl,scale=self.psf) * stats.norm.pdf(ra,scale=self.psf)
+        return stats.norm.pdf(decl,scale=self.psf) * stats.norm.pdf(ra,scale=self.psf)#fisher(decl,ra,0.,0.,1./self.psf**2)#
 
+
+def smooth(y, box_pts):
+    box = np.ones(box_pts)/box_pts
+    y_smooth = np.convolve(y, box, mode='same')
+    return y_smooth
+
+def fisher(x1,x2,p1,p2,k):
+    '''Fisher distribution numerically stable for 1/k**2>0.04
+    '''
+    if(k<200):
+        return k/(4*np.pi*np.sinh(k))*np.exp(k*(
+                                                np.sin(x1)*np.sin(p1)*np.cos(x2-p2)
+                                                + np.cos(x1)*np.cos(p1)
+                                                ) )
+    else:
+        return k/(2*np.pi)*np.exp(k*(
+                                                np.sin(x1)*np.sin(p1)*np.cos(x2-p2)
+                                                + np.cos(x1)*np.cos(p1)
+                                                -1) )
+ 
+
+def projected_fisher(ang,theta,thetap):
+    from scipy import special
+    k=1/ang**2
+    e = np.exp(k*np.cos(theta)*np.cos(thetap))
+    bessel = special.i0(k*np.sin(theta)*np.sin(thetap))*np.sin(theta)
+    return k*e*bessel/(2*np.sinh(k))
 
 
 class ToySimulation(object):
@@ -162,7 +190,7 @@ class ToySimulation(object):
             A dictionary with pdfs and pseudo data
         """
         import dashi
-        
+        from kde import pykde
         ra = np.linspace(-self.ra_fraction*np.pi,self.ra_fraction*np.pi,ra)
         decl = np.linspace(-self.decl_band/2,self.decl_band/2,decl)
         pdfs = dict()
@@ -174,16 +202,20 @@ class ToySimulation(object):
         #Only once!
         if(self.generated_sig_pdf == False):
             self.generated_sig_pdf = True
-            N = int(8e6)
-            tmp = self.sig_model.generate(N)
-            self.sig_fract = np.sum(np.abs(tmp[0])<self.ra_fraction*np.pi)/float(N)
+            #N = int(8e6)
+            #tmp = self.sig_model.generate(N)
+            self.sig_fract = 1.0#np.sum(np.abs(tmp[0])<self.ra_fraction*np.pi)/float(N)
             #pdfs['sig_fract'] = self.sig_fract
 
             #generating signal pdf
             self.sig_pdf = dashi.histogram.hist2d((ra,decl))
-            self.sig_pdf.fill((tmp[0],tmp[1]))
-            self.sig_pdf.bincontent[:] /= np.sum(self.sig_pdf.bincontent)
-
+            #self.sig_pdf.fill((tmp[0],tmp[1]))
+            #self.sig_pdf.bincontent[:] /= np.sum(self.sig_pdf.bincontent)
+            
+            declv,rav = np.meshgrid(self.sig_pdf.bincenters[0], self.sig_pdf.bincenters[1])
+            #print(declv.)
+            #print(self.sig_pdf.bincontent.shape)
+            self.sig_pdf.bincontent[:] = self.sig_model.pdf(rav,declv).T
 
             #scramble the signal
             self.sigdec =  self.sig_pdf.project([1])
@@ -196,10 +228,46 @@ class ToySimulation(object):
         pdfs['sig_fract'] = self.sig_fract
         #generating background pdf from data which is scrambled in RA
         bg_pdf = dashi.histogram.hist2d((ra,decl))
-        bg_pdf.fill((np.random.uniform(-1,1,len(pdfs['data_raw'][0]))*np.pi*2,pdfs['data_raw'][1]))
-        bgdec = bg_pdf.project([1])
+        bg_decl_pdf = dashi.histogram.hist1d(decl)
+        bg_decl_pdf.fill(pdfs['data_raw'][1])
+        #bg_kde = pykde.gaussian_kde(bg_decl_pdf.bincenters,weights=bg_decl_pdf.bincontent[:],bw_method='silverman',adaptive=True,alpha=0.3)
+        bg_decl = dashi.histogram.hist1d(decl)
+        #bg_decl.bincontent[:] = smooth(bg_decl_pdf.bincontent[:],10)#bg_decl_pdf.bincontent[:]#bg_kde(bg_decl_pdf.bincenters)
+        #bins = (bg_decl_pdf.bincenters[-1]-bg_decl_pdf.bincenters[0]+bg_decl_pdf.bincenters)[::-1]
+        #bins2 = (-bg_decl_pdf.bincenters[-1]+bg_decl_pdf.bincenters[0]+bg_decl_pdf.bincenters)[::-1]
+        #print(bg_decl_pdf.bincenters)
+        #bg_decl.bincontent[:] =  bg_kde(bg_decl_pdf.bincenters) + bg_kde(bins)+ bg_kde(bins2)
+        #bg_decl.bincontent[:] =  bg_decl_pdf.bincontent[:]
+        #Getting a smooth projection of the data in theta using a fisher distribution
+        from scipy.interpolate import UnivariateSpline
+        from scipy.interpolate import pchip
+
+        pchip
+        #UnivariateSpline
+        #spl = pchip(bg_decl_pdf.bincenters,bg_decl_pdf.bincontent)#,s=1e4)
+        spl = UnivariateSpline(bg_decl_pdf.bincenters,bg_decl_pdf.bincontent,s=5e3)
+        #bg_decl.bincontent[:] = spl(bg_decl_pdf.bincenters)
+        bg_decl.bincontent[:] = bg_decl_pdf.bincontent[:]
+        bg_decl.bincontent[bg_decl.bincontent[:]<=0] = 1e-19
+        '''
+        for i in xrange(len(bg_decl_pdf.bincenters)):
+            d = bg_decl_pdf.bincenters[i]
+            w = bg_decl_pdf.bincontent[i]
+            #print((np.pi/2-d)/np.pi*180,d)
+            #print(1,(np.pi/2-bg_decl_pdf.bincenters)/np.pi)
+            #print(2,(np.pi/2-d)/np.pi)
+            #print(np.diff(bins)[0])
+            pd= w*projected_fisher(3./180.0*np.pi, np.pi/2-d,np.pi/2-bg_decl_pdf.bincenters)*np.diff(bg_decl_pdf.bincenters)[0]
+            #print(pd)
+            #print(pd)
+            bg_decl.bincontent[:] +=pd
+        '''
+        #print(bg_decl.bincontent) 
+        #bg_pdf.fill((np.random.uniform(-1,1,len(pdfs['data_raw'][0]))*np.pi*2,pdfs['data_raw'][1]))
+        #bgdec = bg_pdf.project([1])
+        
         for i in range(bg_pdf.bincontent.shape[1]):
-            bg_pdf.bincontent[:,i] = bgdec.bincontent[i]
+            bg_pdf.bincontent[:,i] = bg_decl.bincontent[i]
         bg_pdf.bincontent /= np.sum(bg_pdf.bincontent)
 
         #bin the data
@@ -215,19 +283,39 @@ class ToySimulation(object):
         pdfs['sig_scr_hist'] = self.sig_pdf_scr
         pdfs['bg_hist'] = bg_pdf
         pdfs['n_data'] = len(pdfs['data_raw'][0])
+        bg_decl_pdf.bincontent[:] /=np.sum(bg_decl_pdf.bincontent)
+        bg_decl.bincontent[:] /=np.sum(bg_decl.bincontent)  
+        pdfs['bg_decl'] = bg_decl_pdf
+        pdfs['bg_decl_pdf'] = bg_decl
         return pdfs
 
+def bg_lin_slope(x):
+    return 2*x+1
+
+    
+def bg_fisher(x):
+    return projected_fisher(60*np.pi/180,np.pi*2./5,(x-1)*np.pi)
+
+bg_models = {'linear_slope':bg_lin_slope,'fisher60':bg_fisher}
 
 if (__name__ == "__main__"):
+    import sys
     import dashi
     import matplotlib.pyplot as plt
     dashi.visual()
+
+    seed = int(sys.argv[1])
     def d(x):
+        from scipy import stats
+        return projected_fisher(60*np.pi/180,np.pi*2./5,(x-1)*np.pi)
+
+        #return stats.norm.pdf(x,scale=0.3,loc=0.7)
         return x
-    bg = bg_model(2.5e5,d)
-    sig = sig_model(2*np.pi/180)
-    selection = ToySimulation(bg,sig)
-    pdfs = selection.generate_pdfs(50,decl = 30,ra=60)
+    N = 2.5e4
+    bg = bg_model(N,bg_models['fisher60'],decl_band=30*np.pi/180,seed =seed)
+    sig = sig_model(1*np.pi/180,decl_band=30*np.pi/180,seed = seed)
+    selection = ToySimulation(bg,sig,ra_fraction = 1./1.,decl_band=30*np.pi/180)
+    pdfs = selection.generate_pdfs(int(0.2*N),decl = 20,ra=360)
     plt.figure()
     pdfs['sig_hist'].imshow()
     plt.title('signal')
@@ -257,7 +345,42 @@ if (__name__ == "__main__"):
     plt.xlabel("RA a.u")
     plt.ylabel("DEC a.u")
 
+
+
     plt.colorbar()
+    plt.figure()
+    pdfs['bg_decl'].line(label='data')
+    pdfs['bg_decl_pdf'].line(label='smooth pdf')
+    plt.title('data')
+    plt.xlabel("DEC a.u")
+    plt.ylabel("Events a.u")
+    plt.legend()
+
     print(pdfs['sig_fract'])
     print(pdfs['bg_fract'])
+    
+    
+    plt.figure(figsize=(11,7))
+    plt.xkcd()
+    x  = np.linspace(-0.27,.27,1000)
+    y = list()
+    for v in x:
+        y.append(selection.bg_model.ddec.PDF(v)*13.5)
+    plt.plot(x,y,label='true background',lw=8,ls='dashed',color='green')
+    pdfs['bg_decl'].line(label='scr. data',color='black')
+    sigscr = pdfs['sig_scr_hist'].project([1])
+    #sigscr.line(label='scr. signal')
+    #for w in [0.1,0.2,0.3]:
+    plt.step(sigscr.bincenters,pdfs['bg_decl'].bincontent-0.2*sigscr.bincontent,where='mid',label='background est. ')
+    plt.step(sigscr.bincenters,0.2*sigscr.bincontent,where='mid',label='scr. signal')
+
+
+    #plt.title('data')
+    plt.xlabel("Nonscrambled event observable",size=25)
+    plt.ylabel("Events a.u",size=25)
+    plt.legend(ncol=1,frameon=False,loc='best',fontsize=25)
+    plt.xlim((-0.27,0.27))
+    plt.tight_layout()
+    plt.savefig('SubtractionExample.png')       
+
     plt.show()
