@@ -61,7 +61,7 @@ class sig_model(object):
 
         for i in xrange(n_pix):
             pix_pos = healpy.pix2ang(self.n_side,i)
-            self.true_pdf[i] =  fisher(pix_pos[0],pix_pos[1],np.pi/2-coord[0],coord[1],1./psf)
+            self.true_pdf[i] =  fisher(pix_pos[0],pix_pos[1],np.pi/2-coord[0],coord[1],1./psf**2)
         
         self.distr = Distribution(self.true_pdf,0,1,self.seed)
         
@@ -70,7 +70,7 @@ class sig_model(object):
 
         for i in xrange(healpy.nside2npix(self.n_side/2)):
             pix_pos = healpy.pix2ang(self.n_side/2,i)
-            self.binned_pdf[i] =  fisher(pix_pos[0],pix_pos[1],np.pi/2-coord[0],coord[1],1./psf)
+            self.binned_pdf[i] =  fisher(pix_pos[0],pix_pos[1],np.pi/2-coord[0],coord[1],1./psf**2)
 
 
     def generate(self,nsig):
@@ -123,7 +123,7 @@ class complexsource(object):
         #Sum up contributions from all sources in the healpix map 
         for i in xrange(n_pix):
             pix_pos = healpy.pix2ang(self.n_side,i)
-            self.true_pdf[i] =  np.sum(fisher(pix_pos[0],pix_pos[1],self.ga_sources_dec,self.ga_sources_ra,1./psf))
+            self.true_pdf[i] =  np.sum(fisher(pix_pos[0],pix_pos[1],self.ga_sources_dec,self.ga_sources_ra,1./psf**2))
         #Creating a binned distribution from the healpix map that we can sample from    
         self.distr = Distribution(self.true_pdf,0,1,self.seed)
         
@@ -132,7 +132,7 @@ class complexsource(object):
 
         for i in xrange(healpy.nside2npix(self.n_side/2)):
             pix_pos = healpy.pix2ang(self.n_side/2,i)
-            self.binned_pdf[i] =  np.sum(fisher(pix_pos[0],pix_pos[1],self.ga_sources_dec,self.ga_sources_ra,1./psf))
+            self.binned_pdf[i] =  np.sum(fisher(pix_pos[0],pix_pos[1],self.ga_sources_dec,self.ga_sources_ra,1./psf**2))
     
     
         
@@ -331,10 +331,10 @@ if (__name__ == "__main__"):
 
     seed = int(sys.argv[1])
 
-    N = 7.5e5
+    N = 7.5e4
     n_side = 32 
     bg = bg_model(N,bg_models['linear_slope'],seed =seed)
-    sig = sig_model(5*np.pi/180,(-80*np.pi/180,266*np.pi/180),n_side = n_side,seed = seed)
+    sig = sig_model(10*np.pi/180,(-80*np.pi/180,266*np.pi/180),n_side = n_side,seed = seed)
     selection = ToySimulation(bg,sig,n_side = n_side)
     selection.generate_data_sample(int(0.00*N))
     pdfs = selection.generate_pdfs()
