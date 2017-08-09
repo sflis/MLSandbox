@@ -136,27 +136,10 @@ def compute_TS_distr(dec ,n_trials,selection,bias_col):
                         llh.SetEvents(pdfs['binned_scr_data'])
                         mini.ComputeBestFit(llh)
                         bias_col[l][dec].append(mini.bestFitLLH-llh.EvaluateLLH(0.0))
-
-                        if(False):
-                            x = np.linspace(0,1,100)
-                            y = []
-                            for xs in x:
-                                y.append(llh.EvaluateLLH(xs))
-                            l,=plt.plot(x,y,label=l)
-                            plt.axvline(mini.bestFit,color=l.get_color())
                             
                     except Exception, e:
                         print('Error with %s likelihood:' %l,e)
-                        x = np.linspace(0,1,100)
-                        y = []
-                        for xs in x:
-                            y.append(llh.EvaluateLLH(xs))
-                        plt.figure()
-                        plt.plot(x,y)
-                        plt.show()
-                if(False):
-                    plt.legend()
-                    plt.show()
+
 
             else:
                 llh.SetEvents(pdfs['binned_scr_data'])
