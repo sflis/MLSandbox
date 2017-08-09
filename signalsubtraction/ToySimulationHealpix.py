@@ -278,7 +278,6 @@ class ToySimulation(object):
             A dictionary with pdfs and pseudo data
         """
         import dashi
-        from kde import pykde
 
         n_pix = healpy.nside2npix(self.n_side)
 
