@@ -29,6 +29,18 @@ namespace mlsandbox{
             }
             return sample_array;            
         }
+
+        bn::ndarray sampleI(Distribution &self, int N){
+            std::vector<intptr_t> shape(1,N);
+            bn::dtype dt = bn::dtype::get_builtin<int>();
+            bn::ndarray sample_array = bn::empty(shape,dt);
+            int* data = (int*) sample_array.get_data();
+            for(uint i = 0; i<N; ++i){
+                *data = self.SampleFromDistrI();
+                data++;
+            }
+            return sample_array;            
+        }
     }
 }
 
@@ -48,6 +60,7 @@ void register_Distribution()
        .def("CDF",&Distribution::CDF)
        .def("SetCDFSampling",&Distribution::SetCDFSampling)
        .def("SampleN",mlsandbox::python::sample)
+       .def("SampleIN",mlsandbox::python::sampleI)
        ;
   }
 }
