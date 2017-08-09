@@ -70,42 +70,30 @@ double LikelihoodCollection::StandardSigSub(double xi)const{
         xi = 1.0 - std::numeric_limits<double>::epsilon();
     
     const double w = Xi2W(xi);
-    const uint64_t nbins = mixed_.GetNBins();
+    // const uint64_t nbins = mixed_.GetNBins();
     // Loop over the binned events to evaluate the likelihood.
     for (std::vector<uint64_t>::const_iterator it=usedBins_.begin(); it!=usedBins_.end(); ++it){
         uint64_t index = *it;
         double bg_prob = bgPdf_[index] - xi*signalPdfScrambled_[index];
-        double t_prob = w * signalPdf_[index] + (1-w)/(1-xi)*( bg_prob);
+        if(bg_prob<0)
+            bg_prob = 0;
+
+        double t_prob = xi * signalPdf_[index] + ( bg_prob);
 
         if(t_prob<=0){
             t_prob = std::numeric_limits<double>::min();
         }
 
-        if(bg_prob<0){
-            llhSum -= std::numeric_limits<double>::max()/mixed_.GetNBins();
-        }
-        else{    
+        // if(bg_prob<0){
+        //     llhSum -= std::numeric_limits<double>::max()/mixed_.GetNBins();
+        // }
+        // else{    
             llhSum += observation_[index]
             * log(t_prob);
-        }
+        // }
     }
 
-    // Adding poisson or binomial factor to the likelihood if enabled.
-    switch(usedModel_){
-        case Poisson:
-            llhSum += -(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_)) +
-            totEvents_*log(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_));
-            break;
-        case Binomial:
-        {
-            double p = sig_prob_*xi + bg_prob_*(1 - xi);
-            llhSum += log(gsl_ran_binomial_pdf(totEvents_, p, N_));
-        }
-            break;
-        case None:
-        default:
-            break;
-    }
+    
     // Counting the number of llh evaluations.
     nTotalLLHEvaluations_++;
 
@@ -124,7 +112,6 @@ double LikelihoodCollection::NoSigSubCorr(double xi)const{
         log( xi * signalPdf_[index] + bgFraction * bgPdf_[index]);
 
     }
-
     // Adding poisson or binomial factor to the likelihood if enabled.
     switch(usedModel_){
         case Poisson:
@@ -141,7 +128,6 @@ double LikelihoodCollection::NoSigSubCorr(double xi)const{
         default:
             break;
     }
-
     // Counting the number of llh evaluations.
     nTotalLLHEvaluations_++;
 
