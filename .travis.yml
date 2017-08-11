@@ -3,6 +3,7 @@ sudo: false
 
 language: Ç++
 
+
 # Blacklist
 branches:
   only:
@@ -14,6 +15,7 @@ env:
     - GH_REPO_NAME: MLSandbox
     - DOXYFILE: $TRAVIS_BUILD_DIR/docs/Doxyfile
     - GH_REPO_REF: github.com/sflis/MLSandbox.git
+    - secure: "LehdBKmTOW2Sp2kmEnuxgzqWs+nKx1t3uJOxh8kKVx3Z9CBzPSuN/ckw4QJGQOSbw4cMEo1c75xdnQAIjYi/KYBS+SQv41dlTKEjr+0PdK4Uyz9tDm7PnTrMi+rvF6qdhTMqvnC5z1PkldQfVGJBnc8B/OFJCCWaVW35MqNl9S8qnZX8OLJaOwlRIjXE5gWZ1OW2A7fyu4LB0Eerhw0y5iiVptVMYa4S7TAVuDKyJdnnqhnmuwAzJCUwVyVkT30exzVwhxb7Rv5csAfDDF9yPq8Ybo2ZqOuDD4YsoGskgljPU6OJV7N7CwHQIc2HrLtTrwhEJIDIxHfRJfkdiReAvRo4GX+FozceUIp/I8I9Xb2CYSehH4B+2oSyvJwJIDmuR+LEd3b+uAuBkI6+pqsxC62/hDDDXJ9+u7sK+ZSx0i481l0DnjB0ICAtWBPULHfTEi94JTFkO8r0BG4daag7jcpIAs0/xfw3LdgVqPnxaKC9tn2CQHbG0t0kzZdfjw3SMezN1EdidGp4OSL3SDzflIvoURHEQfn0MbUO8Ff0NMt3Yr3/Hoae1m9PwL8QnidyZ4zN+cfZ44t3cxTBN2zU4FlzkDbotrChhQ+Qfd0m4lS7SJ7oFD1ky3AJj4WQic8ZJFNXerTOrBP0blvpgJqLfuo0JNIPFnRYrG1Jgo63KTA="
 
 # Install dependencies
 addons:
