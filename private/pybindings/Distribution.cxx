@@ -1,5 +1,4 @@
 #include "MLSandbox/Distribution.h"
-// #include "bindingutils.h"
 #include <boost/numpy.hpp>
 
 #include <iostream>
@@ -17,7 +16,8 @@ namespace mlsandbox{
             std::copy((double*)arr.get_data(), (double*)arr.get_data()+arr.get_size(), &distribution_vec[0]);
             return boost::shared_ptr<Distribution>( new Distribution(distribution_vec, rMin, rMax, rSeed) );
         }
-
+        /// A helper function that takes a Distribution object and samples N
+        /// random numbers according to the distribution and returns it in a numpy array 
         bn::ndarray sample(Distribution &self, int N){
             std::vector<intptr_t> shape(1,N);
             bn::dtype dt = bn::dtype::get_builtin<double>();
