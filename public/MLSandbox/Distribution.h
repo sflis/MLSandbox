@@ -22,10 +22,10 @@
 
 #include "RNG.h"
 #include <algorithm>
-typedef double(*ptDFctD)(double);
+
 /**class: Distribution
-*\brief A class that provides a common interface for distributions which can be used to build up
-* likelihoods.
+*\brief A class that provides a common interface for binned distributions which are used
+*       to represent binned pdfs in likelihood objects.
 *
 *
 */
@@ -33,58 +33,81 @@ class Distribution{
    public:
 
         Distribution(Distribution const &base, boost::shared_ptr<RNG> rng);
-        Distribution(ptDFctD pdf, double rMin, double rMax, uint64_t nBins, uint rSeed = 1);
         Distribution(std::vector<double>const &distribution, double rMin, double rMax, uint rSeed = 1);
 
-        double PDF(double x) const;
+        /// Returns the pdf value evaluated at the given value
+        double PDF(double x) const; 
 
         /// Fast unsafe call to PDF (no boundary checks)
         /// \param x the pdf paramater at which the pdf should be evaluated at
         /// \return pdf value at x
         double PDF_f(double x) const{
-            return pdf_[(x - rangeMin) * invBinWidth_];
+            return pdf_[(x - rangeMin_) * invBinWidth_];
         }
 
+        /// Evaluates the CDF at a given value
         double CDF(double x) const;
 
+        /// Returns a random number sampled according to the binned distribution
         double SampleFromDistr() const;
 
+        /// Returns a random index of the binned distribution sampled according to the same distribution
         uint64_t SampleFromDistrI()const{
-           return  std::upper_bound(cdf_.begin(), cdf_.end(), rng->Uniform()) - cdf_.begin();
+           return  std::upper_bound(cdf_.begin(), cdf_.end(), rng_->Uniform()) - cdf_.begin();
         }
 
-        uint64_t GetNBins()const {return nBins_;}
-        uint64_t ValueToBin(double x){return (x - rangeMin) * invBinWidth_ + 1;}
 
+        /// Returns the number of bins of the pdf
+        uint64_t GetNBins()const {return nBins_;}
+
+        /// Returns the bin index of the binned pdf corresponding to the givem value
+        uint64_t ValueToBin(double x){return (x - rangeMin_) * invBinWidth_ + 1;}
+
+        /// Returns a reference to the pdf
         std::vector<double> & GetPDFVector(){return pdf_;}
+        
+        
+        /// Provides direct access to the binned pdf 
         double operator[](uint64_t index){return pdf_[index];}
+        
+        /// Provides direct access to the binned pdf (const)
         double operator[] (uint64_t index) const {return pdf_[index];}
+        
         void SetCDFSampling(bool set){useCDF_ = set;}
 
-        double GetRangeMax() const{return rangeMax;}
-        double GetRangeMin() const{return rangeMin;}
+        double GetRangeMax() const{return rangeMax_;}
+        
+        double GetRangeMin() const{return rangeMin_;}
    private:
-        friend void addDistributions(double w1,Distribution const &dst1,double w2,Distribution const &dst2,Distribution & target);
-        double rangeMax;
-        double rangeMin;
-        bool cdf;
-        bool pdf;
+        friend void addDistributions(double w1,
+                                     Distribution const &dst1,
+                                     double w2,
+                                     Distribution const &dst2,
+                                     Distribution & target);
+        double rangeMax_;
+        double rangeMin_;
         bool useCDF_;
-        double pdfMax;
-        uint32_t seed;
+        double pdfMax_;
+        uint32_t seed_;
         std::vector<double> pdf_;
         std::vector<double> cdf_;
         double binWidth_;
         double invBinWidth_;
         double range_;
         uint64_t nBins_;
-        boost::shared_ptr<RNG> rng;
+        boost::shared_ptr<RNG> rng_;
 
 };
 
 
-
-inline void addDistributions(double w1, Distribution const &dst1, double w2, Distribution const &dst2, Distribution & target){
+///A helper function that performs an addition operation on two 
+///distributions and putting the result in a third distribution object  
+inline void addDistributions(double w1, 
+                             Distribution const &dst1, 
+                             double w2, 
+                             Distribution const &dst2, 
+                             Distribution & target){
+        
         const uint64_t n = dst1.nBins_;
         target.pdf_[0] = w1*dst1.pdf_[0] + w2*dst2.pdf_[0];
         target.cdf_[0] = target.pdf_[0];
@@ -93,7 +116,8 @@ inline void addDistributions(double w1, Distribution const &dst1, double w2, Dis
             target.pdf_[i] = w1*dst1.pdf_[i] + w2*dst2.pdf_[i];
             target.cdf_[i] = target.cdf_[i-1] + target.pdf_[i];
         }
-        target.pdfMax = *std::max_element(target.pdf_.begin(),target.pdf_.end());
+        //Finding the max value of the new pdf
+        target.pdfMax_ = *std::max_element(target.pdf_.begin(),target.pdf_.end());
 }
 
 

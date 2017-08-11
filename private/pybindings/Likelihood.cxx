@@ -2,7 +2,6 @@
 #include "MLSandbox/Distribution.h"
 #include "MLSandbox/CombinedLikelihood.h"
 #include "MLSandbox/SignalContaminatedLH.h"
-#include "MLSandbox/PSignalContaminatedLH.h"
 #include "MLSandbox/LikelihoodCollection.h"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
@@ -194,38 +193,7 @@ void register_Likelihood()
     }//LikelihoodCollection
 
 
-    {
-        bp::scope PSignalContaminatedLH_scope =
-        bp::class_<PSignalContaminatedLH, boost::shared_ptr<PSignalContaminatedLH>,bp::bases<BinnedLikelihood> >
-        ("PSignalContaminatedLH","DocString",
-        bp::init<Distribution &,
-                    Distribution &,
-                    Distribution &,
-                    Distribution &,
-                    Distribution &,
-                    Distribution &,
-                    double,
-                    double,
-                    double,
-                    PSignalContaminatedLH::Model,
-                    double,
-                    double,
-                    int>(
-                    "Constructor for signal contaminated likelihood"
-                    )
-        )
-        .def("SampleEvents",&PSignalContaminatedLH::SampleEvents)
-        .def("EvaluateLLH",&PSignalContaminatedLH::EvaluateLLH)
-        .def("SetW2Xi",&PSignalContaminatedLH::SetW2Xi)
-        //.def("EnableHistogramedEvents",&PSignalContaminatedLH::EnableHistogramedEvents)
-        ;
-
-        bp::enum_<PSignalContaminatedLH::Model>("Model")
-        .value("None", PSignalContaminatedLH::None)
-        .value("Poisson", PSignalContaminatedLH::Poisson)
-        .value("Binomial", PSignalContaminatedLH::Binomial)
-        .export_values();
-    }//PSignalContaminatedLH scope
+    
 
     {
         bp::scope ShapeLikelihood_scope =

@@ -32,8 +32,13 @@ double ShapeLikelihood::likelihoodEval(double xi, void *params){
 //_____________________________________________________________________________
  void ShapeLikelihood::SampleEvents(double xi){
     if(xi>1){
-        cerr<<"Invalid signal fraction: xi ("<<xi<<") must lie between 0<=xi<=1"<<endl;
-        exit(1);
+        char error_str[300];
+        sprintf(error_str,
+            "Invalid signal fraction: xi (%f) must lie between 0<=xi<=1\n error caught at at line %d in file %s",
+            xi,
+            __LINE__,
+            __FILE__);
+        throw std::invalid_argument(std::string(error_str));
     }
     changed_ = true;
     usedBins_.clear();
