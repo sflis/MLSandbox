@@ -15,10 +15,6 @@
 #include <boost/make_shared.hpp>
 using namespace std;
 
-//double up_lim(std::vector<double> ts_distr, double cl){
-//    return ts_distr[ts_distr[current_xi].size() * cl];
-//}
-
 struct job;
 struct NeymanThreadData{
     NeymanThreadData(boost::shared_ptr<NeymanAnalysis> ana,
@@ -92,43 +88,7 @@ double NeymanAnalysis::ComputeLimit(double ts, double cl, double prec){
     }
     return up_lim;
 }
-/*
-double NeymanAnalysis::ComputeLimit(double ts, double cl, double prec){
 
-
-
-    bool found_lim = false;
-    double current_xi = 0;
-    tsDistributions_[current_xi] =  TestStatisticDistribution(0,100);
-    double current_ts_up = up_lim(tsDistributions_[current_xi],cl);
-    found_lim = ts>current_ts_up?true:false;
-    //if limit is found when xi=0
-    if(found_lim)
-        return 0.0/0.0;
-
-    do{
-        current_xi += 10 * prec;
-        tsDistributions_[current_xi] =  TestStatisticDistribution(0,100);
-        current_ts_up = up_lim(tsDistributions_[current_xi], cl);
-    }while(ts>current_ts_up)
-
-    current_xi += 100 * prec;
-    tsDistributions_[current_xi] =  TestStatisticDistribution(0,100);
-    current_ts_up = up_lim(tsDistributions_[current_xi], cl);
-
-    uint64_t bins = current_xi/prec+0.5;
-    Histogram1D(bins, 0,current_xi);
-
-
-    while(!found_lim){
-        tsDistributions_
-
-
-    }
-
-
-}
-*/
 
 struct job
 {
