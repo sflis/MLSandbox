@@ -38,8 +38,8 @@ class Minimizer;
 uint32_t SuperFastHash (const char * data, int len);
 typedef double(*likelihoodCallback)(double,void*);
 /**class: Likelihood
- * \brief A base class (wrapper class) for likelihoods which defines the interface needed
- *        by FeldmanCousinsAnalysis class.
+ * \brief A base class (wrapper class) for likelihoods which defines a general interface needed
+ *        analysis classes.
  */
 class Likelihood{
     public:
@@ -62,15 +62,15 @@ class Likelihood{
         virtual void MinimizerConditions(Minimizer &min){}
         
         virtual bool Changed(){
-            bool ret = (stateHash_ == ChangedHash());
-            stateHash_ = ChangedHash();
+            bool ret = (stateHash_ == StateHash());
+            stateHash_ = StateHash();
             return (ret || changed_);
         }
 
         virtual double MinXiBound(){return 0.0;}
         virtual double MaxXiBound(){return 1.0;}
 
-        virtual uint32_t ChangedHash() =  0;
+        virtual uint32_t StateHash() =  0;
         /// Number of events in the current sample
         uint64_t totEvents_;
         ///Expected number of events in the sample
@@ -133,7 +133,7 @@ public:
         }
 
         std::vector<uint64_t>& GetEventSample() {return observation_;}
-        uint32_t ChangedHash(){return SuperFastHash((const char*) &observation_[0],sizeof(uint64_t)*observation_.size()); }
+        uint32_t StateHash(){return SuperFastHash((const char*) &observation_[0],sizeof(uint64_t)*observation_.size()); }
 protected:
     void HistogramEvents();
 

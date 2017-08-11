@@ -34,7 +34,7 @@ class CombinedLikelihood: public Likelihood{
             N_ = 0;
             for(uint64_t i = 0; i<likelihoods_.size(); i++){
                 totEvents_ += likelihoods_[i]->totEvents_;
-                hashes_[i] = likelihoods_[i]->ChangedHash();
+                hashes_[i] = likelihoods_[i]->StateHash();
                 N_ += likelihoods_[i]->N_;
             }
             changed_ = true;
@@ -57,9 +57,9 @@ class CombinedLikelihood: public Likelihood{
             return new CombinedLikelihood(llhv,weights_);
         }
 
-        uint32_t ChangedHash(){
+        uint32_t StateHash(){
             for(uint64_t i = 0; i<likelihoods_.size(); i++){
-                hashes_[i] = likelihoods_[i]->ChangedHash();
+                hashes_[i] = likelihoods_[i]->StateHash();
             }
             return SuperFastHash((const char*) &hashes_[0],sizeof(uint32_t)*hashes_.size());
         }
