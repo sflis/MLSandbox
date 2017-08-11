@@ -60,7 +60,10 @@ class Likelihood{
         virtual Likelihood * Clone(int seed)const = 0;
 
         virtual void MinimizerConditions(Minimizer &min){}
-        
+
+        /// Returns true if the state of the likelihood has changed since the last call to Change
+        /// indicating that the event sample of the likelihood might have changed thus a recalculation 
+        /// of the best fit is needed. 
         virtual bool Changed(){
             bool ret = (stateHash_ == StateHash());
             stateHash_ = StateHash();
@@ -70,6 +73,7 @@ class Likelihood{
         virtual double MinXiBound(){return 0.0;}
         virtual double MaxXiBound(){return 1.0;}
 
+        /// Returns a hash number of the observation
         virtual uint32_t StateHash() =  0;
         /// Number of events in the current sample
         uint64_t totEvents_;
@@ -126,9 +130,6 @@ public:
                     usedBins_.push_back(i);
             }
 
-            //std::accumulate(observation_.begin(), observation_.end(), 0);
-            
-            //totEvents_ = events.size();
             changed_ = true;
         }
 
@@ -228,11 +229,15 @@ class ShapeLikelihood: public BinnedLikelihood{
         ///\param xi the signal fraction for which the likelihood should be evaulated.
         double EvaluateLLH(double xi)const;
 
+        /// Generates a new observation (event sample) based on the sampling pdfs 
         void SampleEvents(double xi);
+        
+        /// A callback function of the likelihood evaluation to be passed to the minimizer
         likelihoodCallback CallBackFcn(){return &likelihoodEval;}
 
-        bool EnableHistogramedEvents();
+        
         void EnablePoissonSampling(){poissonSampling_ = true;}
+        
         ///Signal fraction to number of events
         ///\param xi signal fraction
         ///\return number of events
@@ -247,6 +252,8 @@ class ShapeLikelihood: public BinnedLikelihood{
             return mu/N_;
         }
 
+        /// Returns a clone of the likelihood with a possible 
+        /// exception of the rng seed
         ShapeLikelihood * Clone(int seed)const{
             return new ShapeLikelihood(*this,
                                        seed);
