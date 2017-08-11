@@ -64,13 +64,6 @@ seed_(rSeed){
 
 
     pdfMax_ = max;
-    // double area = 0;
-    // for(uint64_t i = 1; i < 10000; i++){
-    //     double x = rangeMin_ + rng_->Uniform() * range_;
-    //     double y = rng_->Uniform() * pdfMax;
-    //     if(PDF(x) < y)
-    //         area += 1;
-    // }
 
     useCDF_ = true;
 
