@@ -5,7 +5,7 @@ The main code base is in C++ but this project is meant to be used through its py
 
 Dependencies
 ------------
-To build MLSandbox the following dependencies are needed: gsl, boost, numpy and `BoostNumpy <https://github.com/martwo/BoostNumpy>`_
+To build MLSandbox the following dependencies are needed: gsl, boost, numpy and BoostNumpy (https://github.com/martwo/BoostNumpy)
 
 Building MLSandbox
 ------------------
