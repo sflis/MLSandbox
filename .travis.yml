@@ -31,15 +31,20 @@ addons:
       - libboost-all-dev
       - python-numpy
 before_install:
-- sudo apt-get update -qq
-- sudo apt-get install -qq libgsl0-dev 
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libgsl0-dev 
 
+install:
+  - wget https://github.com/martwo/BoostNumpy/archive/master.zip
+  - tar -xzvf BoostNumpy-master.zip
+  - pushd BoostNumpy-master && ./configure --prefix=/usr && make && sudo make install && popd
 # Build your code e.g. by calling make
 script:
   - cd ..
   - mkdir build 
   - cd build
   - cmake $TRAVIS_BUILD_DIR
+  - make 
   #echo 'hello'
 #  - make
 
