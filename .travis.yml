@@ -28,9 +28,12 @@ addons:
       - graphviz
       - gsl-bin
       - cmake
-      - libboost-python-dev
-      - libboost-serialization-dev
+      - libboost-all-dev
       - python-numpy
+before_install:
+- sudo apt-get update -qq
+- sudo apt-get install -qq libgsl-dev
+
 # Build your code e.g. by calling make
 script:
   - cd ..
