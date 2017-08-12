@@ -33,7 +33,10 @@ addons:
       - python-numpy
 # Build your code e.g. by calling make
 script:
-  cmake $TRAVIS_BUILD_DIR
+  - cd ..
+  - mkdir build 
+  - cd build
+  - cmake $TRAVIS_BUILD_DIR
   #echo 'hello'
 #  - make
 
