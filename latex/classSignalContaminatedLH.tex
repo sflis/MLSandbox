@@ -1,0 +1,261 @@
+\hypertarget{classSignalContaminatedLH}{\section{Signal\-Contaminated\-L\-H Class Reference}
+\label{classSignalContaminatedLH}\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}}
+}
+
+
+{\ttfamily \#include $<$Signal\-Contaminated\-L\-H.\-h$>$}
+
+
+
+Inheritance diagram for Signal\-Contaminated\-L\-H\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{classSignalContaminatedLH__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Signal\-Contaminated\-L\-H\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{classSignalContaminatedLH__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39}{Model} \{ \hyperlink{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39a938925ccf594ff61ad6259e1cbad39ad}{None}, 
+\hyperlink{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39acb9f8cfccc9a6e01055b7abbe18aca40}{Poisson}, 
+\hyperlink{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39aaa0cea64560f39edb1f5cdc6fa2c8b27}{Binomial}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSignalContaminatedLH_adcc85279f2683e800839bf9b1d837a53}{Signal\-Contaminated\-L\-H} (const \hyperlink{classDistribution}{Distribution} \&signal, const \hyperlink{classDistribution}{Distribution} \&background, const \hyperlink{classDistribution}{Distribution} \&signal\-Scrambled, const \hyperlink{classDistribution}{Distribution} \&signal\-Sample, const \hyperlink{classDistribution}{Distribution} \&background\-Sample, const \hyperlink{classDistribution}{Distribution} \&signal\-Scrambled\-Sample, double N, double sig\-\_\-prob=1.\-0, double bg\-\_\-prob=1.\-0, \hyperlink{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39}{Signal\-Contaminated\-L\-H\-::\-Model} model=\hyperlink{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39a938925ccf594ff61ad6259e1cbad39ad}{Signal\-Contaminated\-L\-H\-::\-None}, double sig\-\_\-sample\-\_\-prob=1.\-0, double bg\-\_\-sample\-\_\-prob=1.\-0, int seed=1)
+\item 
+double \hyperlink{classSignalContaminatedLH_a30c729fa905cc0d812827f23c71b55cc}{Evaluate\-L\-L\-H} (double xi) const 
+\item 
+\hyperlink{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39}{Model} \hyperlink{classSignalContaminatedLH_a07dbde7a99bf6b3063a933f2a53f48a1}{Get\-Model} ()
+\item 
+const \hyperlink{classDistribution}{Distribution} \& \hyperlink{classSignalContaminatedLH_a4172a3ca2e8261150d5008886342529f}{Get\-Signal\-P\-D\-F} () const 
+\item 
+const \hyperlink{classDistribution}{Distribution} \& \hyperlink{classSignalContaminatedLH_a6c6990779ac1e9b26eb1468944109760}{Get\-Bg\-P\-D\-F} () const 
+\item 
+void \hyperlink{classSignalContaminatedLH_a04fcf69547f8b0c5bc3ee2cb89671c06}{Sample\-Events} (double xi)
+\begin{DoxyCompactList}\small\item\em Creates internally a new sample with the specified parameter. \end{DoxyCompactList}\item 
+uint64\-\_\-t \hyperlink{classSignalContaminatedLH_abc5929f588d9e1944010e303ce66abf7}{Get\-N\-Events} ()
+\item 
+double \hyperlink{classSignalContaminatedLH_a9e201ec323c7d849151bde4b0d0ac82a}{Xi2\-W} (double xi) const 
+\item 
+double \hyperlink{classSignalContaminatedLH_ad39354a351421539c3e7fd136398b7b5}{W2\-Xi} (double w) const 
+\item 
+double \hyperlink{classSignalContaminatedLH_a72c6b5f9c339214cbd8e3fe41c9bad5d}{W2\-Mu} (double w) const 
+\item 
+double \hyperlink{classSignalContaminatedLH_a7fa94978c4da27077a38818e3baf0e19}{Xi2\-Mu} (double xi) const 
+\item 
+double \hyperlink{classSignalContaminatedLH_a151bf309a577282e09dbb75566c1467e}{Mu2\-Xi} (double mu) const 
+\item 
+void \hyperlink{classSignalContaminatedLH_ad991e7649ed72c411830cb0c7788dff4}{Minimizer\-Conditions} (\hyperlink{classMinimizer}{Minimizer} \&min)
+\item 
+\hyperlink{Likelihood_8h_a97d92c5c141f28319e7e8198defc9084}{likelihood\-Callback} \hyperlink{classSignalContaminatedLH_a9c67422f6e79df2352bd158be9949feb}{Call\-Back\-Fcn} ()
+\begin{DoxyCompactList}\small\item\em Return the callback function of the likelihood for the minimizer. \end{DoxyCompactList}\item 
+\hyperlink{classSignalContaminatedLH}{Signal\-Contaminated\-L\-H} $\ast$ \hyperlink{classSignalContaminatedLH_ae7c8264a79340a12dd4a83d83f0b9d2f}{Clone} (int seed) const 
+\item 
+double \hyperlink{classSignalContaminatedLH_a579d86a266c6ecb44cff26e47d141a9e}{Max\-Xi\-Bound} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Model@{Model}}
+\index{Model@{Model}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Model}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Signal\-Contaminated\-L\-H\-::\-Model}}}\label{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{None@{None}!Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}}\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!None@{None}}\item[{\em 
+\hypertarget{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39a938925ccf594ff61ad6259e1cbad39ad}{None}\label{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39a938925ccf594ff61ad6259e1cbad39ad}
+}]\index{Poisson@{Poisson}!Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}}\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Poisson@{Poisson}}\item[{\em 
+\hypertarget{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39acb9f8cfccc9a6e01055b7abbe18aca40}{Poisson}\label{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39acb9f8cfccc9a6e01055b7abbe18aca40}
+}]\index{Binomial@{Binomial}!Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}}\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Binomial@{Binomial}}\item[{\em 
+\hypertarget{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39aaa0cea64560f39edb1f5cdc6fa2c8b27}{Binomial}\label{classSignalContaminatedLH_a9d4a8fe949ffa894ce3dc79a79257c39aaa0cea64560f39edb1f5cdc6fa2c8b27}
+}]\end{description}
+\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classSignalContaminatedLH_adcc85279f2683e800839bf9b1d837a53}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}}
+\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Signal\-Contaminated\-L\-H}]{\setlength{\rightskip}{0pt plus 5cm}Signal\-Contaminated\-L\-H\-::\-Signal\-Contaminated\-L\-H (
+\begin{DoxyParamCaption}
+\item[{const {\bf Distribution} \&}]{signal, }
+\item[{const {\bf Distribution} \&}]{background, }
+\item[{const {\bf Distribution} \&}]{signal\-Scrambled, }
+\item[{const {\bf Distribution} \&}]{signal\-Sample, }
+\item[{const {\bf Distribution} \&}]{background\-Sample, }
+\item[{const {\bf Distribution} \&}]{signal\-Scrambled\-Sample, }
+\item[{double}]{N, }
+\item[{double}]{sig\-\_\-prob = {\ttfamily 1.0}, }
+\item[{double}]{bg\-\_\-prob = {\ttfamily 1.0}, }
+\item[{{\bf Signal\-Contaminated\-L\-H\-::\-Model}}]{model = {\ttfamily {\bf Signal\-Contaminated\-L\-H\-::\-None}}, }
+\item[{double}]{sig\-\_\-sample\-\_\-prob = {\ttfamily 1.0}, }
+\item[{double}]{bg\-\_\-sample\-\_\-prob = {\ttfamily 1.0}, }
+\item[{int}]{seed = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}}\label{classSignalContaminatedLH_adcc85279f2683e800839bf9b1d837a53}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classSignalContaminatedLH_a9c67422f6e79df2352bd158be9949feb}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Call\-Back\-Fcn@{Call\-Back\-Fcn}}
+\index{Call\-Back\-Fcn@{Call\-Back\-Fcn}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Call\-Back\-Fcn}]{\setlength{\rightskip}{0pt plus 5cm}{\bf likelihood\-Callback} Signal\-Contaminated\-L\-H\-::\-Call\-Back\-Fcn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classSignalContaminatedLH_a9c67422f6e79df2352bd158be9949feb}
+
+
+Return the callback function of the likelihood for the minimizer. 
+
+
+
+Implements \hyperlink{classBinnedLikelihood_aed7e05d58a36f515afc8e34fe8550b31}{Binned\-Likelihood}.
+
+\hypertarget{classSignalContaminatedLH_ae7c8264a79340a12dd4a83d83f0b9d2f}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Clone@{Clone}}
+\index{Clone@{Clone}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Clone}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Signal\-Contaminated\-L\-H}$\ast$ Signal\-Contaminated\-L\-H\-::\-Clone (
+\begin{DoxyParamCaption}
+\item[{int}]{seed}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classSignalContaminatedLH_ae7c8264a79340a12dd4a83d83f0b9d2f}
+Should create a copy of the original \hyperlink{classLikelihood}{Likelihood} which is thread safe. 
+
+Implements \hyperlink{classLikelihood_a938b362a171c46f447cb364effc83bcf}{Likelihood}.
+
+\hypertarget{classSignalContaminatedLH_a30c729fa905cc0d812827f23c71b55cc}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}}
+\index{Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Evaluate\-L\-L\-H}]{\setlength{\rightskip}{0pt plus 5cm}double Signal\-Contaminated\-L\-H\-::\-Evaluate\-L\-L\-H (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classSignalContaminatedLH_a30c729fa905cc0d812827f23c71b55cc}
+Evaluates the log likelihood sum 
+\begin{DoxyParams}{Parameters}
+{\em xi} & the signal fraction for which the likelihood should be evaulated. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classBinnedLikelihood_a2084a64cd8b5d6bf8055538a0f633785}{Binned\-Likelihood}.
+
+\hypertarget{classSignalContaminatedLH_a6c6990779ac1e9b26eb1468944109760}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Get\-Bg\-P\-D\-F@{Get\-Bg\-P\-D\-F}}
+\index{Get\-Bg\-P\-D\-F@{Get\-Bg\-P\-D\-F}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Get\-Bg\-P\-D\-F}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Distribution}\& Signal\-Contaminated\-L\-H\-::\-Get\-Bg\-P\-D\-F (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSignalContaminatedLH_a6c6990779ac1e9b26eb1468944109760}
+\hypertarget{classSignalContaminatedLH_a07dbde7a99bf6b3063a933f2a53f48a1}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Get\-Model@{Get\-Model}}
+\index{Get\-Model@{Get\-Model}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Get\-Model}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Model} Signal\-Contaminated\-L\-H\-::\-Get\-Model (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSignalContaminatedLH_a07dbde7a99bf6b3063a933f2a53f48a1}
+\hypertarget{classSignalContaminatedLH_abc5929f588d9e1944010e303ce66abf7}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Get\-N\-Events@{Get\-N\-Events}}
+\index{Get\-N\-Events@{Get\-N\-Events}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Get\-N\-Events}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Signal\-Contaminated\-L\-H\-::\-Get\-N\-Events (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSignalContaminatedLH_abc5929f588d9e1944010e303ce66abf7}
+\hypertarget{classSignalContaminatedLH_a4172a3ca2e8261150d5008886342529f}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Get\-Signal\-P\-D\-F@{Get\-Signal\-P\-D\-F}}
+\index{Get\-Signal\-P\-D\-F@{Get\-Signal\-P\-D\-F}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Get\-Signal\-P\-D\-F}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Distribution}\& Signal\-Contaminated\-L\-H\-::\-Get\-Signal\-P\-D\-F (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSignalContaminatedLH_a4172a3ca2e8261150d5008886342529f}
+\hypertarget{classSignalContaminatedLH_a579d86a266c6ecb44cff26e47d141a9e}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Max\-Xi\-Bound@{Max\-Xi\-Bound}}
+\index{Max\-Xi\-Bound@{Max\-Xi\-Bound}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Max\-Xi\-Bound}]{\setlength{\rightskip}{0pt plus 5cm}double Signal\-Contaminated\-L\-H\-::\-Max\-Xi\-Bound (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classSignalContaminatedLH_a579d86a266c6ecb44cff26e47d141a9e}
+
+
+Reimplemented from \hyperlink{classBinnedLikelihood_ab6144b4d092744dc9d5ee58a491bf77d}{Binned\-Likelihood}.
+
+\hypertarget{classSignalContaminatedLH_ad991e7649ed72c411830cb0c7788dff4}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Minimizer\-Conditions@{Minimizer\-Conditions}}
+\index{Minimizer\-Conditions@{Minimizer\-Conditions}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Minimizer\-Conditions}]{\setlength{\rightskip}{0pt plus 5cm}void Signal\-Contaminated\-L\-H\-::\-Minimizer\-Conditions (
+\begin{DoxyParamCaption}
+\item[{{\bf Minimizer} \&}]{min}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classSignalContaminatedLH_ad991e7649ed72c411830cb0c7788dff4}
+
+
+Reimplemented from \hyperlink{classLikelihood_ae43d17adaa0b34b9da4948e262b8d898}{Likelihood}.
+
+\hypertarget{classSignalContaminatedLH_a151bf309a577282e09dbb75566c1467e}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Mu2\-Xi@{Mu2\-Xi}}
+\index{Mu2\-Xi@{Mu2\-Xi}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Mu2\-Xi}]{\setlength{\rightskip}{0pt plus 5cm}double Signal\-Contaminated\-L\-H\-::\-Mu2\-Xi (
+\begin{DoxyParamCaption}
+\item[{double}]{mu}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSignalContaminatedLH_a151bf309a577282e09dbb75566c1467e}
+\hypertarget{classSignalContaminatedLH_a04fcf69547f8b0c5bc3ee2cb89671c06}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Sample\-Events@{Sample\-Events}}
+\index{Sample\-Events@{Sample\-Events}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Sample\-Events}]{\setlength{\rightskip}{0pt plus 5cm}void Signal\-Contaminated\-L\-H\-::\-Sample\-Events (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classSignalContaminatedLH_a04fcf69547f8b0c5bc3ee2cb89671c06}
+
+
+Creates internally a new sample with the specified parameter. 
+
+
+
+Implements \hyperlink{classBinnedLikelihood_a0793b8109912c6e509470a14a58d2a2a}{Binned\-Likelihood}.
+
+\hypertarget{classSignalContaminatedLH_a72c6b5f9c339214cbd8e3fe41c9bad5d}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!W2\-Mu@{W2\-Mu}}
+\index{W2\-Mu@{W2\-Mu}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{W2\-Mu}]{\setlength{\rightskip}{0pt plus 5cm}double Signal\-Contaminated\-L\-H\-::\-W2\-Mu (
+\begin{DoxyParamCaption}
+\item[{double}]{w}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSignalContaminatedLH_a72c6b5f9c339214cbd8e3fe41c9bad5d}
+\hypertarget{classSignalContaminatedLH_ad39354a351421539c3e7fd136398b7b5}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!W2\-Xi@{W2\-Xi}}
+\index{W2\-Xi@{W2\-Xi}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{W2\-Xi}]{\setlength{\rightskip}{0pt plus 5cm}double Signal\-Contaminated\-L\-H\-::\-W2\-Xi (
+\begin{DoxyParamCaption}
+\item[{double}]{w}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSignalContaminatedLH_ad39354a351421539c3e7fd136398b7b5}
+\hypertarget{classSignalContaminatedLH_a7fa94978c4da27077a38818e3baf0e19}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Xi2\-Mu@{Xi2\-Mu}}
+\index{Xi2\-Mu@{Xi2\-Mu}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Xi2\-Mu}]{\setlength{\rightskip}{0pt plus 5cm}double Signal\-Contaminated\-L\-H\-::\-Xi2\-Mu (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSignalContaminatedLH_a7fa94978c4da27077a38818e3baf0e19}
+\hypertarget{classSignalContaminatedLH_a9e201ec323c7d849151bde4b0d0ac82a}{\index{Signal\-Contaminated\-L\-H@{Signal\-Contaminated\-L\-H}!Xi2\-W@{Xi2\-W}}
+\index{Xi2\-W@{Xi2\-W}!SignalContaminatedLH@{Signal\-Contaminated\-L\-H}}
+\subsubsection[{Xi2\-W}]{\setlength{\rightskip}{0pt plus 5cm}double Signal\-Contaminated\-L\-H\-::\-Xi2\-W (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSignalContaminatedLH_a9e201ec323c7d849151bde4b0d0ac82a}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{SignalContaminatedLH_8h}{Signal\-Contaminated\-L\-H.\-h}\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\hyperlink{SignalContaminatedLH_8cxx}{Signal\-Contaminated\-L\-H.\-cxx}\end{DoxyCompactItemize}

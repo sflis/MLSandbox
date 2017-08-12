@@ -1,0 +1,65 @@
+\hypertarget{pybindings_2Likelihood_8cxx}{\section{/home/travis/build/sflis/\-M\-L\-Sandbox/private/pybindings/\-Likelihood.cxx File Reference}
+\label{pybindings_2Likelihood_8cxx}\index{/home/travis/build/sflis/\-M\-L\-Sandbox/private/pybindings/\-Likelihood.\-cxx@{/home/travis/build/sflis/\-M\-L\-Sandbox/private/pybindings/\-Likelihood.\-cxx}}
+}
+{\ttfamily \#include \char`\"{}M\-L\-Sandbox/\-Likelihood.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}M\-L\-Sandbox/\-Distribution.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}M\-L\-Sandbox/\-Combined\-Likelihood.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}M\-L\-Sandbox/\-Signal\-Contaminated\-L\-H.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}M\-L\-Sandbox/\-Likelihood\-Collection.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}bindingutils.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$boost/python.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/tuple.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/module.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/def.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/class.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/dict.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/numpy.\-hpp$>$}\\*
+{\ttfamily \#include $<$numpy/arrayobject.\-h$>$}\\*
+Include dependency graph for Likelihood.\-cxx\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pybindings_2Likelihood_8cxx__incl}
+\end{center}
+\end{figure}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespacemlsandbox}{mlsandbox}
+\item 
+\hyperlink{namespacemlsandbox_1_1python}{mlsandbox\-::python}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{pybindings_2Likelihood_8cxx_ab6e6ee86736f9ebb56e74ae21bf3ff8a}{N\-P\-Y\-\_\-\-N\-O\-\_\-\-D\-E\-P\-R\-E\-C\-A\-T\-E\-D\-\_\-\-A\-P\-I}~N\-P\-Y\-\_\-1\-\_\-7\-\_\-\-A\-P\-I\-\_\-\-V\-E\-R\-S\-I\-O\-N
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bn\-::ndarray \hyperlink{namespacemlsandbox_1_1python_a34e7315520ddd52ff2425944ff0b7ceb}{mlsandbox\-::python\-::get\-\_\-events} (\hyperlink{classBinnedLikelihood}{Binned\-Likelihood} \&self)
+\item 
+void \hyperlink{namespacemlsandbox_1_1python_a2b76c3fcdec9f6639cf79a73939c63a2}{mlsandbox\-::python\-::set\-\_\-events} (\hyperlink{classBinnedLikelihood}{Binned\-Likelihood} \&self, bp\-::object obj)
+\item 
+boost\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{classCombinedLikelihood}{Combined\-Likelihood} $>$ \hyperlink{namespacemlsandbox_1_1python_a1e62411a6ea1b3d42e90559d5537ceb6}{mlsandbox\-::python\-::init\-Wrapper\-Combined\-Likelihood} (bp\-::object const \&l\-\_\-list, bp\-::object const \&w\-\_\-list)
+\item 
+void \hyperlink{pybindings_2Likelihood_8cxx_a4dc0bafec23bc1ae4727f0921ddb34c7}{register\-\_\-\-Likelihood} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{pybindings_2Likelihood_8cxx_ab6e6ee86736f9ebb56e74ae21bf3ff8a}{\index{pybindings/\-Likelihood.\-cxx@{pybindings/\-Likelihood.\-cxx}!N\-P\-Y\-\_\-\-N\-O\-\_\-\-D\-E\-P\-R\-E\-C\-A\-T\-E\-D\-\_\-\-A\-P\-I@{N\-P\-Y\-\_\-\-N\-O\-\_\-\-D\-E\-P\-R\-E\-C\-A\-T\-E\-D\-\_\-\-A\-P\-I}}
+\index{N\-P\-Y\-\_\-\-N\-O\-\_\-\-D\-E\-P\-R\-E\-C\-A\-T\-E\-D\-\_\-\-A\-P\-I@{N\-P\-Y\-\_\-\-N\-O\-\_\-\-D\-E\-P\-R\-E\-C\-A\-T\-E\-D\-\_\-\-A\-P\-I}!pybindings/Likelihood.cxx@{pybindings/\-Likelihood.\-cxx}}
+\subsubsection[{N\-P\-Y\-\_\-\-N\-O\-\_\-\-D\-E\-P\-R\-E\-C\-A\-T\-E\-D\-\_\-\-A\-P\-I}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-P\-Y\-\_\-\-N\-O\-\_\-\-D\-E\-P\-R\-E\-C\-A\-T\-E\-D\-\_\-\-A\-P\-I~N\-P\-Y\-\_\-1\-\_\-7\-\_\-\-A\-P\-I\-\_\-\-V\-E\-R\-S\-I\-O\-N}}\label{pybindings_2Likelihood_8cxx_ab6e6ee86736f9ebb56e74ae21bf3ff8a}
+
+
+\subsection{Function Documentation}
+\hypertarget{pybindings_2Likelihood_8cxx_a4dc0bafec23bc1ae4727f0921ddb34c7}{\index{pybindings/\-Likelihood.\-cxx@{pybindings/\-Likelihood.\-cxx}!register\-\_\-\-Likelihood@{register\-\_\-\-Likelihood}}
+\index{register\-\_\-\-Likelihood@{register\-\_\-\-Likelihood}!pybindings/Likelihood.cxx@{pybindings/\-Likelihood.\-cxx}}
+\subsubsection[{register\-\_\-\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}void register\-\_\-\-Likelihood (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{pybindings_2Likelihood_8cxx_a4dc0bafec23bc1ae4727f0921ddb34c7}

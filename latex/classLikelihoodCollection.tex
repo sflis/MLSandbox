@@ -1,0 +1,331 @@
+\hypertarget{classLikelihoodCollection}{\section{Likelihood\-Collection Class Reference}
+\label{classLikelihoodCollection}\index{Likelihood\-Collection@{Likelihood\-Collection}}
+}
+
+
+{\ttfamily \#include $<$Likelihood\-Collection.\-h$>$}
+
+
+
+Inheritance diagram for Likelihood\-Collection\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classLikelihoodCollection__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Likelihood\-Collection\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classLikelihoodCollection__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76}{Model} \{ \hyperlink{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76a1f3fa362dbbf13c3fa8c732c6125b040}{None}, 
+\hyperlink{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76afdc2c0395310f3e3a033a8b4239c5927}{Poisson}, 
+\hyperlink{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76aea62206336d47863916f4eaa6dc99662}{Binomial}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classLikelihoodCollection_acde8a81497f959a7b6af883490da0bd7}{Likelihood\-Collection} (const \hyperlink{classDistribution}{Distribution} \&signal, const \hyperlink{classDistribution}{Distribution} \&background, const \hyperlink{classDistribution}{Distribution} \&signal\-Scrambled, const \hyperlink{classDistribution}{Distribution} \&signal\-Sample, const \hyperlink{classDistribution}{Distribution} \&background\-Sample, const \hyperlink{classDistribution}{Distribution} \&signal\-Scrambled\-Sample, double N, double sig\-\_\-prob=1.\-0, double bg\-\_\-prob=1.\-0, \hyperlink{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76}{Likelihood\-Collection\-::\-Model} model=\hyperlink{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76a1f3fa362dbbf13c3fa8c732c6125b040}{Likelihood\-Collection\-::\-None}, double sig\-\_\-sample\-\_\-prob=1.\-0, double bg\-\_\-sample\-\_\-prob=1.\-0, int seed=1)
+\item 
+double \hyperlink{classLikelihoodCollection_a942b79738d2be74a358e138ff5284f53}{Evaluate\-L\-L\-H} (double xi) const 
+\item 
+double \hyperlink{classLikelihoodCollection_a72f0fc31317f33ad79cba87753ce736e}{No\-Sig\-Sub\-Corr} (double xi) const 
+\item 
+double \hyperlink{classLikelihoodCollection_a18f2600065b936215bea7c4eb223b548}{Standard\-Sig\-Sub} (double xi) const 
+\item 
+\hyperlink{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76}{Model} \hyperlink{classLikelihoodCollection_ad59da7f036985775d8c81caeaa8e461b}{Get\-Model} ()
+\item 
+const \hyperlink{classDistribution}{Distribution} \& \hyperlink{classLikelihoodCollection_acd787cbdd7ca9dbdc09bb2ec1972e29d}{Get\-Signal\-P\-D\-F} () const 
+\item 
+const \hyperlink{classDistribution}{Distribution} \& \hyperlink{classLikelihoodCollection_a1421a10716bb315e62c14ae325ed8311}{Get\-Bg\-P\-D\-F} () const 
+\item 
+void \hyperlink{classLikelihoodCollection_a38af4d60e248c8d32d0b05ce623c031b}{Sample\-Events} (double xi)
+\begin{DoxyCompactList}\small\item\em Creates internally a new sample with the specified parameter. \end{DoxyCompactList}\item 
+uint64\-\_\-t \hyperlink{classLikelihoodCollection_ad6a6c6a4549d33052f1a0256c1bee059}{Get\-N\-Events} ()
+\item 
+double \hyperlink{classLikelihoodCollection_a794f0baef8300c86905d22e92f9a157e}{Xi2\-W} (double xi) const 
+\item 
+double \hyperlink{classLikelihoodCollection_a9a1ca7a817d25f9e01d65c4015111ebe}{W2\-Xi} (double w) const 
+\item 
+double \hyperlink{classLikelihoodCollection_a72719241eded381680815ebdda1e6502}{W2\-Mu} (double w) const 
+\item 
+double \hyperlink{classLikelihoodCollection_ac7dcd857dcbbe516e9b83a1405422cfb}{Xi2\-Mu} (double xi) const 
+\item 
+double \hyperlink{classLikelihoodCollection_ad4009a5ffe924948b39d760c9f31f5c3}{Mu2\-Xi} (double mu) const 
+\item 
+void \hyperlink{classLikelihoodCollection_ae1d445fbfc327da63d469d67891dc7e3}{Minimizer\-Conditions} (\hyperlink{classMinimizer}{Minimizer} \&min)
+\item 
+\hyperlink{Likelihood_8h_a97d92c5c141f28319e7e8198defc9084}{likelihood\-Callback} \hyperlink{classLikelihoodCollection_af4c889ced5fc4de6be4ffac2898250b5}{Call\-Back\-Fcn} ()
+\begin{DoxyCompactList}\small\item\em Return the callback function of the likelihood for the minimizer. \end{DoxyCompactList}\item 
+\hyperlink{classLikelihoodCollection}{Likelihood\-Collection} $\ast$ \hyperlink{classLikelihoodCollection_ae3d80984323771199c511db7016608cf}{Clone} (int seed) const 
+\item 
+double \hyperlink{classLikelihoodCollection_adc81d79fce77d226853f4cfcb33fb7a3}{Max\-Xi\-Bound} ()
+\item 
+void \hyperlink{classLikelihoodCollection_ade325e0d8eb68213933bf19ea83f8276}{Set\-L\-L\-H\-Function2} (double($\ast$fcpt)(const \hyperlink{classLikelihoodCollection}{Likelihood\-Collection} \&, double))
+\item 
+void \hyperlink{classLikelihoodCollection_a634e541adaa8965ad06108a6b5cfd4f3}{Set\-L\-L\-H\-Function} (std\-::string fc\-\_\-name)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \hyperlink{classLikelihoodCollection_ae13aea60a6c3e4b44ac0d45f5a93a31f}{no\-Sig\-Sub\-Corr} (const \hyperlink{classLikelihoodCollection}{Likelihood\-Collection} \&likelihood, double xi)
+\item 
+static double \hyperlink{classLikelihoodCollection_a1db426782d8da3072c54e9670f81880f}{standard\-Sig\-Sub} (const \hyperlink{classLikelihoodCollection}{Likelihood\-Collection} \&likelihood, double xi)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double($\ast$ \hyperlink{classLikelihoodCollection_ac3149697f9181cac9b54085a4629a26d}{current\-\_\-llh\-\_\-} )(const \hyperlink{classLikelihoodCollection}{Likelihood\-Collection} \&, double)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Model@{Model}}
+\index{Model@{Model}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Model}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Likelihood\-Collection\-::\-Model}}}\label{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{None@{None}!Likelihood\-Collection@{Likelihood\-Collection}}\index{Likelihood\-Collection@{Likelihood\-Collection}!None@{None}}\item[{\em 
+\hypertarget{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76a1f3fa362dbbf13c3fa8c732c6125b040}{None}\label{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76a1f3fa362dbbf13c3fa8c732c6125b040}
+}]\index{Poisson@{Poisson}!Likelihood\-Collection@{Likelihood\-Collection}}\index{Likelihood\-Collection@{Likelihood\-Collection}!Poisson@{Poisson}}\item[{\em 
+\hypertarget{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76afdc2c0395310f3e3a033a8b4239c5927}{Poisson}\label{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76afdc2c0395310f3e3a033a8b4239c5927}
+}]\index{Binomial@{Binomial}!Likelihood\-Collection@{Likelihood\-Collection}}\index{Likelihood\-Collection@{Likelihood\-Collection}!Binomial@{Binomial}}\item[{\em 
+\hypertarget{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76aea62206336d47863916f4eaa6dc99662}{Binomial}\label{classLikelihoodCollection_a3d71df2ed0bdff414ae5fedb30f7cc76aea62206336d47863916f4eaa6dc99662}
+}]\end{description}
+\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classLikelihoodCollection_acde8a81497f959a7b6af883490da0bd7}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Likelihood\-Collection@{Likelihood\-Collection}}
+\index{Likelihood\-Collection@{Likelihood\-Collection}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Likelihood\-Collection}]{\setlength{\rightskip}{0pt plus 5cm}Likelihood\-Collection\-::\-Likelihood\-Collection (
+\begin{DoxyParamCaption}
+\item[{const {\bf Distribution} \&}]{signal, }
+\item[{const {\bf Distribution} \&}]{background, }
+\item[{const {\bf Distribution} \&}]{signal\-Scrambled, }
+\item[{const {\bf Distribution} \&}]{signal\-Sample, }
+\item[{const {\bf Distribution} \&}]{background\-Sample, }
+\item[{const {\bf Distribution} \&}]{signal\-Scrambled\-Sample, }
+\item[{double}]{N, }
+\item[{double}]{sig\-\_\-prob = {\ttfamily 1.0}, }
+\item[{double}]{bg\-\_\-prob = {\ttfamily 1.0}, }
+\item[{{\bf Likelihood\-Collection\-::\-Model}}]{model = {\ttfamily {\bf Likelihood\-Collection\-::\-None}}, }
+\item[{double}]{sig\-\_\-sample\-\_\-prob = {\ttfamily 1.0}, }
+\item[{double}]{bg\-\_\-sample\-\_\-prob = {\ttfamily 1.0}, }
+\item[{int}]{seed = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}}\label{classLikelihoodCollection_acde8a81497f959a7b6af883490da0bd7}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classLikelihoodCollection_af4c889ced5fc4de6be4ffac2898250b5}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Call\-Back\-Fcn@{Call\-Back\-Fcn}}
+\index{Call\-Back\-Fcn@{Call\-Back\-Fcn}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Call\-Back\-Fcn}]{\setlength{\rightskip}{0pt plus 5cm}{\bf likelihood\-Callback} Likelihood\-Collection\-::\-Call\-Back\-Fcn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classLikelihoodCollection_af4c889ced5fc4de6be4ffac2898250b5}
+
+
+Return the callback function of the likelihood for the minimizer. 
+
+
+
+Implements \hyperlink{classBinnedLikelihood_aed7e05d58a36f515afc8e34fe8550b31}{Binned\-Likelihood}.
+
+\hypertarget{classLikelihoodCollection_ae3d80984323771199c511db7016608cf}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Clone@{Clone}}
+\index{Clone@{Clone}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Clone}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Likelihood\-Collection}$\ast$ Likelihood\-Collection\-::\-Clone (
+\begin{DoxyParamCaption}
+\item[{int}]{seed}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classLikelihoodCollection_ae3d80984323771199c511db7016608cf}
+Should create a copy of the original \hyperlink{classLikelihood}{Likelihood} which is thread safe. 
+
+Implements \hyperlink{classLikelihood_a938b362a171c46f447cb364effc83bcf}{Likelihood}.
+
+\hypertarget{classLikelihoodCollection_a942b79738d2be74a358e138ff5284f53}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}}
+\index{Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Evaluate\-L\-L\-H}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::\-Evaluate\-L\-L\-H (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classLikelihoodCollection_a942b79738d2be74a358e138ff5284f53}
+Evaluates the log likelihood sum 
+\begin{DoxyParams}{Parameters}
+{\em xi} & the signal fraction for which the likelihood should be evaulated. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classBinnedLikelihood_a2084a64cd8b5d6bf8055538a0f633785}{Binned\-Likelihood}.
+
+\hypertarget{classLikelihoodCollection_a1421a10716bb315e62c14ae325ed8311}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Get\-Bg\-P\-D\-F@{Get\-Bg\-P\-D\-F}}
+\index{Get\-Bg\-P\-D\-F@{Get\-Bg\-P\-D\-F}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Get\-Bg\-P\-D\-F}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Distribution}\& Likelihood\-Collection\-::\-Get\-Bg\-P\-D\-F (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_a1421a10716bb315e62c14ae325ed8311}
+\hypertarget{classLikelihoodCollection_ad59da7f036985775d8c81caeaa8e461b}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Get\-Model@{Get\-Model}}
+\index{Get\-Model@{Get\-Model}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Get\-Model}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Model} Likelihood\-Collection\-::\-Get\-Model (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_ad59da7f036985775d8c81caeaa8e461b}
+\hypertarget{classLikelihoodCollection_ad6a6c6a4549d33052f1a0256c1bee059}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Get\-N\-Events@{Get\-N\-Events}}
+\index{Get\-N\-Events@{Get\-N\-Events}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Get\-N\-Events}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Likelihood\-Collection\-::\-Get\-N\-Events (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_ad6a6c6a4549d33052f1a0256c1bee059}
+\hypertarget{classLikelihoodCollection_acd787cbdd7ca9dbdc09bb2ec1972e29d}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Get\-Signal\-P\-D\-F@{Get\-Signal\-P\-D\-F}}
+\index{Get\-Signal\-P\-D\-F@{Get\-Signal\-P\-D\-F}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Get\-Signal\-P\-D\-F}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Distribution}\& Likelihood\-Collection\-::\-Get\-Signal\-P\-D\-F (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_acd787cbdd7ca9dbdc09bb2ec1972e29d}
+\hypertarget{classLikelihoodCollection_adc81d79fce77d226853f4cfcb33fb7a3}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Max\-Xi\-Bound@{Max\-Xi\-Bound}}
+\index{Max\-Xi\-Bound@{Max\-Xi\-Bound}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Max\-Xi\-Bound}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::\-Max\-Xi\-Bound (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classLikelihoodCollection_adc81d79fce77d226853f4cfcb33fb7a3}
+
+
+Reimplemented from \hyperlink{classBinnedLikelihood_ab6144b4d092744dc9d5ee58a491bf77d}{Binned\-Likelihood}.
+
+\hypertarget{classLikelihoodCollection_ae1d445fbfc327da63d469d67891dc7e3}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Minimizer\-Conditions@{Minimizer\-Conditions}}
+\index{Minimizer\-Conditions@{Minimizer\-Conditions}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Minimizer\-Conditions}]{\setlength{\rightskip}{0pt plus 5cm}void Likelihood\-Collection\-::\-Minimizer\-Conditions (
+\begin{DoxyParamCaption}
+\item[{{\bf Minimizer} \&}]{min}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classLikelihoodCollection_ae1d445fbfc327da63d469d67891dc7e3}
+
+
+Reimplemented from \hyperlink{classLikelihood_ae43d17adaa0b34b9da4948e262b8d898}{Likelihood}.
+
+\hypertarget{classLikelihoodCollection_ad4009a5ffe924948b39d760c9f31f5c3}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Mu2\-Xi@{Mu2\-Xi}}
+\index{Mu2\-Xi@{Mu2\-Xi}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Mu2\-Xi}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::\-Mu2\-Xi (
+\begin{DoxyParamCaption}
+\item[{double}]{mu}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_ad4009a5ffe924948b39d760c9f31f5c3}
+\hypertarget{classLikelihoodCollection_a72f0fc31317f33ad79cba87753ce736e}{\index{Likelihood\-Collection@{Likelihood\-Collection}!No\-Sig\-Sub\-Corr@{No\-Sig\-Sub\-Corr}}
+\index{No\-Sig\-Sub\-Corr@{No\-Sig\-Sub\-Corr}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{No\-Sig\-Sub\-Corr}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::\-No\-Sig\-Sub\-Corr (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const}}\label{classLikelihoodCollection_a72f0fc31317f33ad79cba87753ce736e}
+\hypertarget{classLikelihoodCollection_ae13aea60a6c3e4b44ac0d45f5a93a31f}{\index{Likelihood\-Collection@{Likelihood\-Collection}!no\-Sig\-Sub\-Corr@{no\-Sig\-Sub\-Corr}}
+\index{no\-Sig\-Sub\-Corr@{no\-Sig\-Sub\-Corr}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{no\-Sig\-Sub\-Corr}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::no\-Sig\-Sub\-Corr (
+\begin{DoxyParamCaption}
+\item[{const {\bf Likelihood\-Collection} \&}]{likelihood, }
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classLikelihoodCollection_ae13aea60a6c3e4b44ac0d45f5a93a31f}
+\hypertarget{classLikelihoodCollection_a38af4d60e248c8d32d0b05ce623c031b}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Sample\-Events@{Sample\-Events}}
+\index{Sample\-Events@{Sample\-Events}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Sample\-Events}]{\setlength{\rightskip}{0pt plus 5cm}void Likelihood\-Collection\-::\-Sample\-Events (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classLikelihoodCollection_a38af4d60e248c8d32d0b05ce623c031b}
+
+
+Creates internally a new sample with the specified parameter. 
+
+
+
+Implements \hyperlink{classBinnedLikelihood_a0793b8109912c6e509470a14a58d2a2a}{Binned\-Likelihood}.
+
+\hypertarget{classLikelihoodCollection_a634e541adaa8965ad06108a6b5cfd4f3}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Set\-L\-L\-H\-Function@{Set\-L\-L\-H\-Function}}
+\index{Set\-L\-L\-H\-Function@{Set\-L\-L\-H\-Function}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Set\-L\-L\-H\-Function}]{\setlength{\rightskip}{0pt plus 5cm}void Likelihood\-Collection\-::\-Set\-L\-L\-H\-Function (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{fc\-\_\-name}
+\end{DoxyParamCaption}
+)}}\label{classLikelihoodCollection_a634e541adaa8965ad06108a6b5cfd4f3}
+\hypertarget{classLikelihoodCollection_ade325e0d8eb68213933bf19ea83f8276}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Set\-L\-L\-H\-Function2@{Set\-L\-L\-H\-Function2}}
+\index{Set\-L\-L\-H\-Function2@{Set\-L\-L\-H\-Function2}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Set\-L\-L\-H\-Function2}]{\setlength{\rightskip}{0pt plus 5cm}void Likelihood\-Collection\-::\-Set\-L\-L\-H\-Function2 (
+\begin{DoxyParamCaption}
+\item[{double($\ast$)(const {\bf Likelihood\-Collection} \&, double)}]{fcpt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_ade325e0d8eb68213933bf19ea83f8276}
+\hypertarget{classLikelihoodCollection_a18f2600065b936215bea7c4eb223b548}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Standard\-Sig\-Sub@{Standard\-Sig\-Sub}}
+\index{Standard\-Sig\-Sub@{Standard\-Sig\-Sub}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Standard\-Sig\-Sub}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::\-Standard\-Sig\-Sub (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const}}\label{classLikelihoodCollection_a18f2600065b936215bea7c4eb223b548}
+\hypertarget{classLikelihoodCollection_a1db426782d8da3072c54e9670f81880f}{\index{Likelihood\-Collection@{Likelihood\-Collection}!standard\-Sig\-Sub@{standard\-Sig\-Sub}}
+\index{standard\-Sig\-Sub@{standard\-Sig\-Sub}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{standard\-Sig\-Sub}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::standard\-Sig\-Sub (
+\begin{DoxyParamCaption}
+\item[{const {\bf Likelihood\-Collection} \&}]{likelihood, }
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classLikelihoodCollection_a1db426782d8da3072c54e9670f81880f}
+\hypertarget{classLikelihoodCollection_a72719241eded381680815ebdda1e6502}{\index{Likelihood\-Collection@{Likelihood\-Collection}!W2\-Mu@{W2\-Mu}}
+\index{W2\-Mu@{W2\-Mu}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{W2\-Mu}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::\-W2\-Mu (
+\begin{DoxyParamCaption}
+\item[{double}]{w}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_a72719241eded381680815ebdda1e6502}
+\hypertarget{classLikelihoodCollection_a9a1ca7a817d25f9e01d65c4015111ebe}{\index{Likelihood\-Collection@{Likelihood\-Collection}!W2\-Xi@{W2\-Xi}}
+\index{W2\-Xi@{W2\-Xi}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{W2\-Xi}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::\-W2\-Xi (
+\begin{DoxyParamCaption}
+\item[{double}]{w}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_a9a1ca7a817d25f9e01d65c4015111ebe}
+\hypertarget{classLikelihoodCollection_ac7dcd857dcbbe516e9b83a1405422cfb}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Xi2\-Mu@{Xi2\-Mu}}
+\index{Xi2\-Mu@{Xi2\-Mu}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Xi2\-Mu}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::\-Xi2\-Mu (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_ac7dcd857dcbbe516e9b83a1405422cfb}
+\hypertarget{classLikelihoodCollection_a794f0baef8300c86905d22e92f9a157e}{\index{Likelihood\-Collection@{Likelihood\-Collection}!Xi2\-W@{Xi2\-W}}
+\index{Xi2\-W@{Xi2\-W}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{Xi2\-W}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-Collection\-::\-Xi2\-W (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classLikelihoodCollection_a794f0baef8300c86905d22e92f9a157e}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classLikelihoodCollection_ac3149697f9181cac9b54085a4629a26d}{\index{Likelihood\-Collection@{Likelihood\-Collection}!current\-\_\-llh\-\_\-@{current\-\_\-llh\-\_\-}}
+\index{current\-\_\-llh\-\_\-@{current\-\_\-llh\-\_\-}!LikelihoodCollection@{Likelihood\-Collection}}
+\subsubsection[{current\-\_\-llh\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double($\ast$ Likelihood\-Collection\-::current\-\_\-llh\-\_\-)(const {\bf Likelihood\-Collection} \&, double)}}\label{classLikelihoodCollection_ac3149697f9181cac9b54085a4629a26d}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{LikelihoodCollection_8h}{Likelihood\-Collection.\-h}\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\hyperlink{LikelihoodCollection_8cxx}{Likelihood\-Collection.\-cxx}\end{DoxyCompactItemize}

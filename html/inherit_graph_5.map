@@ -1,0 +1,8 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classLikelihood.html" title="A base class (wrapper class) for likelihoods which defines a general interface needed analysis classe..." alt="" coords="5,81,85,108"/>
+<area shape="rect" id="node2" href="$classBinnedLikelihood.html" title="BinnedLikelihood" alt="" coords="143,56,263,83"/>
+<area shape="rect" id="node6" href="$classCombinedLikelihood.html" title="CombinedLikelihood" alt="" coords="133,107,272,133"/>
+<area shape="rect" id="node3" href="$classLikelihoodCollection.html" title="LikelihoodCollection" alt="" coords="329,5,468,32"/>
+<area shape="rect" id="node4" href="$classShapeLikelihood.html" title="A class that provides functions to compute a 1 dimensional Likelihood of the form: ..." alt="" coords="340,56,457,83"/>
+<area shape="rect" id="node5" href="$classSignalContaminatedLH.html" title="SignalContaminatedLH" alt="" coords="321,107,477,133"/>
+</map>

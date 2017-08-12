@@ -1,0 +1,4 @@
+<map id="FeldmanCousinsAnalysis" name="FeldmanCousinsAnalysis">
+<area shape="rect" id="node2" href="$classFCRanks.html" title="A class that holds Feldman Cousins rank distribtions and provides some utilities to interpolate the c..." alt="" coords="5,5,83,32"/>
+<area shape="rect" id="node3" href="$classMinimizer.html" title="A small wrapper class around the GSL minimizer. " alt="" coords="107,5,185,32"/>
+</map>

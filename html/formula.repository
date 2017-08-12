@@ -1,0 +1,2 @@
+\form#0:\[ L(\xi) = \prod^N_{k=1} (\xi f_{sig}(x_k) + (1-\xi) f_{bg}(x_k)) \]
+\form#1:$ \xi = \mu / N $

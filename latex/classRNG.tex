@@ -1,0 +1,107 @@
+\hypertarget{classRNG}{\section{R\-N\-G Class Reference}
+\label{classRNG}\index{R\-N\-G@{R\-N\-G}}
+}
+
+
+A small wrapper class around the G\-S\-L random number generator.  
+
+
+
+
+{\ttfamily \#include $<$R\-N\-G.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classRNG_add68b5f4738198b83f1021a1817fd821}{R\-N\-G} (uint seed)
+\item 
+\hyperlink{classRNG_abe0c541fcfa0b12ef7446eccb166d510}{$\sim$\-R\-N\-G} ()
+\item 
+double \hyperlink{classRNG_a6f369de914cf763da0a0bc8c17affb12}{Uniform} ()
+\item 
+double \hyperlink{classRNG_aa8a14d0a3367ada957ab898ff6974957}{Exp} (double tau)
+\item 
+double \hyperlink{classRNG_a959d86ea22fc5bb2f5ff6ded9881137a}{Poisson} (double nu)
+\item 
+double \hyperlink{classRNG_afe51d6c541a71af3a80c2ecf86d81523}{Gauss} (double mu, double sigma)
+\item 
+double \hyperlink{classRNG_a37fc5d27bda97b756e92565183f48d66}{Binomial} (double p, double N)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint \hyperlink{classRNG_a6b240cba939fb5463c7497153a852320}{seed\-\_\-}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A small wrapper class around the G\-S\-L random number generator. 
+
+class\-: \hyperlink{classRNG}{R\-N\-G} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classRNG_add68b5f4738198b83f1021a1817fd821}{\index{R\-N\-G@{R\-N\-G}!R\-N\-G@{R\-N\-G}}
+\index{R\-N\-G@{R\-N\-G}!RNG@{R\-N\-G}}
+\subsubsection[{R\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}R\-N\-G\-::\-R\-N\-G (
+\begin{DoxyParamCaption}
+\item[{uint}]{seed}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classRNG_add68b5f4738198b83f1021a1817fd821}
+\hypertarget{classRNG_abe0c541fcfa0b12ef7446eccb166d510}{\index{R\-N\-G@{R\-N\-G}!$\sim$\-R\-N\-G@{$\sim$\-R\-N\-G}}
+\index{$\sim$\-R\-N\-G@{$\sim$\-R\-N\-G}!RNG@{R\-N\-G}}
+\subsubsection[{$\sim$\-R\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}R\-N\-G\-::$\sim$\-R\-N\-G (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classRNG_abe0c541fcfa0b12ef7446eccb166d510}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classRNG_a37fc5d27bda97b756e92565183f48d66}{\index{R\-N\-G@{R\-N\-G}!Binomial@{Binomial}}
+\index{Binomial@{Binomial}!RNG@{R\-N\-G}}
+\subsubsection[{Binomial}]{\setlength{\rightskip}{0pt plus 5cm}double R\-N\-G\-::\-Binomial (
+\begin{DoxyParamCaption}
+\item[{double}]{p, }
+\item[{double}]{N}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classRNG_a37fc5d27bda97b756e92565183f48d66}
+\hypertarget{classRNG_aa8a14d0a3367ada957ab898ff6974957}{\index{R\-N\-G@{R\-N\-G}!Exp@{Exp}}
+\index{Exp@{Exp}!RNG@{R\-N\-G}}
+\subsubsection[{Exp}]{\setlength{\rightskip}{0pt plus 5cm}double R\-N\-G\-::\-Exp (
+\begin{DoxyParamCaption}
+\item[{double}]{tau}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classRNG_aa8a14d0a3367ada957ab898ff6974957}
+\hypertarget{classRNG_afe51d6c541a71af3a80c2ecf86d81523}{\index{R\-N\-G@{R\-N\-G}!Gauss@{Gauss}}
+\index{Gauss@{Gauss}!RNG@{R\-N\-G}}
+\subsubsection[{Gauss}]{\setlength{\rightskip}{0pt plus 5cm}double R\-N\-G\-::\-Gauss (
+\begin{DoxyParamCaption}
+\item[{double}]{mu, }
+\item[{double}]{sigma}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classRNG_afe51d6c541a71af3a80c2ecf86d81523}
+\hypertarget{classRNG_a959d86ea22fc5bb2f5ff6ded9881137a}{\index{R\-N\-G@{R\-N\-G}!Poisson@{Poisson}}
+\index{Poisson@{Poisson}!RNG@{R\-N\-G}}
+\subsubsection[{Poisson}]{\setlength{\rightskip}{0pt plus 5cm}double R\-N\-G\-::\-Poisson (
+\begin{DoxyParamCaption}
+\item[{double}]{nu}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classRNG_a959d86ea22fc5bb2f5ff6ded9881137a}
+\hypertarget{classRNG_a6f369de914cf763da0a0bc8c17affb12}{\index{R\-N\-G@{R\-N\-G}!Uniform@{Uniform}}
+\index{Uniform@{Uniform}!RNG@{R\-N\-G}}
+\subsubsection[{Uniform}]{\setlength{\rightskip}{0pt plus 5cm}double R\-N\-G\-::\-Uniform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classRNG_a6f369de914cf763da0a0bc8c17affb12}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classRNG_a6b240cba939fb5463c7497153a852320}{\index{R\-N\-G@{R\-N\-G}!seed\-\_\-@{seed\-\_\-}}
+\index{seed\-\_\-@{seed\-\_\-}!RNG@{R\-N\-G}}
+\subsubsection[{seed\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}uint R\-N\-G\-::seed\-\_\-}}\label{classRNG_a6b240cba939fb5463c7497153a852320}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{RNG_8h}{R\-N\-G.\-h}\end{DoxyCompactItemize}

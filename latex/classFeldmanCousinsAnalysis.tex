@@ -1,0 +1,165 @@
+\hypertarget{classFeldmanCousinsAnalysis}{\section{Feldman\-Cousins\-Analysis Class Reference}
+\label{classFeldmanCousinsAnalysis}\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}}
+}
+
+
+{\ttfamily \#include $<$Feldman\-Cousins.\-h$>$}
+
+
+
+Collaboration diagram for Feldman\-Cousins\-Analysis\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{classFeldmanCousinsAnalysis__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFeldmanCousinsAnalysis_a5b2fbad9a24678ba86f0f5b082a5b726}{Feldman\-Cousins\-Analysis} (boost\-::shared\-\_\-ptr$<$ \hyperlink{classLikelihood}{Likelihood} $>$ llh, double cl)
+\item 
+double \hyperlink{classFeldmanCousinsAnalysis_a090ca9e45d445fed42345d0a71a589bd}{Evaluate\-Tests\-Statistic} (double xi)
+\item 
+void \hyperlink{classFeldmanCousinsAnalysis_a5761bf4e0cd5968add070215988517ca}{Set\-F\-C\-Ranks} (\hyperlink{classFCRanks}{F\-C\-Ranks} const \&ranks)
+\item 
+void \hyperlink{classFeldmanCousinsAnalysis_a0f56a30ad2ec38520aa562fbea7f41cf}{Sample} (double xi)
+\item 
+void \hyperlink{classFeldmanCousinsAnalysis_a2455d8b563e2f243f02c76d61bf10573}{Generate\-Limits\-Ensemble} (double xi, bn\-::ndarray \&up, bn\-::ndarray \&down, uint64\-\_\-t n\-Experiments, double cl=-\/1)
+\item 
+void \hyperlink{classFeldmanCousinsAnalysis_ab6d8e4b65fa29c30e248f5e022c28dde}{Compute\-Limits} (double \&upper, double \&lower)
+\item 
+void \hyperlink{classFeldmanCousinsAnalysis_a0ed46c186508934d827e5fefef53be38}{Compute\-Limits} (double \&upper, double \&lower, bool assume\-Chi2)
+\item 
+void \hyperlink{classFeldmanCousinsAnalysis_a65c0fb42d70bf0a72b36261cde2ac095}{Compute\-Ranks} (uint64\-\_\-t n\-Experiments, double min\-Xi, double max\-Xi, uint64\-\_\-t n\-Steps, uint64\-\_\-t n\-Threads=1)
+\item 
+\hyperlink{classFCRanks}{F\-C\-Ranks} \& \hyperlink{classFeldmanCousinsAnalysis_a369111f301236a55ef19aeb7ac0d9562}{Get\-Ranks} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFCRanks}{F\-C\-Ranks} \hyperlink{classFeldmanCousinsAnalysis_a2a83aefd21bd62772ba9b8ef2a0afe37}{ranks\-\_\-}
+\item 
+\hyperlink{classMinimizer}{Minimizer} \hyperlink{classFeldmanCousinsAnalysis_a4a16f04a45c379c10b12f76714116226}{minimizer\-\_\-}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+class\-: \hyperlink{classFeldmanCousinsAnalysis}{Feldman\-Cousins\-Analysis} is a class which encapsulates the F\-C analysis proceedures. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classFeldmanCousinsAnalysis_a5b2fbad9a24678ba86f0f5b082a5b726}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}}
+\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{Feldman\-Cousins\-Analysis}]{\setlength{\rightskip}{0pt plus 5cm}Feldman\-Cousins\-Analysis\-::\-Feldman\-Cousins\-Analysis (
+\begin{DoxyParamCaption}
+\item[{boost\-::shared\-\_\-ptr$<$ {\bf Likelihood} $>$}]{llh, }
+\item[{double}]{cl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFeldmanCousinsAnalysis_a5b2fbad9a24678ba86f0f5b082a5b726}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classFeldmanCousinsAnalysis_ab6d8e4b65fa29c30e248f5e022c28dde}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!Compute\-Limits@{Compute\-Limits}}
+\index{Compute\-Limits@{Compute\-Limits}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{Compute\-Limits}]{\setlength{\rightskip}{0pt plus 5cm}void Feldman\-Cousins\-Analysis\-::\-Compute\-Limits (
+\begin{DoxyParamCaption}
+\item[{double \&}]{upper, }
+\item[{double \&}]{lower}
+\end{DoxyParamCaption}
+)}}\label{classFeldmanCousinsAnalysis_ab6d8e4b65fa29c30e248f5e022c28dde}
+\hypertarget{classFeldmanCousinsAnalysis_a0ed46c186508934d827e5fefef53be38}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!Compute\-Limits@{Compute\-Limits}}
+\index{Compute\-Limits@{Compute\-Limits}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{Compute\-Limits}]{\setlength{\rightskip}{0pt plus 5cm}void Feldman\-Cousins\-Analysis\-::\-Compute\-Limits (
+\begin{DoxyParamCaption}
+\item[{double \&}]{upper, }
+\item[{double \&}]{lower, }
+\item[{bool}]{assume\-Chi2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFeldmanCousinsAnalysis_a0ed46c186508934d827e5fefef53be38}
+\hypertarget{classFeldmanCousinsAnalysis_a65c0fb42d70bf0a72b36261cde2ac095}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!Compute\-Ranks@{Compute\-Ranks}}
+\index{Compute\-Ranks@{Compute\-Ranks}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{Compute\-Ranks}]{\setlength{\rightskip}{0pt plus 5cm}void Feldman\-Cousins\-Analysis\-::\-Compute\-Ranks (
+\begin{DoxyParamCaption}
+\item[{uint64\-\_\-t}]{n\-Experiments, }
+\item[{double}]{min\-Xi, }
+\item[{double}]{max\-Xi, }
+\item[{uint64\-\_\-t}]{n\-Steps, }
+\item[{uint64\-\_\-t}]{n\-Threads = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}}\label{classFeldmanCousinsAnalysis_a65c0fb42d70bf0a72b36261cde2ac095}
+\hypertarget{classFeldmanCousinsAnalysis_a090ca9e45d445fed42345d0a71a589bd}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!Evaluate\-Tests\-Statistic@{Evaluate\-Tests\-Statistic}}
+\index{Evaluate\-Tests\-Statistic@{Evaluate\-Tests\-Statistic}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{Evaluate\-Tests\-Statistic}]{\setlength{\rightskip}{0pt plus 5cm}double Feldman\-Cousins\-Analysis\-::\-Evaluate\-Tests\-Statistic (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFeldmanCousinsAnalysis_a090ca9e45d445fed42345d0a71a589bd}
+Returns the log value of the F\-C test-\/statistic for a given likelihood parameter 
+\begin{DoxyParams}{Parameters}
+{\em xi} & likelihood parameter for which the test statistic should be calculated \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the log of the F\-C test-\/statistic = log(L(xi)/\-L(xi\-\_\-best)) 
+\end{DoxyReturn}
+\hypertarget{classFeldmanCousinsAnalysis_a2455d8b563e2f243f02c76d61bf10573}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!Generate\-Limits\-Ensemble@{Generate\-Limits\-Ensemble}}
+\index{Generate\-Limits\-Ensemble@{Generate\-Limits\-Ensemble}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{Generate\-Limits\-Ensemble}]{\setlength{\rightskip}{0pt plus 5cm}void Feldman\-Cousins\-Analysis\-::\-Generate\-Limits\-Ensemble (
+\begin{DoxyParamCaption}
+\item[{double}]{xi, }
+\item[{bn\-::ndarray \&}]{up, }
+\item[{bn\-::ndarray \&}]{down, }
+\item[{uint64\-\_\-t}]{n\-Experiments, }
+\item[{double}]{cl = {\ttfamily -\/1}}
+\end{DoxyParamCaption}
+)}}\label{classFeldmanCousinsAnalysis_a2455d8b563e2f243f02c76d61bf10573}
+Generates an ensemble of pseudo experiments to construct upper and lower limits distributions at a given likelihood parameter value xi 
+\begin{DoxyParams}{Parameters}
+{\em xi} & \\
+\hline
+{\em up} & \\
+\hline
+{\em down} & \\
+\hline
+{\em cl} & \\
+\hline
+{\em n\-Experiments} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFeldmanCousinsAnalysis_a369111f301236a55ef19aeb7ac0d9562}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!Get\-Ranks@{Get\-Ranks}}
+\index{Get\-Ranks@{Get\-Ranks}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{Get\-Ranks}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\-C\-Ranks}\& Feldman\-Cousins\-Analysis\-::\-Get\-Ranks (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFeldmanCousinsAnalysis_a369111f301236a55ef19aeb7ac0d9562}
+\hypertarget{classFeldmanCousinsAnalysis_a0f56a30ad2ec38520aa562fbea7f41cf}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!Sample@{Sample}}
+\index{Sample@{Sample}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{Sample}]{\setlength{\rightskip}{0pt plus 5cm}void Feldman\-Cousins\-Analysis\-::\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFeldmanCousinsAnalysis_a0f56a30ad2ec38520aa562fbea7f41cf}
+\hypertarget{classFeldmanCousinsAnalysis_a5761bf4e0cd5968add070215988517ca}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!Set\-F\-C\-Ranks@{Set\-F\-C\-Ranks}}
+\index{Set\-F\-C\-Ranks@{Set\-F\-C\-Ranks}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{Set\-F\-C\-Ranks}]{\setlength{\rightskip}{0pt plus 5cm}void Feldman\-Cousins\-Analysis\-::\-Set\-F\-C\-Ranks (
+\begin{DoxyParamCaption}
+\item[{{\bf F\-C\-Ranks} const \&}]{ranks}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFeldmanCousinsAnalysis_a5761bf4e0cd5968add070215988517ca}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classFeldmanCousinsAnalysis_a4a16f04a45c379c10b12f76714116226}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!minimizer\-\_\-@{minimizer\-\_\-}}
+\index{minimizer\-\_\-@{minimizer\-\_\-}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{minimizer\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Minimizer} Feldman\-Cousins\-Analysis\-::minimizer\-\_\-}}\label{classFeldmanCousinsAnalysis_a4a16f04a45c379c10b12f76714116226}
+\hypertarget{classFeldmanCousinsAnalysis_a2a83aefd21bd62772ba9b8ef2a0afe37}{\index{Feldman\-Cousins\-Analysis@{Feldman\-Cousins\-Analysis}!ranks\-\_\-@{ranks\-\_\-}}
+\index{ranks\-\_\-@{ranks\-\_\-}!FeldmanCousinsAnalysis@{Feldman\-Cousins\-Analysis}}
+\subsubsection[{ranks\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\-C\-Ranks} Feldman\-Cousins\-Analysis\-::ranks\-\_\-}}\label{classFeldmanCousinsAnalysis_a2a83aefd21bd62772ba9b8ef2a0afe37}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{FeldmanCousins_8h}{Feldman\-Cousins.\-h}\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\hyperlink{MLSandbox_2FeldmanCousins_8cxx}{Feldman\-Cousins.\-cxx}\end{DoxyCompactItemize}

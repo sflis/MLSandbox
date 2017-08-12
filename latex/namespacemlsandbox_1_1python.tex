@@ -1,0 +1,71 @@
+\hypertarget{namespacemlsandbox_1_1python}{\section{mlsandbox\-:\-:python Namespace Reference}
+\label{namespacemlsandbox_1_1python}\index{mlsandbox\-::python@{mlsandbox\-::python}}
+}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+boost\-::shared\-\_\-ptr$<$ \hyperlink{classDistribution}{Distribution} $>$ \hyperlink{namespacemlsandbox_1_1python_aa2d95d46d684b8e8a9e6041e6753904e}{distribtion\-\_\-constructor} (bp\-::object distribution, double r\-Min, double r\-Max, uint r\-Seed)
+\item 
+bn\-::ndarray \hyperlink{namespacemlsandbox_1_1python_a00273dd6c5be90398654d4e7c707add4}{sample} (\hyperlink{classDistribution}{Distribution} \&self, int N)
+\item 
+bn\-::ndarray \hyperlink{namespacemlsandbox_1_1python_a2a2c84be9021d9445d30be3d85447f9b}{sample\-I} (\hyperlink{classDistribution}{Distribution} \&self, int N)
+\item 
+bn\-::ndarray \hyperlink{namespacemlsandbox_1_1python_a34e7315520ddd52ff2425944ff0b7ceb}{get\-\_\-events} (\hyperlink{classBinnedLikelihood}{Binned\-Likelihood} \&self)
+\item 
+void \hyperlink{namespacemlsandbox_1_1python_a2b76c3fcdec9f6639cf79a73939c63a2}{set\-\_\-events} (\hyperlink{classBinnedLikelihood}{Binned\-Likelihood} \&self, bp\-::object obj)
+\item 
+boost\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{classCombinedLikelihood}{Combined\-Likelihood} $>$ \hyperlink{namespacemlsandbox_1_1python_a1e62411a6ea1b3d42e90559d5537ceb6}{init\-Wrapper\-Combined\-Likelihood} (bp\-::object const \&l\-\_\-list, bp\-::object const \&w\-\_\-list)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespacemlsandbox_1_1python_aa2d95d46d684b8e8a9e6041e6753904e}{\index{mlsandbox\-::python@{mlsandbox\-::python}!distribtion\-\_\-constructor@{distribtion\-\_\-constructor}}
+\index{distribtion\-\_\-constructor@{distribtion\-\_\-constructor}!mlsandbox::python@{mlsandbox\-::python}}
+\subsubsection[{distribtion\-\_\-constructor}]{\setlength{\rightskip}{0pt plus 5cm}boost\-::shared\-\_\-ptr$<${\bf Distribution}$>$ mlsandbox\-::python\-::distribtion\-\_\-constructor (
+\begin{DoxyParamCaption}
+\item[{bp\-::object}]{distribution, }
+\item[{double}]{r\-Min, }
+\item[{double}]{r\-Max, }
+\item[{uint}]{r\-Seed}
+\end{DoxyParamCaption}
+)}}\label{namespacemlsandbox_1_1python_aa2d95d46d684b8e8a9e6041e6753904e}
+\hypertarget{namespacemlsandbox_1_1python_a34e7315520ddd52ff2425944ff0b7ceb}{\index{mlsandbox\-::python@{mlsandbox\-::python}!get\-\_\-events@{get\-\_\-events}}
+\index{get\-\_\-events@{get\-\_\-events}!mlsandbox::python@{mlsandbox\-::python}}
+\subsubsection[{get\-\_\-events}]{\setlength{\rightskip}{0pt plus 5cm}bn\-::ndarray mlsandbox\-::python\-::get\-\_\-events (
+\begin{DoxyParamCaption}
+\item[{{\bf Binned\-Likelihood} \&}]{self}
+\end{DoxyParamCaption}
+)}}\label{namespacemlsandbox_1_1python_a34e7315520ddd52ff2425944ff0b7ceb}
+\hypertarget{namespacemlsandbox_1_1python_a1e62411a6ea1b3d42e90559d5537ceb6}{\index{mlsandbox\-::python@{mlsandbox\-::python}!init\-Wrapper\-Combined\-Likelihood@{init\-Wrapper\-Combined\-Likelihood}}
+\index{init\-Wrapper\-Combined\-Likelihood@{init\-Wrapper\-Combined\-Likelihood}!mlsandbox::python@{mlsandbox\-::python}}
+\subsubsection[{init\-Wrapper\-Combined\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}boost\-::shared\-\_\-ptr$<${\bf Combined\-Likelihood}$>$ mlsandbox\-::python\-::init\-Wrapper\-Combined\-Likelihood (
+\begin{DoxyParamCaption}
+\item[{bp\-::object const \&}]{l\-\_\-list, }
+\item[{bp\-::object const \&}]{w\-\_\-list}
+\end{DoxyParamCaption}
+)}}\label{namespacemlsandbox_1_1python_a1e62411a6ea1b3d42e90559d5537ceb6}
+\hypertarget{namespacemlsandbox_1_1python_a00273dd6c5be90398654d4e7c707add4}{\index{mlsandbox\-::python@{mlsandbox\-::python}!sample@{sample}}
+\index{sample@{sample}!mlsandbox::python@{mlsandbox\-::python}}
+\subsubsection[{sample}]{\setlength{\rightskip}{0pt plus 5cm}bn\-::ndarray mlsandbox\-::python\-::sample (
+\begin{DoxyParamCaption}
+\item[{{\bf Distribution} \&}]{self, }
+\item[{int}]{N}
+\end{DoxyParamCaption}
+)}}\label{namespacemlsandbox_1_1python_a00273dd6c5be90398654d4e7c707add4}
+A helper function that takes a \hyperlink{classDistribution}{Distribution} object and samples N random numbers according to the distribution and returns it in a numpy array \hypertarget{namespacemlsandbox_1_1python_a2a2c84be9021d9445d30be3d85447f9b}{\index{mlsandbox\-::python@{mlsandbox\-::python}!sample\-I@{sample\-I}}
+\index{sample\-I@{sample\-I}!mlsandbox::python@{mlsandbox\-::python}}
+\subsubsection[{sample\-I}]{\setlength{\rightskip}{0pt plus 5cm}bn\-::ndarray mlsandbox\-::python\-::sample\-I (
+\begin{DoxyParamCaption}
+\item[{{\bf Distribution} \&}]{self, }
+\item[{int}]{N}
+\end{DoxyParamCaption}
+)}}\label{namespacemlsandbox_1_1python_a2a2c84be9021d9445d30be3d85447f9b}
+\hypertarget{namespacemlsandbox_1_1python_a2b76c3fcdec9f6639cf79a73939c63a2}{\index{mlsandbox\-::python@{mlsandbox\-::python}!set\-\_\-events@{set\-\_\-events}}
+\index{set\-\_\-events@{set\-\_\-events}!mlsandbox::python@{mlsandbox\-::python}}
+\subsubsection[{set\-\_\-events}]{\setlength{\rightskip}{0pt plus 5cm}void mlsandbox\-::python\-::set\-\_\-events (
+\begin{DoxyParamCaption}
+\item[{{\bf Binned\-Likelihood} \&}]{self, }
+\item[{bp\-::object}]{obj}
+\end{DoxyParamCaption}
+)}}\label{namespacemlsandbox_1_1python_a2b76c3fcdec9f6639cf79a73939c63a2}

@@ -1,0 +1,234 @@
+\hypertarget{classDistribution}{\section{Distribution Class Reference}
+\label{classDistribution}\index{Distribution@{Distribution}}
+}
+
+
+A class that provides a common interface for binned distributions which are used to represent binned pdfs in likelihood objects.  
+
+
+
+
+{\ttfamily \#include $<$Distribution.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classDistribution_a7671d190019f4e6d1014a561a9e3cc65}{Distribution} (\hyperlink{classDistribution}{Distribution} const \&base, boost\-::shared\-\_\-ptr$<$ \hyperlink{classRNG}{R\-N\-G} $>$ rng)
+\item 
+\hyperlink{classDistribution_a2ee6e69ceb1df2813df56c6883cbb326}{Distribution} (std\-::vector$<$ double $>$const \&distribution, double r\-Min, double r\-Max, uint r\-Seed=1)
+\item 
+double \hyperlink{classDistribution_a26a55e9b524f94fb5c75e3c8abe96ecd}{P\-D\-F} (double x) const 
+\begin{DoxyCompactList}\small\item\em Returns the pdf value evaluated at the given value. \end{DoxyCompactList}\item 
+double \hyperlink{classDistribution_a94a970330e540c2061d6c05dc9f60f1d}{P\-D\-F\-\_\-f} (double x) const 
+\item 
+double \hyperlink{classDistribution_ac852b7915ba69e2d8f9cee0e5dab68b5}{C\-D\-F} (double x) const 
+\begin{DoxyCompactList}\small\item\em Evaluates the C\-D\-F at a given value. \end{DoxyCompactList}\item 
+double \hyperlink{classDistribution_a503ae8b2d80c3c26a8c9a255c59761f2}{Sample\-From\-Distr} () const 
+\begin{DoxyCompactList}\small\item\em Returns a random number sampled according to the binned distribution. \end{DoxyCompactList}\item 
+uint64\-\_\-t \hyperlink{classDistribution_aeaaf3037d0c8167d4c41fe4213df3181}{Sample\-From\-Distr\-I} () const 
+\begin{DoxyCompactList}\small\item\em Returns a random index of the binned distribution sampled according to the same distribution. \end{DoxyCompactList}\item 
+uint64\-\_\-t \hyperlink{classDistribution_a8d5beb423a42b4acb0724e24ddb05195}{Get\-N\-Bins} () const 
+\begin{DoxyCompactList}\small\item\em Returns the number of bins of the pdf. \end{DoxyCompactList}\item 
+uint64\-\_\-t \hyperlink{classDistribution_a14d717bbe93f876772eead67bd413f2b}{Value\-To\-Bin} (double x)
+\begin{DoxyCompactList}\small\item\em Returns the bin index of the binned pdf corresponding to the givem value. \end{DoxyCompactList}\item 
+std\-::vector$<$ double $>$ \& \hyperlink{classDistribution_a58298747fcca2bd64976ae247df3f3e5}{Get\-P\-D\-F\-Vector} ()
+\begin{DoxyCompactList}\small\item\em Returns a reference to the pdf. \end{DoxyCompactList}\item 
+double \hyperlink{classDistribution_a52415dcd5a27eb454df64912597eb95a}{operator\mbox{[}$\,$\mbox{]}} (uint64\-\_\-t index)
+\begin{DoxyCompactList}\small\item\em Provides direct access to the binned pdf. \end{DoxyCompactList}\item 
+double \hyperlink{classDistribution_a7e969b8ea60baa6498ca6951b205f967}{operator\mbox{[}$\,$\mbox{]}} (uint64\-\_\-t index) const 
+\begin{DoxyCompactList}\small\item\em Provides direct access to the binned pdf (const) \end{DoxyCompactList}\item 
+void \hyperlink{classDistribution_a9cc42751d710907d76d97813b8fa8697}{Set\-C\-D\-F\-Sampling} (bool set)
+\item 
+double \hyperlink{classDistribution_a3802925dff4de220fbe8e214e42e1e33}{Get\-Range\-Max} () const 
+\item 
+double \hyperlink{classDistribution_a10e8b59653c735c0dceae1d3c15b2713}{Get\-Range\-Min} () const 
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classDistribution_ab7b6b8c6018ab181645199038b0dba3a}{add\-Distributions} (double w1, \hyperlink{classDistribution}{Distribution} const \&dst1, double w2, \hyperlink{classDistribution}{Distribution} const \&dst2, \hyperlink{classDistribution}{Distribution} \&target)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class that provides a common interface for binned distributions which are used to represent binned pdfs in likelihood objects. 
+
+class\-: \hyperlink{classDistribution}{Distribution} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classDistribution_a7671d190019f4e6d1014a561a9e3cc65}{\index{Distribution@{Distribution}!Distribution@{Distribution}}
+\index{Distribution@{Distribution}!Distribution@{Distribution}}
+\subsubsection[{Distribution}]{\setlength{\rightskip}{0pt plus 5cm}Distribution\-::\-Distribution (
+\begin{DoxyParamCaption}
+\item[{{\bf Distribution} const \&}]{base, }
+\item[{boost\-::shared\-\_\-ptr$<$ {\bf R\-N\-G} $>$}]{rng}
+\end{DoxyParamCaption}
+)}}\label{classDistribution_a7671d190019f4e6d1014a561a9e3cc65}
+\hypertarget{classDistribution_a2ee6e69ceb1df2813df56c6883cbb326}{\index{Distribution@{Distribution}!Distribution@{Distribution}}
+\index{Distribution@{Distribution}!Distribution@{Distribution}}
+\subsubsection[{Distribution}]{\setlength{\rightskip}{0pt plus 5cm}Distribution\-::\-Distribution (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ double $>$const \&}]{distribution, }
+\item[{double}]{r\-Min, }
+\item[{double}]{r\-Max, }
+\item[{uint}]{r\-Seed = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}}\label{classDistribution_a2ee6e69ceb1df2813df56c6883cbb326}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classDistribution_ac852b7915ba69e2d8f9cee0e5dab68b5}{\index{Distribution@{Distribution}!C\-D\-F@{C\-D\-F}}
+\index{C\-D\-F@{C\-D\-F}!Distribution@{Distribution}}
+\subsubsection[{C\-D\-F}]{\setlength{\rightskip}{0pt plus 5cm}double Distribution\-::\-C\-D\-F (
+\begin{DoxyParamCaption}
+\item[{double}]{x}
+\end{DoxyParamCaption}
+) const}}\label{classDistribution_ac852b7915ba69e2d8f9cee0e5dab68b5}
+
+
+Evaluates the C\-D\-F at a given value. 
+
+\hypertarget{classDistribution_a8d5beb423a42b4acb0724e24ddb05195}{\index{Distribution@{Distribution}!Get\-N\-Bins@{Get\-N\-Bins}}
+\index{Get\-N\-Bins@{Get\-N\-Bins}!Distribution@{Distribution}}
+\subsubsection[{Get\-N\-Bins}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Distribution\-::\-Get\-N\-Bins (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_a8d5beb423a42b4acb0724e24ddb05195}
+
+
+Returns the number of bins of the pdf. 
+
+\hypertarget{classDistribution_a58298747fcca2bd64976ae247df3f3e5}{\index{Distribution@{Distribution}!Get\-P\-D\-F\-Vector@{Get\-P\-D\-F\-Vector}}
+\index{Get\-P\-D\-F\-Vector@{Get\-P\-D\-F\-Vector}!Distribution@{Distribution}}
+\subsubsection[{Get\-P\-D\-F\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$double$>$\& Distribution\-::\-Get\-P\-D\-F\-Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_a58298747fcca2bd64976ae247df3f3e5}
+
+
+Returns a reference to the pdf. 
+
+\hypertarget{classDistribution_a3802925dff4de220fbe8e214e42e1e33}{\index{Distribution@{Distribution}!Get\-Range\-Max@{Get\-Range\-Max}}
+\index{Get\-Range\-Max@{Get\-Range\-Max}!Distribution@{Distribution}}
+\subsubsection[{Get\-Range\-Max}]{\setlength{\rightskip}{0pt plus 5cm}double Distribution\-::\-Get\-Range\-Max (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_a3802925dff4de220fbe8e214e42e1e33}
+\hypertarget{classDistribution_a10e8b59653c735c0dceae1d3c15b2713}{\index{Distribution@{Distribution}!Get\-Range\-Min@{Get\-Range\-Min}}
+\index{Get\-Range\-Min@{Get\-Range\-Min}!Distribution@{Distribution}}
+\subsubsection[{Get\-Range\-Min}]{\setlength{\rightskip}{0pt plus 5cm}double Distribution\-::\-Get\-Range\-Min (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_a10e8b59653c735c0dceae1d3c15b2713}
+\hypertarget{classDistribution_a52415dcd5a27eb454df64912597eb95a}{\index{Distribution@{Distribution}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Distribution@{Distribution}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}double Distribution\-::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{uint64\-\_\-t}]{index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_a52415dcd5a27eb454df64912597eb95a}
+
+
+Provides direct access to the binned pdf. 
+
+\hypertarget{classDistribution_a7e969b8ea60baa6498ca6951b205f967}{\index{Distribution@{Distribution}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Distribution@{Distribution}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}double Distribution\-::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{uint64\-\_\-t}]{index}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_a7e969b8ea60baa6498ca6951b205f967}
+
+
+Provides direct access to the binned pdf (const) 
+
+\hypertarget{classDistribution_a26a55e9b524f94fb5c75e3c8abe96ecd}{\index{Distribution@{Distribution}!P\-D\-F@{P\-D\-F}}
+\index{P\-D\-F@{P\-D\-F}!Distribution@{Distribution}}
+\subsubsection[{P\-D\-F}]{\setlength{\rightskip}{0pt plus 5cm}double Distribution\-::\-P\-D\-F (
+\begin{DoxyParamCaption}
+\item[{double}]{x}
+\end{DoxyParamCaption}
+) const}}\label{classDistribution_a26a55e9b524f94fb5c75e3c8abe96ecd}
+
+
+Returns the pdf value evaluated at the given value. 
+
+\hypertarget{classDistribution_a94a970330e540c2061d6c05dc9f60f1d}{\index{Distribution@{Distribution}!P\-D\-F\-\_\-f@{P\-D\-F\-\_\-f}}
+\index{P\-D\-F\-\_\-f@{P\-D\-F\-\_\-f}!Distribution@{Distribution}}
+\subsubsection[{P\-D\-F\-\_\-f}]{\setlength{\rightskip}{0pt plus 5cm}double Distribution\-::\-P\-D\-F\-\_\-f (
+\begin{DoxyParamCaption}
+\item[{double}]{x}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_a94a970330e540c2061d6c05dc9f60f1d}
+Fast unsafe call to P\-D\-F (no boundary checks) 
+\begin{DoxyParams}{Parameters}
+{\em x} & the pdf paramater at which the pdf should be evaluated at \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pdf value at x 
+\end{DoxyReturn}
+\hypertarget{classDistribution_a503ae8b2d80c3c26a8c9a255c59761f2}{\index{Distribution@{Distribution}!Sample\-From\-Distr@{Sample\-From\-Distr}}
+\index{Sample\-From\-Distr@{Sample\-From\-Distr}!Distribution@{Distribution}}
+\subsubsection[{Sample\-From\-Distr}]{\setlength{\rightskip}{0pt plus 5cm}double Distribution\-::\-Sample\-From\-Distr (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classDistribution_a503ae8b2d80c3c26a8c9a255c59761f2}
+
+
+Returns a random number sampled according to the binned distribution. 
+
+\hypertarget{classDistribution_aeaaf3037d0c8167d4c41fe4213df3181}{\index{Distribution@{Distribution}!Sample\-From\-Distr\-I@{Sample\-From\-Distr\-I}}
+\index{Sample\-From\-Distr\-I@{Sample\-From\-Distr\-I}!Distribution@{Distribution}}
+\subsubsection[{Sample\-From\-Distr\-I}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Distribution\-::\-Sample\-From\-Distr\-I (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_aeaaf3037d0c8167d4c41fe4213df3181}
+
+
+Returns a random index of the binned distribution sampled according to the same distribution. 
+
+\hypertarget{classDistribution_a9cc42751d710907d76d97813b8fa8697}{\index{Distribution@{Distribution}!Set\-C\-D\-F\-Sampling@{Set\-C\-D\-F\-Sampling}}
+\index{Set\-C\-D\-F\-Sampling@{Set\-C\-D\-F\-Sampling}!Distribution@{Distribution}}
+\subsubsection[{Set\-C\-D\-F\-Sampling}]{\setlength{\rightskip}{0pt plus 5cm}void Distribution\-::\-Set\-C\-D\-F\-Sampling (
+\begin{DoxyParamCaption}
+\item[{bool}]{set}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_a9cc42751d710907d76d97813b8fa8697}
+\hypertarget{classDistribution_a14d717bbe93f876772eead67bd413f2b}{\index{Distribution@{Distribution}!Value\-To\-Bin@{Value\-To\-Bin}}
+\index{Value\-To\-Bin@{Value\-To\-Bin}!Distribution@{Distribution}}
+\subsubsection[{Value\-To\-Bin}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Distribution\-::\-Value\-To\-Bin (
+\begin{DoxyParamCaption}
+\item[{double}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classDistribution_a14d717bbe93f876772eead67bd413f2b}
+
+
+Returns the bin index of the binned pdf corresponding to the givem value. 
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classDistribution_ab7b6b8c6018ab181645199038b0dba3a}{\index{Distribution@{Distribution}!add\-Distributions@{add\-Distributions}}
+\index{add\-Distributions@{add\-Distributions}!Distribution@{Distribution}}
+\subsubsection[{add\-Distributions}]{\setlength{\rightskip}{0pt plus 5cm}void add\-Distributions (
+\begin{DoxyParamCaption}
+\item[{double}]{w1, }
+\item[{{\bf Distribution} const \&}]{dst1, }
+\item[{double}]{w2, }
+\item[{{\bf Distribution} const \&}]{dst2, }
+\item[{{\bf Distribution} \&}]{target}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{classDistribution_ab7b6b8c6018ab181645199038b0dba3a}
+A helper function that performs an addition operation on two distributions and putting the result in a third distribution object 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{Distribution_8h}{Distribution.\-h}\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\hyperlink{MLSandbox_2Distribution_8cxx}{Distribution.\-cxx}\end{DoxyCompactItemize}

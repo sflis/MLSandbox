@@ -1,0 +1,125 @@
+\hypertarget{classMinimizer}{\section{Minimizer Class Reference}
+\label{classMinimizer}\index{Minimizer@{Minimizer}}
+}
+
+
+A small wrapper class around the G\-S\-L minimizer.  
+
+
+
+
+{\ttfamily \#include $<$Minimizer.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classMinimizer_a6954aac8325fa56845db3074b4a552d2}{Minimizer} ()
+\item 
+\hyperlink{classMinimizer_accc9c6d6c3724e4cd057ef4d00b45dfe}{Minimizer} (const \hyperlink{classMinimizer}{Minimizer} \&min)
+\item 
+\hyperlink{classMinimizer_aa0643eca7cdbc9c8550e3f28e8459ad2}{$\sim$\-Minimizer} ()
+\item 
+void \hyperlink{classMinimizer_af529621f077cc602c695d1e60e5adbba}{Set\-Boundaries} (double min, double max)
+\item 
+double \hyperlink{classMinimizer_a4419559871e702cd3da37d45081b1046}{Compute\-Best\-Fit} (\hyperlink{classLikelihood}{Likelihood} \&lh)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{classMinimizer_a375d2f66f20fdaedf828a536d473b9b9}{best\-Fit\-\_\-}
+\begin{DoxyCompactList}\small\item\em Best fit of the likelihood parameter from the last fit. \end{DoxyCompactList}\item 
+double \hyperlink{classMinimizer_ace3797e38fc23cf74bf05a3b1c3cdc36}{best\-Fit\-L\-L\-H\-\_\-}
+\begin{DoxyCompactList}\small\item\em Log of the likelihood value at the best fit. \end{DoxyCompactList}\item 
+uint64\-\_\-t \hyperlink{classMinimizer_ac2b79419b1d5230732bdf9c3f4ead23e}{n\-Iterations\-\_\-}
+\item 
+double \hyperlink{classMinimizer_afb5a706ff1374955187d666634f2ac63}{min\-Xi\-\_\-}
+\item 
+double \hyperlink{classMinimizer_af45f99d12232ed7f056ad16182392752}{max\-Xi\-\_\-}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A small wrapper class around the G\-S\-L minimizer. 
+
+class\-: \hyperlink{classMinimizer}{Minimizer} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classMinimizer_a6954aac8325fa56845db3074b4a552d2}{\index{Minimizer@{Minimizer}!Minimizer@{Minimizer}}
+\index{Minimizer@{Minimizer}!Minimizer@{Minimizer}}
+\subsubsection[{Minimizer}]{\setlength{\rightskip}{0pt plus 5cm}Minimizer\-::\-Minimizer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classMinimizer_a6954aac8325fa56845db3074b4a552d2}
+\hypertarget{classMinimizer_accc9c6d6c3724e4cd057ef4d00b45dfe}{\index{Minimizer@{Minimizer}!Minimizer@{Minimizer}}
+\index{Minimizer@{Minimizer}!Minimizer@{Minimizer}}
+\subsubsection[{Minimizer}]{\setlength{\rightskip}{0pt plus 5cm}Minimizer\-::\-Minimizer (
+\begin{DoxyParamCaption}
+\item[{const {\bf Minimizer} \&}]{min}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classMinimizer_accc9c6d6c3724e4cd057ef4d00b45dfe}
+\hypertarget{classMinimizer_aa0643eca7cdbc9c8550e3f28e8459ad2}{\index{Minimizer@{Minimizer}!$\sim$\-Minimizer@{$\sim$\-Minimizer}}
+\index{$\sim$\-Minimizer@{$\sim$\-Minimizer}!Minimizer@{Minimizer}}
+\subsubsection[{$\sim$\-Minimizer}]{\setlength{\rightskip}{0pt plus 5cm}Minimizer\-::$\sim$\-Minimizer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classMinimizer_aa0643eca7cdbc9c8550e3f28e8459ad2}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classMinimizer_a4419559871e702cd3da37d45081b1046}{\index{Minimizer@{Minimizer}!Compute\-Best\-Fit@{Compute\-Best\-Fit}}
+\index{Compute\-Best\-Fit@{Compute\-Best\-Fit}!Minimizer@{Minimizer}}
+\subsubsection[{Compute\-Best\-Fit}]{\setlength{\rightskip}{0pt plus 5cm}double Minimizer\-::\-Compute\-Best\-Fit (
+\begin{DoxyParamCaption}
+\item[{{\bf Likelihood} \&}]{lh}
+\end{DoxyParamCaption}
+)}}\label{classMinimizer_a4419559871e702cd3da37d45081b1046}
+Computes the best fit given a \hyperlink{classLikelihood}{Likelihood} 
+\begin{DoxyParams}{Parameters}
+{\em lh} & a likelihood object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+best fit 
+\end{DoxyReturn}
+Determining the best fit (maximizing the likelihood) with the gsl library minimizer using brent's method. domain mu=\mbox{[}0,n\-Obs\mbox{]}. \hypertarget{classMinimizer_af529621f077cc602c695d1e60e5adbba}{\index{Minimizer@{Minimizer}!Set\-Boundaries@{Set\-Boundaries}}
+\index{Set\-Boundaries@{Set\-Boundaries}!Minimizer@{Minimizer}}
+\subsubsection[{Set\-Boundaries}]{\setlength{\rightskip}{0pt plus 5cm}void Minimizer\-::\-Set\-Boundaries (
+\begin{DoxyParamCaption}
+\item[{double}]{min, }
+\item[{double}]{max}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classMinimizer_af529621f077cc602c695d1e60e5adbba}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classMinimizer_a375d2f66f20fdaedf828a536d473b9b9}{\index{Minimizer@{Minimizer}!best\-Fit\-\_\-@{best\-Fit\-\_\-}}
+\index{best\-Fit\-\_\-@{best\-Fit\-\_\-}!Minimizer@{Minimizer}}
+\subsubsection[{best\-Fit\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Minimizer\-::best\-Fit\-\_\-}}\label{classMinimizer_a375d2f66f20fdaedf828a536d473b9b9}
+
+
+Best fit of the likelihood parameter from the last fit. 
+
+\hypertarget{classMinimizer_ace3797e38fc23cf74bf05a3b1c3cdc36}{\index{Minimizer@{Minimizer}!best\-Fit\-L\-L\-H\-\_\-@{best\-Fit\-L\-L\-H\-\_\-}}
+\index{best\-Fit\-L\-L\-H\-\_\-@{best\-Fit\-L\-L\-H\-\_\-}!Minimizer@{Minimizer}}
+\subsubsection[{best\-Fit\-L\-L\-H\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Minimizer\-::best\-Fit\-L\-L\-H\-\_\-}}\label{classMinimizer_ace3797e38fc23cf74bf05a3b1c3cdc36}
+
+
+Log of the likelihood value at the best fit. 
+
+\hypertarget{classMinimizer_af45f99d12232ed7f056ad16182392752}{\index{Minimizer@{Minimizer}!max\-Xi\-\_\-@{max\-Xi\-\_\-}}
+\index{max\-Xi\-\_\-@{max\-Xi\-\_\-}!Minimizer@{Minimizer}}
+\subsubsection[{max\-Xi\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Minimizer\-::max\-Xi\-\_\-}}\label{classMinimizer_af45f99d12232ed7f056ad16182392752}
+\hypertarget{classMinimizer_afb5a706ff1374955187d666634f2ac63}{\index{Minimizer@{Minimizer}!min\-Xi\-\_\-@{min\-Xi\-\_\-}}
+\index{min\-Xi\-\_\-@{min\-Xi\-\_\-}!Minimizer@{Minimizer}}
+\subsubsection[{min\-Xi\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Minimizer\-::min\-Xi\-\_\-}}\label{classMinimizer_afb5a706ff1374955187d666634f2ac63}
+\hypertarget{classMinimizer_ac2b79419b1d5230732bdf9c3f4ead23e}{\index{Minimizer@{Minimizer}!n\-Iterations\-\_\-@{n\-Iterations\-\_\-}}
+\index{n\-Iterations\-\_\-@{n\-Iterations\-\_\-}!Minimizer@{Minimizer}}
+\subsubsection[{n\-Iterations\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Minimizer\-::n\-Iterations\-\_\-}}\label{classMinimizer_ac2b79419b1d5230732bdf9c3f4ead23e}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{Minimizer_8h}{Minimizer.\-h}\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\hyperlink{MLSandbox_2Minimizer_8cxx}{Minimizer.\-cxx}\end{DoxyCompactItemize}

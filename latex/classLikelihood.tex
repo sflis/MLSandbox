@@ -1,0 +1,205 @@
+\hypertarget{classLikelihood}{\section{Likelihood Class Reference}
+\label{classLikelihood}\index{Likelihood@{Likelihood}}
+}
+
+
+A base class (wrapper class) for likelihoods which defines a general interface needed analysis classes.  
+
+
+
+
+{\ttfamily \#include $<$Likelihood.\-h$>$}
+
+
+
+Inheritance diagram for Likelihood\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLikelihood__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual double \hyperlink{classLikelihood_ab8dd44247a393aa203ff3513b2ba1587}{Evaluate\-L\-L\-H} (double xi) const =0
+\item 
+virtual void \hyperlink{classLikelihood_a11245b8594fa8658698798d92a56e4d8}{Sample\-Events} (double xi)=0
+\item 
+virtual \hyperlink{Likelihood_8h_a97d92c5c141f28319e7e8198defc9084}{likelihood\-Callback} \hyperlink{classLikelihood_a423872ac038f3fc30d0080f199dc1feb}{Call\-Back\-Fcn} ()=0
+\item 
+virtual \hyperlink{classLikelihood}{Likelihood} $\ast$ \hyperlink{classLikelihood_a938b362a171c46f447cb364effc83bcf}{Clone} (int seed) const =0
+\item 
+virtual void \hyperlink{classLikelihood_ae43d17adaa0b34b9da4948e262b8d898}{Minimizer\-Conditions} (\hyperlink{classMinimizer}{Minimizer} \&min)
+\item 
+virtual bool \hyperlink{classLikelihood_a48cfa022b87027e4793dac6fa0dd1b24}{Changed} ()
+\item 
+virtual double \hyperlink{classLikelihood_a5af640d09a81f553b8331d2557b01aa6}{Min\-Xi\-Bound} ()
+\item 
+virtual double \hyperlink{classLikelihood_a948c31dcc4fe8efc7c39db49ad56c745}{Max\-Xi\-Bound} ()
+\item 
+virtual uint32\-\_\-t \hyperlink{classLikelihood_a5e38ffabbfeba8196b71073effc497c9}{State\-Hash} ()=0
+\begin{DoxyCompactList}\small\item\em Returns a hash number of the observation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint64\-\_\-t \hyperlink{classLikelihood_afc00e95dfa5a5c71d413830f50958d80}{tot\-Events\-\_\-}
+\begin{DoxyCompactList}\small\item\em Number of events in the current sample. \end{DoxyCompactList}\item 
+double \hyperlink{classLikelihood_afa1482c93235340101bb2d6ad9398f60}{N\-\_\-}
+\begin{DoxyCompactList}\small\item\em Expected number of events in the sample. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classLikelihood_afb7ebdce4ecd44b62bf5573ac3a96562}{changed\-\_\-}
+\item 
+uint32\-\_\-t \hyperlink{classLikelihood_a9a9940bdd1aa6ee5efd8da4a883c3d79}{state\-Hash\-\_\-}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A base class (wrapper class) for likelihoods which defines a general interface needed analysis classes. 
+
+class\-: \hyperlink{classLikelihood}{Likelihood} 
+
+\subsection{Member Function Documentation}
+\hypertarget{classLikelihood_a423872ac038f3fc30d0080f199dc1feb}{\index{Likelihood@{Likelihood}!Call\-Back\-Fcn@{Call\-Back\-Fcn}}
+\index{Call\-Back\-Fcn@{Call\-Back\-Fcn}!Likelihood@{Likelihood}}
+\subsubsection[{Call\-Back\-Fcn}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf likelihood\-Callback} Likelihood\-::\-Call\-Back\-Fcn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classLikelihood_a423872ac038f3fc30d0080f199dc1feb}
+Return the callback function of the likelihood for the minimizer \begin{DoxyReturn}{Returns}
+A function pointer function of the type double(double,void$\ast$) 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classShapeLikelihood_acf56e312fd4f0881aa09215d73b93412}{Shape\-Likelihood}, \hyperlink{classBinnedLikelihood_aed7e05d58a36f515afc8e34fe8550b31}{Binned\-Likelihood}, \hyperlink{classLikelihoodCollection_af4c889ced5fc4de6be4ffac2898250b5}{Likelihood\-Collection}, \hyperlink{classSignalContaminatedLH_a9c67422f6e79df2352bd158be9949feb}{Signal\-Contaminated\-L\-H}, and \hyperlink{classCombinedLikelihood_a4d70d16e3f63005427dc9261addd0bfb}{Combined\-Likelihood}.
+
+\hypertarget{classLikelihood_a48cfa022b87027e4793dac6fa0dd1b24}{\index{Likelihood@{Likelihood}!Changed@{Changed}}
+\index{Changed@{Changed}!Likelihood@{Likelihood}}
+\subsubsection[{Changed}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Likelihood\-::\-Changed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classLikelihood_a48cfa022b87027e4793dac6fa0dd1b24}
+Returns true if the state of the likelihood has changed since the last call to Change indicating that the event sample of the likelihood might have changed thus a recalculation of the best fit is needed. \hypertarget{classLikelihood_a938b362a171c46f447cb364effc83bcf}{\index{Likelihood@{Likelihood}!Clone@{Clone}}
+\index{Clone@{Clone}!Likelihood@{Likelihood}}
+\subsubsection[{Clone}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Likelihood}$\ast$ Likelihood\-::\-Clone (
+\begin{DoxyParamCaption}
+\item[{int}]{seed}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classLikelihood_a938b362a171c46f447cb364effc83bcf}
+Should create a copy of the original \hyperlink{classLikelihood}{Likelihood} which is thread safe. 
+
+Implemented in \hyperlink{classShapeLikelihood_a67630eb790d07ef1d0d2e33711495cbe}{Shape\-Likelihood}, \hyperlink{classLikelihoodCollection_ae3d80984323771199c511db7016608cf}{Likelihood\-Collection}, \hyperlink{classSignalContaminatedLH_ae7c8264a79340a12dd4a83d83f0b9d2f}{Signal\-Contaminated\-L\-H}, and \hyperlink{classCombinedLikelihood_afb2505b9b126ddfcc859b150e8345aed}{Combined\-Likelihood}.
+
+\hypertarget{classLikelihood_ab8dd44247a393aa203ff3513b2ba1587}{\index{Likelihood@{Likelihood}!Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}}
+\index{Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}!Likelihood@{Likelihood}}
+\subsubsection[{Evaluate\-L\-L\-H}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Likelihood\-::\-Evaluate\-L\-L\-H (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classLikelihood_ab8dd44247a393aa203ff3513b2ba1587}
+Evaluates the log likelihood sum 
+\begin{DoxyParams}{Parameters}
+{\em xi} & the signal fraction for which the likelihood should be evaulated. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classShapeLikelihood_afe024bedaab4633ded018d23d17c37f8}{Shape\-Likelihood}, \hyperlink{classBinnedLikelihood_a2084a64cd8b5d6bf8055538a0f633785}{Binned\-Likelihood}, \hyperlink{classLikelihoodCollection_a942b79738d2be74a358e138ff5284f53}{Likelihood\-Collection}, \hyperlink{classSignalContaminatedLH_a30c729fa905cc0d812827f23c71b55cc}{Signal\-Contaminated\-L\-H}, and \hyperlink{classCombinedLikelihood_a5d41f29fd87fcab976a06e0af12e6767}{Combined\-Likelihood}.
+
+\hypertarget{classLikelihood_a948c31dcc4fe8efc7c39db49ad56c745}{\index{Likelihood@{Likelihood}!Max\-Xi\-Bound@{Max\-Xi\-Bound}}
+\index{Max\-Xi\-Bound@{Max\-Xi\-Bound}!Likelihood@{Likelihood}}
+\subsubsection[{Max\-Xi\-Bound}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Likelihood\-::\-Max\-Xi\-Bound (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classLikelihood_a948c31dcc4fe8efc7c39db49ad56c745}
+
+
+Reimplemented in \hyperlink{classBinnedLikelihood_ab6144b4d092744dc9d5ee58a491bf77d}{Binned\-Likelihood}, \hyperlink{classLikelihoodCollection_adc81d79fce77d226853f4cfcb33fb7a3}{Likelihood\-Collection}, \hyperlink{classSignalContaminatedLH_a579d86a266c6ecb44cff26e47d141a9e}{Signal\-Contaminated\-L\-H}, and \hyperlink{classCombinedLikelihood_a2cf396d545d7873be85a9bbcb72f4b53}{Combined\-Likelihood}.
+
+\hypertarget{classLikelihood_ae43d17adaa0b34b9da4948e262b8d898}{\index{Likelihood@{Likelihood}!Minimizer\-Conditions@{Minimizer\-Conditions}}
+\index{Minimizer\-Conditions@{Minimizer\-Conditions}!Likelihood@{Likelihood}}
+\subsubsection[{Minimizer\-Conditions}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Likelihood\-::\-Minimizer\-Conditions (
+\begin{DoxyParamCaption}
+\item[{{\bf Minimizer} \&}]{min}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classLikelihood_ae43d17adaa0b34b9da4948e262b8d898}
+
+
+Reimplemented in \hyperlink{classLikelihoodCollection_ae1d445fbfc327da63d469d67891dc7e3}{Likelihood\-Collection}, and \hyperlink{classSignalContaminatedLH_ad991e7649ed72c411830cb0c7788dff4}{Signal\-Contaminated\-L\-H}.
+
+\hypertarget{classLikelihood_a5af640d09a81f553b8331d2557b01aa6}{\index{Likelihood@{Likelihood}!Min\-Xi\-Bound@{Min\-Xi\-Bound}}
+\index{Min\-Xi\-Bound@{Min\-Xi\-Bound}!Likelihood@{Likelihood}}
+\subsubsection[{Min\-Xi\-Bound}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Likelihood\-::\-Min\-Xi\-Bound (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classLikelihood_a5af640d09a81f553b8331d2557b01aa6}
+
+
+Reimplemented in \hyperlink{classBinnedLikelihood_a16f5c7acb008393fcdb12df2524d7033}{Binned\-Likelihood}.
+
+\hypertarget{classLikelihood_a11245b8594fa8658698798d92a56e4d8}{\index{Likelihood@{Likelihood}!Sample\-Events@{Sample\-Events}}
+\index{Sample\-Events@{Sample\-Events}!Likelihood@{Likelihood}}
+\subsubsection[{Sample\-Events}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Likelihood\-::\-Sample\-Events (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classLikelihood_a11245b8594fa8658698798d92a56e4d8}
+Creates internally a new sample with the specified parameter likelihood parameter 
+\begin{DoxyParams}{Parameters}
+{\em xi} & value of the likelihood parameter \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classShapeLikelihood_aa303861500c399cb680d89b15d08b806}{Shape\-Likelihood}, \hyperlink{classBinnedLikelihood_a0793b8109912c6e509470a14a58d2a2a}{Binned\-Likelihood}, \hyperlink{classLikelihoodCollection_a38af4d60e248c8d32d0b05ce623c031b}{Likelihood\-Collection}, \hyperlink{classSignalContaminatedLH_a04fcf69547f8b0c5bc3ee2cb89671c06}{Signal\-Contaminated\-L\-H}, and \hyperlink{classCombinedLikelihood_a2e3dc150595fdab805b77fc8f2557fa0}{Combined\-Likelihood}.
+
+\hypertarget{classLikelihood_a5e38ffabbfeba8196b71073effc497c9}{\index{Likelihood@{Likelihood}!State\-Hash@{State\-Hash}}
+\index{State\-Hash@{State\-Hash}!Likelihood@{Likelihood}}
+\subsubsection[{State\-Hash}]{\setlength{\rightskip}{0pt plus 5cm}virtual uint32\-\_\-t Likelihood\-::\-State\-Hash (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classLikelihood_a5e38ffabbfeba8196b71073effc497c9}
+
+
+Returns a hash number of the observation. 
+
+
+
+Implemented in \hyperlink{classBinnedLikelihood_a8b6371a5da5acc90bc1d601422bb9764}{Binned\-Likelihood}, and \hyperlink{classCombinedLikelihood_a7980d2517a55eea72e7e272917b1948d}{Combined\-Likelihood}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classLikelihood_afb7ebdce4ecd44b62bf5573ac3a96562}{\index{Likelihood@{Likelihood}!changed\-\_\-@{changed\-\_\-}}
+\index{changed\-\_\-@{changed\-\_\-}!Likelihood@{Likelihood}}
+\subsubsection[{changed\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}bool Likelihood\-::changed\-\_\-\hspace{0.3cm}{\ttfamily [protected]}}}\label{classLikelihood_afb7ebdce4ecd44b62bf5573ac3a96562}
+\hypertarget{classLikelihood_afa1482c93235340101bb2d6ad9398f60}{\index{Likelihood@{Likelihood}!N\-\_\-@{N\-\_\-}}
+\index{N\-\_\-@{N\-\_\-}!Likelihood@{Likelihood}}
+\subsubsection[{N\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Likelihood\-::\-N\-\_\-}}\label{classLikelihood_afa1482c93235340101bb2d6ad9398f60}
+
+
+Expected number of events in the sample. 
+
+\hypertarget{classLikelihood_a9a9940bdd1aa6ee5efd8da4a883c3d79}{\index{Likelihood@{Likelihood}!state\-Hash\-\_\-@{state\-Hash\-\_\-}}
+\index{state\-Hash\-\_\-@{state\-Hash\-\_\-}!Likelihood@{Likelihood}}
+\subsubsection[{state\-Hash\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Likelihood\-::state\-Hash\-\_\-\hspace{0.3cm}{\ttfamily [protected]}}}\label{classLikelihood_a9a9940bdd1aa6ee5efd8da4a883c3d79}
+\hypertarget{classLikelihood_afc00e95dfa5a5c71d413830f50958d80}{\index{Likelihood@{Likelihood}!tot\-Events\-\_\-@{tot\-Events\-\_\-}}
+\index{tot\-Events\-\_\-@{tot\-Events\-\_\-}!Likelihood@{Likelihood}}
+\subsubsection[{tot\-Events\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Likelihood\-::tot\-Events\-\_\-}}\label{classLikelihood_afc00e95dfa5a5c71d413830f50958d80}
+
+
+Number of events in the current sample. 
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{Likelihood_8h}{Likelihood.\-h}\end{DoxyCompactItemize}

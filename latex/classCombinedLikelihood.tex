@@ -1,0 +1,157 @@
+\hypertarget{classCombinedLikelihood}{\section{Combined\-Likelihood Class Reference}
+\label{classCombinedLikelihood}\index{Combined\-Likelihood@{Combined\-Likelihood}}
+}
+
+
+{\ttfamily \#include $<$Combined\-Likelihood.\-h$>$}
+
+
+
+Inheritance diagram for Combined\-Likelihood\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classCombinedLikelihood__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Combined\-Likelihood\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classCombinedLikelihood__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCombinedLikelihood_a5f4928ccb337b399d64088e3df58d7be}{Combined\-Likelihood} (const std\-::vector$<$ boost\-::shared\-\_\-ptr$<$ \hyperlink{classLikelihood}{Likelihood} $>$ $>$ \&likelihoods\-\_\-, const std\-::vector$<$ double $>$ \&weights\-\_\-)
+\item 
+double \hyperlink{classCombinedLikelihood_a5d41f29fd87fcab976a06e0af12e6767}{Evaluate\-L\-L\-H} (double xi) const 
+\item 
+void \hyperlink{classCombinedLikelihood_a2e3dc150595fdab805b77fc8f2557fa0}{Sample\-Events} (double xi)
+\item 
+\hyperlink{Likelihood_8h_a97d92c5c141f28319e7e8198defc9084}{likelihood\-Callback} \hyperlink{classCombinedLikelihood_a4d70d16e3f63005427dc9261addd0bfb}{Call\-Back\-Fcn} ()
+\item 
+\hyperlink{classCombinedLikelihood}{Combined\-Likelihood} $\ast$ \hyperlink{classCombinedLikelihood_afb2505b9b126ddfcc859b150e8345aed}{Clone} (int seed) const 
+\item 
+uint32\-\_\-t \hyperlink{classCombinedLikelihood_a7980d2517a55eea72e7e272917b1948d}{State\-Hash} ()
+\begin{DoxyCompactList}\small\item\em Returns a hash number of the observation. \end{DoxyCompactList}\item 
+double \hyperlink{classCombinedLikelihood_a2cf396d545d7873be85a9bbcb72f4b53}{Max\-Xi\-Bound} ()
+\item 
+void \hyperlink{classCombinedLikelihood_ae6823517190d050b153d421c46a6cd0f}{Update} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classCombinedLikelihood_a5f4928ccb337b399d64088e3df58d7be}{\index{Combined\-Likelihood@{Combined\-Likelihood}!Combined\-Likelihood@{Combined\-Likelihood}}
+\index{Combined\-Likelihood@{Combined\-Likelihood}!CombinedLikelihood@{Combined\-Likelihood}}
+\subsubsection[{Combined\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}Combined\-Likelihood\-::\-Combined\-Likelihood (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ boost\-::shared\-\_\-ptr$<$ {\bf Likelihood} $>$ $>$ \&}]{likelihoods\-\_\-, }
+\item[{const std\-::vector$<$ double $>$ \&}]{weights\-\_\-}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classCombinedLikelihood_a5f4928ccb337b399d64088e3df58d7be}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classCombinedLikelihood_a4d70d16e3f63005427dc9261addd0bfb}{\index{Combined\-Likelihood@{Combined\-Likelihood}!Call\-Back\-Fcn@{Call\-Back\-Fcn}}
+\index{Call\-Back\-Fcn@{Call\-Back\-Fcn}!CombinedLikelihood@{Combined\-Likelihood}}
+\subsubsection[{Call\-Back\-Fcn}]{\setlength{\rightskip}{0pt plus 5cm}{\bf likelihood\-Callback} Combined\-Likelihood\-::\-Call\-Back\-Fcn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classCombinedLikelihood_a4d70d16e3f63005427dc9261addd0bfb}
+Return the callback function of the likelihood for the minimizer \begin{DoxyReturn}{Returns}
+A function pointer function of the type double(double,void$\ast$) 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classLikelihood_a423872ac038f3fc30d0080f199dc1feb}{Likelihood}.
+
+\hypertarget{classCombinedLikelihood_afb2505b9b126ddfcc859b150e8345aed}{\index{Combined\-Likelihood@{Combined\-Likelihood}!Clone@{Clone}}
+\index{Clone@{Clone}!CombinedLikelihood@{Combined\-Likelihood}}
+\subsubsection[{Clone}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Combined\-Likelihood}$\ast$ Combined\-Likelihood\-::\-Clone (
+\begin{DoxyParamCaption}
+\item[{int}]{seed}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classCombinedLikelihood_afb2505b9b126ddfcc859b150e8345aed}
+Should create a copy of the original \hyperlink{classLikelihood}{Likelihood} which is thread safe. 
+
+Implements \hyperlink{classLikelihood_a938b362a171c46f447cb364effc83bcf}{Likelihood}.
+
+\hypertarget{classCombinedLikelihood_a5d41f29fd87fcab976a06e0af12e6767}{\index{Combined\-Likelihood@{Combined\-Likelihood}!Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}}
+\index{Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}!CombinedLikelihood@{Combined\-Likelihood}}
+\subsubsection[{Evaluate\-L\-L\-H}]{\setlength{\rightskip}{0pt plus 5cm}double Combined\-Likelihood\-::\-Evaluate\-L\-L\-H (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classCombinedLikelihood_a5d41f29fd87fcab976a06e0af12e6767}
+Evaluates the log likelihood sum 
+\begin{DoxyParams}{Parameters}
+{\em xi} & the signal fraction for which the likelihood should be evaulated. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classLikelihood_ab8dd44247a393aa203ff3513b2ba1587}{Likelihood}.
+
+\hypertarget{classCombinedLikelihood_a2cf396d545d7873be85a9bbcb72f4b53}{\index{Combined\-Likelihood@{Combined\-Likelihood}!Max\-Xi\-Bound@{Max\-Xi\-Bound}}
+\index{Max\-Xi\-Bound@{Max\-Xi\-Bound}!CombinedLikelihood@{Combined\-Likelihood}}
+\subsubsection[{Max\-Xi\-Bound}]{\setlength{\rightskip}{0pt plus 5cm}double Combined\-Likelihood\-::\-Max\-Xi\-Bound (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classCombinedLikelihood_a2cf396d545d7873be85a9bbcb72f4b53}
+
+
+Reimplemented from \hyperlink{classLikelihood_a948c31dcc4fe8efc7c39db49ad56c745}{Likelihood}.
+
+\hypertarget{classCombinedLikelihood_a2e3dc150595fdab805b77fc8f2557fa0}{\index{Combined\-Likelihood@{Combined\-Likelihood}!Sample\-Events@{Sample\-Events}}
+\index{Sample\-Events@{Sample\-Events}!CombinedLikelihood@{Combined\-Likelihood}}
+\subsubsection[{Sample\-Events}]{\setlength{\rightskip}{0pt plus 5cm}void Combined\-Likelihood\-::\-Sample\-Events (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classCombinedLikelihood_a2e3dc150595fdab805b77fc8f2557fa0}
+Creates internally a new sample with the specified parameter likelihood parameter 
+\begin{DoxyParams}{Parameters}
+{\em xi} & value of the likelihood parameter \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classLikelihood_a11245b8594fa8658698798d92a56e4d8}{Likelihood}.
+
+\hypertarget{classCombinedLikelihood_a7980d2517a55eea72e7e272917b1948d}{\index{Combined\-Likelihood@{Combined\-Likelihood}!State\-Hash@{State\-Hash}}
+\index{State\-Hash@{State\-Hash}!CombinedLikelihood@{Combined\-Likelihood}}
+\subsubsection[{State\-Hash}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Combined\-Likelihood\-::\-State\-Hash (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classCombinedLikelihood_a7980d2517a55eea72e7e272917b1948d}
+
+
+Returns a hash number of the observation. 
+
+
+
+Implements \hyperlink{classLikelihood_a5e38ffabbfeba8196b71073effc497c9}{Likelihood}.
+
+\hypertarget{classCombinedLikelihood_ae6823517190d050b153d421c46a6cd0f}{\index{Combined\-Likelihood@{Combined\-Likelihood}!Update@{Update}}
+\index{Update@{Update}!CombinedLikelihood@{Combined\-Likelihood}}
+\subsubsection[{Update}]{\setlength{\rightskip}{0pt plus 5cm}void Combined\-Likelihood\-::\-Update (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classCombinedLikelihood_ae6823517190d050b153d421c46a6cd0f}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{CombinedLikelihood_8h}{Combined\-Likelihood.\-h}\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\hyperlink{CombinedLikelihood_8cxx}{Combined\-Likelihood.\-cxx}\end{DoxyCompactItemize}

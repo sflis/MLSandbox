@@ -1,0 +1,154 @@
+\hypertarget{classFCRanks}{\section{F\-C\-Ranks Class Reference}
+\label{classFCRanks}\index{F\-C\-Ranks@{F\-C\-Ranks}}
+}
+
+
+A class that holds Feldman Cousins rank distribtions and provides some utilities to interpolate the critical boundary at different confidence levels.  
+
+
+
+
+{\ttfamily \#include $<$F\-C\-Ranks.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFCRanks_a6db5a79e4fc52467381a44faaf6df285}{F\-C\-Ranks} ()
+\item 
+\hyperlink{classFCRanks_ac16822b8da96bef574edb47b9b3f9a97}{F\-C\-Ranks} (const \hyperlink{classFCRanks}{F\-C\-Ranks} \&base)
+\item 
+\hyperlink{classFCRanks}{F\-C\-Ranks} \& \hyperlink{classFCRanks_acd2e17576127b54187fba7215b47edfc}{operator=} (const \hyperlink{classFCRanks}{F\-C\-Ranks} \&rh)
+\item 
+\hyperlink{classFCRanks_a0a25cd6100cebd6d7d475b2eef5dd025}{$\sim$\-F\-C\-Ranks} ()
+\item 
+void \hyperlink{classFCRanks_a418d7d7351959647aba009a98fa5daec}{Fill} (double xi, std\-::vector$<$ double $>$ \&ranks, bool set=true, bool overwrite=false)
+\item 
+void \hyperlink{classFCRanks_a04064e2ddef37f609caebed6eb4a7949}{Assume\-Chi\-Squre} (bool assume)
+\item 
+void \hyperlink{classFCRanks_a816ee3d5819e1f52a6f30d385a571df2}{Set\-Confidence\-Level} (double cl)
+\item 
+double \hyperlink{classFCRanks_a7152d0742e2c2efa495582c155ab3ec9}{r\-C\-B} (double xi, bool assume\-Chi\-Square\-Distr=false)
+\item 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classFCRanks_a920cac200dd2b306fe92b3423f83d6e2}{serialize} (Archive \&ar, const unsigned int version)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::map$<$ double, std\-::vector\\*
+$<$ double $>$ $>$ \hyperlink{classFCRanks_a97d239b8b91d740673a25ebd90443337}{ranks\-\_\-}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFCRanks_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost\-::serialization\-::access}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class that holds Feldman Cousins rank distribtions and provides some utilities to interpolate the critical boundary at different confidence levels. 
+
+class\-: \hyperlink{classFCRanks}{F\-C\-Ranks} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classFCRanks_a6db5a79e4fc52467381a44faaf6df285}{\index{F\-C\-Ranks@{F\-C\-Ranks}!F\-C\-Ranks@{F\-C\-Ranks}}
+\index{F\-C\-Ranks@{F\-C\-Ranks}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{F\-C\-Ranks}]{\setlength{\rightskip}{0pt plus 5cm}F\-C\-Ranks\-::\-F\-C\-Ranks (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCRanks_a6db5a79e4fc52467381a44faaf6df285}
+\hypertarget{classFCRanks_ac16822b8da96bef574edb47b9b3f9a97}{\index{F\-C\-Ranks@{F\-C\-Ranks}!F\-C\-Ranks@{F\-C\-Ranks}}
+\index{F\-C\-Ranks@{F\-C\-Ranks}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{F\-C\-Ranks}]{\setlength{\rightskip}{0pt plus 5cm}F\-C\-Ranks\-::\-F\-C\-Ranks (
+\begin{DoxyParamCaption}
+\item[{const {\bf F\-C\-Ranks} \&}]{base}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCRanks_ac16822b8da96bef574edb47b9b3f9a97}
+\hypertarget{classFCRanks_a0a25cd6100cebd6d7d475b2eef5dd025}{\index{F\-C\-Ranks@{F\-C\-Ranks}!$\sim$\-F\-C\-Ranks@{$\sim$\-F\-C\-Ranks}}
+\index{$\sim$\-F\-C\-Ranks@{$\sim$\-F\-C\-Ranks}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{$\sim$\-F\-C\-Ranks}]{\setlength{\rightskip}{0pt plus 5cm}F\-C\-Ranks\-::$\sim$\-F\-C\-Ranks (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCRanks_a0a25cd6100cebd6d7d475b2eef5dd025}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classFCRanks_a04064e2ddef37f609caebed6eb4a7949}{\index{F\-C\-Ranks@{F\-C\-Ranks}!Assume\-Chi\-Squre@{Assume\-Chi\-Squre}}
+\index{Assume\-Chi\-Squre@{Assume\-Chi\-Squre}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{Assume\-Chi\-Squre}]{\setlength{\rightskip}{0pt plus 5cm}void F\-C\-Ranks\-::\-Assume\-Chi\-Squre (
+\begin{DoxyParamCaption}
+\item[{bool}]{assume}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCRanks_a04064e2ddef37f609caebed6eb4a7949}
+\hypertarget{classFCRanks_a418d7d7351959647aba009a98fa5daec}{\index{F\-C\-Ranks@{F\-C\-Ranks}!Fill@{Fill}}
+\index{Fill@{Fill}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{Fill}]{\setlength{\rightskip}{0pt plus 5cm}void F\-C\-Ranks\-::\-Fill (
+\begin{DoxyParamCaption}
+\item[{double}]{xi, }
+\item[{std\-::vector$<$ double $>$ \&}]{ranks, }
+\item[{bool}]{set = {\ttfamily true}, }
+\item[{bool}]{overwrite = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCRanks_a418d7d7351959647aba009a98fa5daec}
+Adds a rank distribution to the collection for a specific likelihood hypothesis 
+\begin{DoxyParams}{Parameters}
+{\em xi} & the likelihood parameter value \\
+\hline
+{\em ranks} & a vector with ranks \\
+\hline
+{\em set} & if true the critical boundary is interpolated at the preset confidence level cl\-\_\- \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFCRanks_acd2e17576127b54187fba7215b47edfc}{\index{F\-C\-Ranks@{F\-C\-Ranks}!operator=@{operator=}}
+\index{operator=@{operator=}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\-C\-Ranks}\& F\-C\-Ranks\-::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf F\-C\-Ranks} \&}]{rh}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCRanks_acd2e17576127b54187fba7215b47edfc}
+\hypertarget{classFCRanks_a7152d0742e2c2efa495582c155ab3ec9}{\index{F\-C\-Ranks@{F\-C\-Ranks}!r\-C\-B@{r\-C\-B}}
+\index{r\-C\-B@{r\-C\-B}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{r\-C\-B}]{\setlength{\rightskip}{0pt plus 5cm}double F\-C\-Ranks\-::r\-C\-B (
+\begin{DoxyParamCaption}
+\item[{double}]{xi, }
+\item[{bool}]{assume\-Chi\-Square\-Distr = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCRanks_a7152d0742e2c2efa495582c155ab3ec9}
+Returns the ln(\-Rank) at the preset confidence level 
+\begin{DoxyParams}{Parameters}
+{\em xi} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFCRanks_a920cac200dd2b306fe92b3423f83d6e2}{\index{F\-C\-Ranks@{F\-C\-Ranks}!serialize@{serialize}}
+\index{serialize@{serialize}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{serialize}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Archive $>$ void F\-C\-Ranks\-::serialize (
+\begin{DoxyParamCaption}
+\item[{Archive \&}]{ar, }
+\item[{const unsigned int}]{version}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCRanks_a920cac200dd2b306fe92b3423f83d6e2}
+\hypertarget{classFCRanks_a816ee3d5819e1f52a6f30d385a571df2}{\index{F\-C\-Ranks@{F\-C\-Ranks}!Set\-Confidence\-Level@{Set\-Confidence\-Level}}
+\index{Set\-Confidence\-Level@{Set\-Confidence\-Level}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{Set\-Confidence\-Level}]{\setlength{\rightskip}{0pt plus 5cm}void F\-C\-Ranks\-::\-Set\-Confidence\-Level (
+\begin{DoxyParamCaption}
+\item[{double}]{cl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCRanks_a816ee3d5819e1f52a6f30d385a571df2}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classFCRanks_ac98d07dd8f7b70e16ccb9a01abf56b9c}{\index{F\-C\-Ranks@{F\-C\-Ranks}!boost\-::serialization\-::access@{boost\-::serialization\-::access}}
+\index{boost\-::serialization\-::access@{boost\-::serialization\-::access}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{boost\-::serialization\-::access}]{\setlength{\rightskip}{0pt plus 5cm}friend class boost\-::serialization\-::access\hspace{0.3cm}{\ttfamily [friend]}}}\label{classFCRanks_ac98d07dd8f7b70e16ccb9a01abf56b9c}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classFCRanks_a97d239b8b91d740673a25ebd90443337}{\index{F\-C\-Ranks@{F\-C\-Ranks}!ranks\-\_\-@{ranks\-\_\-}}
+\index{ranks\-\_\-@{ranks\-\_\-}!FCRanks@{F\-C\-Ranks}}
+\subsubsection[{ranks\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}std\-::map$<$double, std\-::vector$<$double$>$ $>$ F\-C\-Ranks\-::ranks\-\_\-}}\label{classFCRanks_a97d239b8b91d740673a25ebd90443337}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{FCRanks_8h}{F\-C\-Ranks.\-h}\end{DoxyCompactItemize}

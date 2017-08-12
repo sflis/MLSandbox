@@ -1,0 +1,154 @@
+\hypertarget{classNeymanAnalysis}{\section{Neyman\-Analysis Class Reference}
+\label{classNeymanAnalysis}\index{Neyman\-Analysis@{Neyman\-Analysis}}
+}
+
+
+{\ttfamily \#include $<$Neyman\-Analysis.\-h$>$}
+
+
+
+Collaboration diagram for Neyman\-Analysis\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{classNeymanAnalysis__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classNeymanAnalysis_ab02f708099c866f0b3dabf529222846e}{Neyman\-Analysis} (boost\-::shared\-\_\-ptr$<$ \hyperlink{classLikelihood}{Likelihood} $>$ llh)
+\item 
+\hyperlink{classNeymanAnalysis_aa84832be2ad6a77d4570f90768ce6f12}{Neyman\-Analysis} (\hyperlink{classNeymanAnalysis}{Neyman\-Analysis} \&analysis, int64\-\_\-t seed)
+\item 
+double \hyperlink{classNeymanAnalysis_ab96261fccdce568c5f49c9caa3f6e585}{Evaluate\-Test\-Statistic} (double xi)
+\item 
+std\-::vector$<$ double $>$ \hyperlink{classNeymanAnalysis_af1382c7a6b0a799adb9b5cba89142c7e}{Test\-Statistic\-Distribution} (double xi, uint64\-\_\-t n)
+\item 
+void \hyperlink{classNeymanAnalysis_a850688639ff1232d73b1b99e8d1a828d}{Compute\-Ranks} (uint64\-\_\-t n\-Experiments, double min\-Xi, double max\-Xi, uint64\-\_\-t n\-Steps, uint64\-\_\-t n\-Threads, uint64\-\_\-t max\-Experiments\-Per\-Thread)
+\item 
+void \hyperlink{classNeymanAnalysis_a517570cbdf64019af5543cc175ce271f}{Set\-F\-C\-Ranks} (\hyperlink{classFCRanks}{F\-C\-Ranks} const \&ts\-Distributions)
+\item 
+void \hyperlink{classNeymanAnalysis_a48a2e22b564fcf5d001d5b397a778319}{Sample} (double xi)
+\item 
+std\-::vector$<$ double $>$ \hyperlink{classNeymanAnalysis_a210d3928ce874e3a1cb7667fb6c30746}{Test\-Statistic\-Distribution} (double xi)
+\item 
+double \hyperlink{classNeymanAnalysis_a32e7f796020e908bef11bf1b6fed9aa0}{Compute\-Limit} (double ts, double cl, double prec)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classMinimizer}{Minimizer} \hyperlink{classNeymanAnalysis_ab7b0eaaf2cb5b407f1496a745111f28e}{minimizer\-\_\-}
+\item 
+\hyperlink{classFCRanks}{F\-C\-Ranks} \hyperlink{classNeymanAnalysis_ab7b43994330c276c03a30dbb0e7f02cd}{ts\-Distributions\-\_\-}
+\item 
+\hyperlink{classFCRanks}{F\-C\-Ranks} \hyperlink{classNeymanAnalysis_a1e239edced6826a979c0e2c541060ecf}{global\-Best\-Fits\-\_\-}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+class\-: \hyperlink{classNeymanAnalysis}{Neyman\-Analysis} is a class which encapsulates the Neyman analysis proceedures. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classNeymanAnalysis_ab02f708099c866f0b3dabf529222846e}{\index{Neyman\-Analysis@{Neyman\-Analysis}!Neyman\-Analysis@{Neyman\-Analysis}}
+\index{Neyman\-Analysis@{Neyman\-Analysis}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{Neyman\-Analysis}]{\setlength{\rightskip}{0pt plus 5cm}Neyman\-Analysis\-::\-Neyman\-Analysis (
+\begin{DoxyParamCaption}
+\item[{boost\-::shared\-\_\-ptr$<$ {\bf Likelihood} $>$}]{llh}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNeymanAnalysis_ab02f708099c866f0b3dabf529222846e}
+\hypertarget{classNeymanAnalysis_aa84832be2ad6a77d4570f90768ce6f12}{\index{Neyman\-Analysis@{Neyman\-Analysis}!Neyman\-Analysis@{Neyman\-Analysis}}
+\index{Neyman\-Analysis@{Neyman\-Analysis}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{Neyman\-Analysis}]{\setlength{\rightskip}{0pt plus 5cm}Neyman\-Analysis\-::\-Neyman\-Analysis (
+\begin{DoxyParamCaption}
+\item[{{\bf Neyman\-Analysis} \&}]{analysis, }
+\item[{int64\-\_\-t}]{seed}
+\end{DoxyParamCaption}
+)}}\label{classNeymanAnalysis_aa84832be2ad6a77d4570f90768ce6f12}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classNeymanAnalysis_a32e7f796020e908bef11bf1b6fed9aa0}{\index{Neyman\-Analysis@{Neyman\-Analysis}!Compute\-Limit@{Compute\-Limit}}
+\index{Compute\-Limit@{Compute\-Limit}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{Compute\-Limit}]{\setlength{\rightskip}{0pt plus 5cm}double Neyman\-Analysis\-::\-Compute\-Limit (
+\begin{DoxyParamCaption}
+\item[{double}]{ts, }
+\item[{double}]{cl, }
+\item[{double}]{prec}
+\end{DoxyParamCaption}
+)}}\label{classNeymanAnalysis_a32e7f796020e908bef11bf1b6fed9aa0}
+\hypertarget{classNeymanAnalysis_a850688639ff1232d73b1b99e8d1a828d}{\index{Neyman\-Analysis@{Neyman\-Analysis}!Compute\-Ranks@{Compute\-Ranks}}
+\index{Compute\-Ranks@{Compute\-Ranks}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{Compute\-Ranks}]{\setlength{\rightskip}{0pt plus 5cm}void Neyman\-Analysis\-::\-Compute\-Ranks (
+\begin{DoxyParamCaption}
+\item[{uint64\-\_\-t}]{n\-Experiments, }
+\item[{double}]{min\-Xi, }
+\item[{double}]{max\-Xi, }
+\item[{uint64\-\_\-t}]{n\-Steps, }
+\item[{uint64\-\_\-t}]{n\-Threads, }
+\item[{uint64\-\_\-t}]{max\-Experiments\-Per\-Thread}
+\end{DoxyParamCaption}
+)}}\label{classNeymanAnalysis_a850688639ff1232d73b1b99e8d1a828d}
+\hypertarget{classNeymanAnalysis_ab96261fccdce568c5f49c9caa3f6e585}{\index{Neyman\-Analysis@{Neyman\-Analysis}!Evaluate\-Test\-Statistic@{Evaluate\-Test\-Statistic}}
+\index{Evaluate\-Test\-Statistic@{Evaluate\-Test\-Statistic}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{Evaluate\-Test\-Statistic}]{\setlength{\rightskip}{0pt plus 5cm}double Neyman\-Analysis\-::\-Evaluate\-Test\-Statistic (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNeymanAnalysis_ab96261fccdce568c5f49c9caa3f6e585}
+Returns the log value of the F\-C test-\/statistic for a given likelihood parameter 
+\begin{DoxyParams}{Parameters}
+{\em xi} & likelihood parameter for which the test statistic should be calculated \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the log of the F\-C test-\/statistic = log(L(xi)/\-L(xi\-\_\-best)) 
+\end{DoxyReturn}
+\hypertarget{classNeymanAnalysis_a48a2e22b564fcf5d001d5b397a778319}{\index{Neyman\-Analysis@{Neyman\-Analysis}!Sample@{Sample}}
+\index{Sample@{Sample}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{Sample}]{\setlength{\rightskip}{0pt plus 5cm}void Neyman\-Analysis\-::\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNeymanAnalysis_a48a2e22b564fcf5d001d5b397a778319}
+\hypertarget{classNeymanAnalysis_a517570cbdf64019af5543cc175ce271f}{\index{Neyman\-Analysis@{Neyman\-Analysis}!Set\-F\-C\-Ranks@{Set\-F\-C\-Ranks}}
+\index{Set\-F\-C\-Ranks@{Set\-F\-C\-Ranks}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{Set\-F\-C\-Ranks}]{\setlength{\rightskip}{0pt plus 5cm}void Neyman\-Analysis\-::\-Set\-F\-C\-Ranks (
+\begin{DoxyParamCaption}
+\item[{{\bf F\-C\-Ranks} const \&}]{ts\-Distributions}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNeymanAnalysis_a517570cbdf64019af5543cc175ce271f}
+\hypertarget{classNeymanAnalysis_af1382c7a6b0a799adb9b5cba89142c7e}{\index{Neyman\-Analysis@{Neyman\-Analysis}!Test\-Statistic\-Distribution@{Test\-Statistic\-Distribution}}
+\index{Test\-Statistic\-Distribution@{Test\-Statistic\-Distribution}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{Test\-Statistic\-Distribution}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ double $>$ Neyman\-Analysis\-::\-Test\-Statistic\-Distribution (
+\begin{DoxyParamCaption}
+\item[{double}]{xi, }
+\item[{uint64\-\_\-t}]{n}
+\end{DoxyParamCaption}
+)}}\label{classNeymanAnalysis_af1382c7a6b0a799adb9b5cba89142c7e}
+\hypertarget{classNeymanAnalysis_a210d3928ce874e3a1cb7667fb6c30746}{\index{Neyman\-Analysis@{Neyman\-Analysis}!Test\-Statistic\-Distribution@{Test\-Statistic\-Distribution}}
+\index{Test\-Statistic\-Distribution@{Test\-Statistic\-Distribution}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{Test\-Statistic\-Distribution}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$double$>$ Neyman\-Analysis\-::\-Test\-Statistic\-Distribution (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)}}\label{classNeymanAnalysis_a210d3928ce874e3a1cb7667fb6c30746}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classNeymanAnalysis_a1e239edced6826a979c0e2c541060ecf}{\index{Neyman\-Analysis@{Neyman\-Analysis}!global\-Best\-Fits\-\_\-@{global\-Best\-Fits\-\_\-}}
+\index{global\-Best\-Fits\-\_\-@{global\-Best\-Fits\-\_\-}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{global\-Best\-Fits\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\-C\-Ranks} Neyman\-Analysis\-::global\-Best\-Fits\-\_\-}}\label{classNeymanAnalysis_a1e239edced6826a979c0e2c541060ecf}
+\hypertarget{classNeymanAnalysis_ab7b0eaaf2cb5b407f1496a745111f28e}{\index{Neyman\-Analysis@{Neyman\-Analysis}!minimizer\-\_\-@{minimizer\-\_\-}}
+\index{minimizer\-\_\-@{minimizer\-\_\-}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{minimizer\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Minimizer} Neyman\-Analysis\-::minimizer\-\_\-}}\label{classNeymanAnalysis_ab7b0eaaf2cb5b407f1496a745111f28e}
+\hypertarget{classNeymanAnalysis_ab7b43994330c276c03a30dbb0e7f02cd}{\index{Neyman\-Analysis@{Neyman\-Analysis}!ts\-Distributions\-\_\-@{ts\-Distributions\-\_\-}}
+\index{ts\-Distributions\-\_\-@{ts\-Distributions\-\_\-}!NeymanAnalysis@{Neyman\-Analysis}}
+\subsubsection[{ts\-Distributions\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\-C\-Ranks} Neyman\-Analysis\-::ts\-Distributions\-\_\-}}\label{classNeymanAnalysis_ab7b43994330c276c03a30dbb0e7f02cd}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{NeymanAnalysis_8h}{Neyman\-Analysis.\-h}\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\hyperlink{MLSandbox_2NeymanAnalysis_8cxx}{Neyman\-Analysis.\-cxx}\end{DoxyCompactItemize}

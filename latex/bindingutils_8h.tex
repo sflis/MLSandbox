@@ -1,0 +1,82 @@
+\hypertarget{bindingutils_8h}{\section{/home/travis/build/sflis/\-M\-L\-Sandbox/private/pybindings/bindingutils.h File Reference}
+\label{bindingutils_8h}\index{/home/travis/build/sflis/\-M\-L\-Sandbox/private/pybindings/bindingutils.\-h@{/home/travis/build/sflis/\-M\-L\-Sandbox/private/pybindings/bindingutils.\-h}}
+}
+{\ttfamily \#include $<$boost/python.\-hpp$>$}\\*
+{\ttfamily \#include $<$numpy/arrayobject.\-h$>$}\\*
+{\ttfamily \#include $<$boost/python/tuple.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/module.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/def.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/class.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/dict.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/extract.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/back\-\_\-reference.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/suite/indexing/vector\-\_\-indexing\-\_\-suite.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/python/suite/indexing/map\-\_\-indexing\-\_\-suite.\-hpp$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+Include dependency graph for bindingutils.\-h\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{bindingutils_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{bindingutils_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class K , class V $>$ }\\boost\-::python\-::dict \hyperlink{bindingutils_8h_abeb1bc1a9d61a526987c14cfa99b5ca2}{to\-Python\-Dict} (const std\-::map$<$ K, V $>$ \&map)
+\item 
+{\footnotesize template$<$class K , class V $>$ }\\boost\-::python\-::dict \hyperlink{bindingutils_8h_ab86871a3baff796925aeece39712af7e}{to\-Python\-Dict} (const std\-::map$<$ K, std\-::vector$<$ V $>$ $>$ \&map)
+\item 
+{\footnotesize template$<$class V $>$ }\\boost\-::python\-::list \hyperlink{bindingutils_8h_a04867bd21ee2507d418f73c111d3af88}{to\-Python\-List} (const std\-::vector$<$ V $>$ \&vector)
+\item 
+{\footnotesize template$<$class K , class V $>$ }\\std\-::map$<$ K, V $>$ \hyperlink{bindingutils_8h_afecf56de807fcf0d676ae208e2d46f8f}{to\-Std\-Map} (boost\-::python\-::dict dictionary)
+\item 
+{\footnotesize template$<$class V $>$ }\\std\-::vector$<$ V $>$ \hyperlink{bindingutils_8h_ab5b9e0909c719546bdf6bf8cab3cdc17}{to\-Std\-Vector} (boost\-::python\-::list list)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{bindingutils_8h_abeb1bc1a9d61a526987c14cfa99b5ca2}{\index{bindingutils.\-h@{bindingutils.\-h}!to\-Python\-Dict@{to\-Python\-Dict}}
+\index{to\-Python\-Dict@{to\-Python\-Dict}!bindingutils.h@{bindingutils.\-h}}
+\subsubsection[{to\-Python\-Dict}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class K , class V $>$ boost\-::python\-::dict to\-Python\-Dict (
+\begin{DoxyParamCaption}
+\item[{const std\-::map$<$ K, V $>$ \&}]{map}
+\end{DoxyParamCaption}
+)}}\label{bindingutils_8h_abeb1bc1a9d61a526987c14cfa99b5ca2}
+\hypertarget{bindingutils_8h_ab86871a3baff796925aeece39712af7e}{\index{bindingutils.\-h@{bindingutils.\-h}!to\-Python\-Dict@{to\-Python\-Dict}}
+\index{to\-Python\-Dict@{to\-Python\-Dict}!bindingutils.h@{bindingutils.\-h}}
+\subsubsection[{to\-Python\-Dict}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class K , class V $>$ boost\-::python\-::dict to\-Python\-Dict (
+\begin{DoxyParamCaption}
+\item[{const std\-::map$<$ K, std\-::vector$<$ V $>$ $>$ \&}]{map}
+\end{DoxyParamCaption}
+)}}\label{bindingutils_8h_ab86871a3baff796925aeece39712af7e}
+\hypertarget{bindingutils_8h_a04867bd21ee2507d418f73c111d3af88}{\index{bindingutils.\-h@{bindingutils.\-h}!to\-Python\-List@{to\-Python\-List}}
+\index{to\-Python\-List@{to\-Python\-List}!bindingutils.h@{bindingutils.\-h}}
+\subsubsection[{to\-Python\-List}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V $>$ boost\-::python\-::list to\-Python\-List (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ V $>$ \&}]{vector}
+\end{DoxyParamCaption}
+)}}\label{bindingutils_8h_a04867bd21ee2507d418f73c111d3af88}
+\hypertarget{bindingutils_8h_afecf56de807fcf0d676ae208e2d46f8f}{\index{bindingutils.\-h@{bindingutils.\-h}!to\-Std\-Map@{to\-Std\-Map}}
+\index{to\-Std\-Map@{to\-Std\-Map}!bindingutils.h@{bindingutils.\-h}}
+\subsubsection[{to\-Std\-Map}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class K , class V $>$ std\-::map$<$K, V$>$ to\-Std\-Map (
+\begin{DoxyParamCaption}
+\item[{boost\-::python\-::dict}]{dictionary}
+\end{DoxyParamCaption}
+)}}\label{bindingutils_8h_afecf56de807fcf0d676ae208e2d46f8f}
+\hypertarget{bindingutils_8h_ab5b9e0909c719546bdf6bf8cab3cdc17}{\index{bindingutils.\-h@{bindingutils.\-h}!to\-Std\-Vector@{to\-Std\-Vector}}
+\index{to\-Std\-Vector@{to\-Std\-Vector}!bindingutils.h@{bindingutils.\-h}}
+\subsubsection[{to\-Std\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V $>$ std\-::vector$<$V$>$ to\-Std\-Vector (
+\begin{DoxyParamCaption}
+\item[{boost\-::python\-::list}]{list}
+\end{DoxyParamCaption}
+)}}\label{bindingutils_8h_ab5b9e0909c719546bdf6bf8cab3cdc17}

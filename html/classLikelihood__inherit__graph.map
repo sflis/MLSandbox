@@ -1,0 +1,7 @@
+<map id="Likelihood" name="Likelihood">
+<area shape="rect" id="node2" href="$classBinnedLikelihood.html" title="BinnedLikelihood" alt="" coords="167,80,287,107"/>
+<area shape="rect" id="node6" href="$classCombinedLikelihood.html" title="CombinedLikelihood" alt="" coords="311,80,449,107"/>
+<area shape="rect" id="node3" href="$classLikelihoodCollection.html" title="LikelihoodCollection" alt="" coords="5,155,144,181"/>
+<area shape="rect" id="node4" href="$classShapeLikelihood.html" title="A class that provides functions to compute a 1 dimensional Likelihood of the form: ..." alt="" coords="168,155,284,181"/>
+<area shape="rect" id="node5" href="$classSignalContaminatedLH.html" title="SignalContaminatedLH" alt="" coords="310,155,465,181"/>
+</map>

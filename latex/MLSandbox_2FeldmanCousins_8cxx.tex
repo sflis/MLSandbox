@@ -1,0 +1,60 @@
+\hypertarget{MLSandbox_2FeldmanCousins_8cxx}{\section{/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\-Feldman\-Cousins.cxx File Reference}
+\label{MLSandbox_2FeldmanCousins_8cxx}\index{/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx@{/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx}}
+}
+{\ttfamily \#include \char`\"{}M\-L\-Sandbox/\-Feldman\-Cousins.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$gsl/gsl\-\_\-roots.\-h$>$}\\*
+{\ttfamily \#include $<$gsl/gsl\-\_\-min.\-h$>$}\\*
+{\ttfamily \#include $<$gsl/gsl\-\_\-errno.\-h$>$}\\*
+{\ttfamily \#include $<$exception$>$}\\*
+{\ttfamily \#include $<$stdexcept$>$}\\*
+{\ttfamily \#include $<$pthread.\-h$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$iomanip$>$}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$queue$>$}\\*
+{\ttfamily \#include $<$boost/make\-\_\-shared.\-hpp$>$}\\*
+Include dependency graph for Feldman\-Cousins.\-cxx\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{MLSandbox_2FeldmanCousins_8cxx__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structFCThreadData}{F\-C\-Thread\-Data}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{MLSandbox_2FeldmanCousins_8cxx_a60929b09c20a8e046d404f63f819377a}{rank\-Computation\-Thread} (void $\ast$data)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+pthread\-\_\-mutex\-\_\-t \hyperlink{MLSandbox_2FeldmanCousins_8cxx_aefc691d2e82892a7bcb11a3ffdb5b864}{mutex\-Fetch\-Hypothesis} = P\-T\-H\-R\-E\-A\-D\-\_\-\-M\-U\-T\-E\-X\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-R
+\item 
+pthread\-\_\-mutex\-\_\-t \hyperlink{MLSandbox_2FeldmanCousins_8cxx_a93b752a4a6a8f14b3d7d1b9241411580}{mutex\-Write\-Ranks} = P\-T\-H\-R\-E\-A\-D\-\_\-\-M\-U\-T\-E\-X\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-R
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{MLSandbox_2FeldmanCousins_8cxx_a60929b09c20a8e046d404f63f819377a}{\index{M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx@{M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx}!rank\-Computation\-Thread@{rank\-Computation\-Thread}}
+\index{rank\-Computation\-Thread@{rank\-Computation\-Thread}!MLSandbox/FeldmanCousins.cxx@{M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx}}
+\subsubsection[{rank\-Computation\-Thread}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ rank\-Computation\-Thread (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{data}
+\end{DoxyParamCaption}
+)}}\label{MLSandbox_2FeldmanCousins_8cxx_a60929b09c20a8e046d404f63f819377a}
+
+
+\subsection{Variable Documentation}
+\hypertarget{MLSandbox_2FeldmanCousins_8cxx_aefc691d2e82892a7bcb11a3ffdb5b864}{\index{M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx@{M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx}!mutex\-Fetch\-Hypothesis@{mutex\-Fetch\-Hypothesis}}
+\index{mutex\-Fetch\-Hypothesis@{mutex\-Fetch\-Hypothesis}!MLSandbox/FeldmanCousins.cxx@{M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx}}
+\subsubsection[{mutex\-Fetch\-Hypothesis}]{\setlength{\rightskip}{0pt plus 5cm}pthread\-\_\-mutex\-\_\-t mutex\-Fetch\-Hypothesis = P\-T\-H\-R\-E\-A\-D\-\_\-\-M\-U\-T\-E\-X\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-R}}\label{MLSandbox_2FeldmanCousins_8cxx_aefc691d2e82892a7bcb11a3ffdb5b864}
+\hypertarget{MLSandbox_2FeldmanCousins_8cxx_a93b752a4a6a8f14b3d7d1b9241411580}{\index{M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx@{M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx}!mutex\-Write\-Ranks@{mutex\-Write\-Ranks}}
+\index{mutex\-Write\-Ranks@{mutex\-Write\-Ranks}!MLSandbox/FeldmanCousins.cxx@{M\-L\-Sandbox/\-Feldman\-Cousins.\-cxx}}
+\subsubsection[{mutex\-Write\-Ranks}]{\setlength{\rightskip}{0pt plus 5cm}pthread\-\_\-mutex\-\_\-t mutex\-Write\-Ranks = P\-T\-H\-R\-E\-A\-D\-\_\-\-M\-U\-T\-E\-X\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-R}}\label{MLSandbox_2FeldmanCousins_8cxx_a93b752a4a6a8f14b3d7d1b9241411580}

@@ -1,0 +1,6 @@
+<map id="BinnedLikelihood" name="BinnedLikelihood">
+<area shape="rect" id="node3" href="$classLikelihoodCollection.html" title="LikelihoodCollection" alt="" coords="5,155,144,181"/>
+<area shape="rect" id="node4" href="$classShapeLikelihood.html" title="A class that provides functions to compute a 1 dimensional Likelihood of the form: ..." alt="" coords="168,155,284,181"/>
+<area shape="rect" id="node5" href="$classSignalContaminatedLH.html" title="SignalContaminatedLH" alt="" coords="310,155,465,181"/>
+<area shape="rect" id="node2" href="$classLikelihood.html" title="A base class (wrapper class) for likelihoods which defines a general interface needed analysis classe..." alt="" coords="187,5,265,32"/>
+</map>

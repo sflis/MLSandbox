@@ -1,0 +1,225 @@
+\hypertarget{classShapeLikelihood}{\section{Shape\-Likelihood Class Reference}
+\label{classShapeLikelihood}\index{Shape\-Likelihood@{Shape\-Likelihood}}
+}
+
+
+A class that provides functions to compute a 1 dimensional \hyperlink{classLikelihood}{Likelihood} of the form\-: \[ L(\xi) = \prod^N_{k=1} (\xi f_{sig}(x_k) + (1-\xi) f_{bg}(x_k)) \].  
+
+
+
+
+{\ttfamily \#include $<$Likelihood.\-h$>$}
+
+
+
+Inheritance diagram for Shape\-Likelihood\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=170pt]{classShapeLikelihood__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Shape\-Likelihood\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=170pt]{classShapeLikelihood__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classShapeLikelihood_aa55ad8f50f5965c942efcdf6bff59713}{Shape\-Likelihood} (const \hyperlink{classDistribution}{Distribution} \&signal, const \hyperlink{classDistribution}{Distribution} \&background, const \hyperlink{classDistribution}{Distribution} \&signal\-Sample, const \hyperlink{classDistribution}{Distribution} \&background\-Sample, double N, bool histograming=false, bool poisson\-Sampling=false, int seed=1)
+\item 
+\hyperlink{classShapeLikelihood_a138035dc74b7e1cb135e93afaf9e56d7}{Shape\-Likelihood} (const \hyperlink{classDistribution}{Distribution} \&signal, const \hyperlink{classDistribution}{Distribution} \&background, const \hyperlink{classDistribution}{Distribution} \&signal\-Sample, const \hyperlink{classDistribution}{Distribution} \&background\-Sample, double N, int seed=1)
+\item 
+double \hyperlink{classShapeLikelihood_afe024bedaab4633ded018d23d17c37f8}{Evaluate\-L\-L\-H} (double xi) const 
+\item 
+void \hyperlink{classShapeLikelihood_aa303861500c399cb680d89b15d08b806}{Sample\-Events} (double xi)
+\begin{DoxyCompactList}\small\item\em Generates a new observation (event sample) based on the sampling pdfs. \end{DoxyCompactList}\item 
+\hyperlink{Likelihood_8h_a97d92c5c141f28319e7e8198defc9084}{likelihood\-Callback} \hyperlink{classShapeLikelihood_acf56e312fd4f0881aa09215d73b93412}{Call\-Back\-Fcn} ()
+\begin{DoxyCompactList}\small\item\em A callback function of the likelihood evaluation to be passed to the minimizer. \end{DoxyCompactList}\item 
+void \hyperlink{classShapeLikelihood_aad505df9d12960a6ed614f8c56b87b16}{Enable\-Poisson\-Sampling} ()
+\item 
+double \hyperlink{classShapeLikelihood_a03f18beacb939bb6766c93e1a9d202b4}{Xi2\-Mu} (double xi) const 
+\item 
+double \hyperlink{classShapeLikelihood_a37d2b69c8d222ffccd0a649f91272043}{Mu2\-Xi} (double mu) const 
+\item 
+\hyperlink{classShapeLikelihood}{Shape\-Likelihood} $\ast$ \hyperlink{classShapeLikelihood_a67630eb790d07ef1d0d2e33711495cbe}{Clone} (int seed) const 
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+A class that provides functions to compute a 1 dimensional \hyperlink{classLikelihood}{Likelihood} of the form\-: \[ L(\xi) = \prod^N_{k=1} (\xi f_{sig}(x_k) + (1-\xi) f_{bg}(x_k)) \]. 
+
+class\-: \hyperlink{classShapeLikelihood}{Shape\-Likelihood} Table containing abbreviations used for variables and explenations in the comments\-: \par
+ N\-: number of observed events \par
+ xi = $ \xi = \mu / N $\-: signal fraction \par
+ x\-: pdf observable \par
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classShapeLikelihood_aa55ad8f50f5965c942efcdf6bff59713}{\index{Shape\-Likelihood@{Shape\-Likelihood}!Shape\-Likelihood@{Shape\-Likelihood}}
+\index{Shape\-Likelihood@{Shape\-Likelihood}!ShapeLikelihood@{Shape\-Likelihood}}
+\subsubsection[{Shape\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}Shape\-Likelihood\-::\-Shape\-Likelihood (
+\begin{DoxyParamCaption}
+\item[{const {\bf Distribution} \&}]{signal, }
+\item[{const {\bf Distribution} \&}]{background, }
+\item[{const {\bf Distribution} \&}]{signal\-Sample, }
+\item[{const {\bf Distribution} \&}]{background\-Sample, }
+\item[{double}]{N, }
+\item[{bool}]{histograming = {\ttfamily false}, }
+\item[{bool}]{poisson\-Sampling = {\ttfamily false}, }
+\item[{int}]{seed = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classShapeLikelihood_aa55ad8f50f5965c942efcdf6bff59713}
+The Simple\-Shape\-Likelihood constructor 
+\begin{DoxyParams}{Parameters}
+{\em signal} & signal expectation (pdf) \\
+\hline
+{\em background} & background expectation (pdf) \\
+\hline
+{\em signal\-Sample} & \\
+\hline
+{\em background} & \\
+\hline
+{\em N} & number of events in sample \\
+\hline
+{\em seed} & random number generator seed \\
+\hline
+\end{DoxyParams}
+\hypertarget{classShapeLikelihood_a138035dc74b7e1cb135e93afaf9e56d7}{\index{Shape\-Likelihood@{Shape\-Likelihood}!Shape\-Likelihood@{Shape\-Likelihood}}
+\index{Shape\-Likelihood@{Shape\-Likelihood}!ShapeLikelihood@{Shape\-Likelihood}}
+\subsubsection[{Shape\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}Shape\-Likelihood\-::\-Shape\-Likelihood (
+\begin{DoxyParamCaption}
+\item[{const {\bf Distribution} \&}]{signal, }
+\item[{const {\bf Distribution} \&}]{background, }
+\item[{const {\bf Distribution} \&}]{signal\-Sample, }
+\item[{const {\bf Distribution} \&}]{background\-Sample, }
+\item[{double}]{N, }
+\item[{int}]{seed = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classShapeLikelihood_a138035dc74b7e1cb135e93afaf9e56d7}
+The Simple\-Shape\-Likelihood constructor 
+\begin{DoxyParams}{Parameters}
+{\em signal} & signal expectation (pdf) \\
+\hline
+{\em background} & background expectation (pdf) \\
+\hline
+{\em signal\-Sample} & \\
+\hline
+{\em background} & \\
+\hline
+{\em N} & number of events in sample \\
+\hline
+{\em seed} & random number generator seed \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classShapeLikelihood_acf56e312fd4f0881aa09215d73b93412}{\index{Shape\-Likelihood@{Shape\-Likelihood}!Call\-Back\-Fcn@{Call\-Back\-Fcn}}
+\index{Call\-Back\-Fcn@{Call\-Back\-Fcn}!ShapeLikelihood@{Shape\-Likelihood}}
+\subsubsection[{Call\-Back\-Fcn}]{\setlength{\rightskip}{0pt plus 5cm}{\bf likelihood\-Callback} Shape\-Likelihood\-::\-Call\-Back\-Fcn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classShapeLikelihood_acf56e312fd4f0881aa09215d73b93412}
+
+
+A callback function of the likelihood evaluation to be passed to the minimizer. 
+
+
+
+Implements \hyperlink{classBinnedLikelihood_aed7e05d58a36f515afc8e34fe8550b31}{Binned\-Likelihood}.
+
+\hypertarget{classShapeLikelihood_a67630eb790d07ef1d0d2e33711495cbe}{\index{Shape\-Likelihood@{Shape\-Likelihood}!Clone@{Clone}}
+\index{Clone@{Clone}!ShapeLikelihood@{Shape\-Likelihood}}
+\subsubsection[{Clone}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Shape\-Likelihood}$\ast$ Shape\-Likelihood\-::\-Clone (
+\begin{DoxyParamCaption}
+\item[{int}]{seed}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classShapeLikelihood_a67630eb790d07ef1d0d2e33711495cbe}
+Returns a clone of the likelihood with a possible exception of the rng seed 
+
+Implements \hyperlink{classLikelihood_a938b362a171c46f447cb364effc83bcf}{Likelihood}.
+
+\hypertarget{classShapeLikelihood_aad505df9d12960a6ed614f8c56b87b16}{\index{Shape\-Likelihood@{Shape\-Likelihood}!Enable\-Poisson\-Sampling@{Enable\-Poisson\-Sampling}}
+\index{Enable\-Poisson\-Sampling@{Enable\-Poisson\-Sampling}!ShapeLikelihood@{Shape\-Likelihood}}
+\subsubsection[{Enable\-Poisson\-Sampling}]{\setlength{\rightskip}{0pt plus 5cm}void Shape\-Likelihood\-::\-Enable\-Poisson\-Sampling (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classShapeLikelihood_aad505df9d12960a6ed614f8c56b87b16}
+\hypertarget{classShapeLikelihood_afe024bedaab4633ded018d23d17c37f8}{\index{Shape\-Likelihood@{Shape\-Likelihood}!Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}}
+\index{Evaluate\-L\-L\-H@{Evaluate\-L\-L\-H}!ShapeLikelihood@{Shape\-Likelihood}}
+\subsubsection[{Evaluate\-L\-L\-H}]{\setlength{\rightskip}{0pt plus 5cm}double Shape\-Likelihood\-::\-Evaluate\-L\-L\-H (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classShapeLikelihood_afe024bedaab4633ded018d23d17c37f8}
+Evaluates the log likelihood sum 
+\begin{DoxyParams}{Parameters}
+{\em xi} & the signal fraction for which the likelihood should be evaulated. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classBinnedLikelihood_a2084a64cd8b5d6bf8055538a0f633785}{Binned\-Likelihood}.
+
+\hypertarget{classShapeLikelihood_a37d2b69c8d222ffccd0a649f91272043}{\index{Shape\-Likelihood@{Shape\-Likelihood}!Mu2\-Xi@{Mu2\-Xi}}
+\index{Mu2\-Xi@{Mu2\-Xi}!ShapeLikelihood@{Shape\-Likelihood}}
+\subsubsection[{Mu2\-Xi}]{\setlength{\rightskip}{0pt plus 5cm}double Shape\-Likelihood\-::\-Mu2\-Xi (
+\begin{DoxyParamCaption}
+\item[{double}]{mu}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classShapeLikelihood_a37d2b69c8d222ffccd0a649f91272043}
+Number of signal events to signal fraction 
+\begin{DoxyParams}{Parameters}
+{\em mu} & number of signal events \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+signal fraction 
+\end{DoxyReturn}
+\hypertarget{classShapeLikelihood_aa303861500c399cb680d89b15d08b806}{\index{Shape\-Likelihood@{Shape\-Likelihood}!Sample\-Events@{Sample\-Events}}
+\index{Sample\-Events@{Sample\-Events}!ShapeLikelihood@{Shape\-Likelihood}}
+\subsubsection[{Sample\-Events}]{\setlength{\rightskip}{0pt plus 5cm}void Shape\-Likelihood\-::\-Sample\-Events (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classShapeLikelihood_aa303861500c399cb680d89b15d08b806}
+
+
+Generates a new observation (event sample) based on the sampling pdfs. 
+
+
+
+Implements \hyperlink{classBinnedLikelihood_a0793b8109912c6e509470a14a58d2a2a}{Binned\-Likelihood}.
+
+\hypertarget{classShapeLikelihood_a03f18beacb939bb6766c93e1a9d202b4}{\index{Shape\-Likelihood@{Shape\-Likelihood}!Xi2\-Mu@{Xi2\-Mu}}
+\index{Xi2\-Mu@{Xi2\-Mu}!ShapeLikelihood@{Shape\-Likelihood}}
+\subsubsection[{Xi2\-Mu}]{\setlength{\rightskip}{0pt plus 5cm}double Shape\-Likelihood\-::\-Xi2\-Mu (
+\begin{DoxyParamCaption}
+\item[{double}]{xi}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classShapeLikelihood_a03f18beacb939bb6766c93e1a9d202b4}
+Signal fraction to number of events 
+\begin{DoxyParams}{Parameters}
+{\em xi} & signal fraction \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of events 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/public/\-M\-L\-Sandbox/\hyperlink{Likelihood_8h}{Likelihood.\-h}\item 
+/home/travis/build/sflis/\-M\-L\-Sandbox/private/\-M\-L\-Sandbox/\hyperlink{MLSandbox_2Likelihood_8cxx}{Likelihood.\-cxx}\end{DoxyCompactItemize}
