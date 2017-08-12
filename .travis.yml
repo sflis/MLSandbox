@@ -35,9 +35,11 @@ before_install:
   - sudo apt-get install -qq libgsl0-dev 
 
 install:
+  - cd ..
   - wget https://github.com/martwo/BoostNumpy/archive/master.zip
-  - tar -xzvf BoostNumpy-master.zip
-  - pushd BoostNumpy-master && ./configure --prefix=/usr && make && sudo make install && popd
+  - tar -xzvf master.zip
+  - pushd master && ./configure --prefix=/usr && make && sudo make install && popd
+  - cd $TRAVIS_BUILD_DIR
 # Build your code e.g. by calling make
 script:
   - cd ..
