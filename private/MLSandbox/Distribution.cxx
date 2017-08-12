@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <numeric>
 #include <limits>
+#include <stdexcept>
 using namespace std;
 
 Distribution::Distribution(Distribution const &base, boost::shared_ptr<RNG> rng):
@@ -37,8 +38,7 @@ seed_(rSeed){
     range_ = rangeMax_ - rangeMin_;
     nBins_ = distribution.size();
     if(range_ < 0){
-        cerr<<"Error: interval is negative..."<<endl;
-        return;
+        throw std::invalid_argument("Error: interval is negative");
     }
 
 
