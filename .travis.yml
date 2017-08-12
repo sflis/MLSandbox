@@ -1,7 +1,7 @@
 # This will run on Travis' 'new' container-based infrastructure
-sudo: false
+sudo: enable
 
-language: Ç++
+language: C++
 
 
 # Blacklist
@@ -26,10 +26,15 @@ addons:
       - doxygen-latex
       - doxygen-gui
       - graphviz
-
+      - gsl-bin
+      - cmake
+      - libboost-python-dev
+      - libboost-serialization-dev
+      - python-numpy
 # Build your code e.g. by calling make
 script:
-  echo 'hello'
+  cmake $TRAVIS_BUILD_DIR
+  #echo 'hello'
 #  - make
 
 # Generate and deploy documentation
