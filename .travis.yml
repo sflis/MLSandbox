@@ -38,7 +38,7 @@ install:
   - cd ..
   - wget https://github.com/martwo/BoostNumpy/archive/master.zip
   - unzip master.zip
-  - pushd master && ./configure --prefix=/usr && make && sudo make install && popd
+  - pushd BoostNumpy-master && ./configure --prefix=/usr && make && sudo make install && popd
   - cd $TRAVIS_BUILD_DIR
 # Build your code e.g. by calling make
 script:
