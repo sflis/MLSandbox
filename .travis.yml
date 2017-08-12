@@ -32,7 +32,7 @@ addons:
       - python-numpy
 before_install:
 - sudo apt-get update -qq
-- sudo apt-get install -qq libgsl-dev
+- sudo apt-get install -qq libgsl0-dev 
 
 # Build your code e.g. by calling make
 script:
