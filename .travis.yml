@@ -1,5 +1,9 @@
 # This will run on Travis' 'new' container-based infrastructure
 sudo: enable
+#Testing both linux and mac
+os:
+  - linux
+  - osx
 
 language: C++
 
@@ -55,3 +59,9 @@ after_success:
   - cd $TRAVIS_BUILD_DIR
   - chmod +x generateDocumentationAndDeploy.sh
   - ./generateDocumentationAndDeploy.sh
+
+#Allow OS X to fail for now
+matrix:
+  allow_failures:
+    - os: osx
+
