@@ -47,8 +47,8 @@ install:
   - cd ..
   - wget https://github.com/martwo/BoostNumpy/archive/master.zip
   - unzip master.zip
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pushd BoostNumpy-master && ./configure --prefix=/usr && cd build && make && sudo make install && popd
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then pushd BoostNumpy-master && ./configure --prefix=/usr/local && cd build && make && sudo make install && popd
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pushd BoostNumpy-master && ./configure --prefix=/usr && cd build && make && sudo make install && popd ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then pushd BoostNumpy-master && ./configure --prefix=/usr/local && cd build && make && sudo make install && popd ; fi
   - cd $TRAVIS_BUILD_DIR
 # Build your code e.g. by calling make
 script:
