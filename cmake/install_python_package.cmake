@@ -1,4 +1,4 @@
-message(STATUS "Installing python package \"ndhist\" via setuptools.")
+message(STATUS "Installing python package \"MLSandbox\" via setuptools.")
 
 execute_process(
     COMMAND /usr/bin/env bash /home/sflis/i3/projects/MLSandbox/MLSandboxSrc/cmake/invoke_setup.py.sh  /home/sflis/i3/projects/MLSandbox/MLSandboxSrc /usr/local

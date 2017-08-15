@@ -81,7 +81,7 @@ if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
         ${PYTHON_INCLUDE_DIRS}
         ${NUMPY_INCLUDE_DIRS}
         ${BOOST_INCLUDE_DIRS}
-                ${BOOSTNUMPY_INCLUDE_DIRS}
+        ${BOOSTNUMPY_INCLUDE_DIRS}
         ${GSL_INCLUDE_DIRS}
         ${PROJECT_SOURCE_DIR}/public/
         ${PROJECT_SOURCE_DIR}/private/
@@ -111,34 +111,34 @@ if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
     )
 
 # Copy some cmake files over to the build directory.
-    add_custom_command(TARGET mlsandbox
-        POST_BUILD
-        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/cmake
-    )
-    add_custom_command(TARGET mlsandbox
-        POST_BUILD
-        COMMAND cp ${PROJECT_SOURCE_DIR}/cmake/invoke_setup.py.sh ${CMAKE_BINARY_DIR}/cmake
-    )
+    #add_custom_command(TARGET mlsandbox
+    #    POST_BUILD
+    #    COMMAND mkdir -p ${CMAKE_BINARY_DIR}/cmake
+    #)
+    #add_custom_command(TARGET mlsandbox
+    #    POST_BUILD
+    #    COMMAND cp ${PROJECT_SOURCE_DIR}/cmake/invoke_setup.py.sh ${CMAKE_BINARY_DIR}/cmake
+    #)
 
     add_custom_target(build_python_package
         ALL
         mkdir -p ${CMAKE_BINARY_DIR}/python/MLSandbox
         COMMAND cp -r ${PROJECT_SOURCE_DIR}/python/* ${CMAKE_BINARY_DIR}/python/MLSandbox
-        DEPENDS mlsandbox
+        #DEPENDS mlsandbox
         COMMENT "Building python package ..."
     )
 
     # Install all the public header files into the include directory.
-    install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mlsandbox
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/
-        FILES_MATCHING PATTERN "*.hpp"
-        PATTERN ".git" EXCLUDE
-    )
+    #install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mlsandbox
+    #    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/
+    #    FILES_MATCHING PATTERN "*.hpp"
+    #    PATTERN ".git" EXCLUDE
+    #)
 
     # Install the shared libraries into the library directory.
-    install(TARGETS mlsandbox
-        LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-    )
+    #install(TARGETS mlsandbox
+    #    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    #)
 
     # Build the core python extension module that provides the Python
     # interface to the C++ code of ndhist.
@@ -174,8 +174,9 @@ if(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
     #add_subdirectory(test)
 
     message(STATUS "Project \"${PROJECT_NAME}\" configured.")
-    message(STATUS "+    Now, type-in \"cd ${CMAKE_BINARY_DIR} && make && make install\"!")
-    message(STATUS "+    \"${PROJECT_NAME}\" will be installed in '${CMAKE_INSTALL_PREFIX}'.")
+    message(STATUS "+    Now, type-in \"cd ${CMAKE_BINARY_DIR} && make\"")
+    #message(STATUS "+    Now, type-in \"cd ${CMAKE_BINARY_DIR} && make && make install\"!")
+    #message(STATUS "+    \"${PROJECT_NAME}\" will be installed in '${CMAKE_INSTALL_PREFIX}'.")
 else(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
     message(STATUS "Failed to configure")
 endif(${PROJECT_NAME}_CONFIGURED_SUCCESSFULLY)
