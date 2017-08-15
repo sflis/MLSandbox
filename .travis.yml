@@ -2,7 +2,7 @@
 sudo: enable
 #Testing both linux and mac
 os:
-#  - linux
+  - linux
   - osx
 
 language: C++
