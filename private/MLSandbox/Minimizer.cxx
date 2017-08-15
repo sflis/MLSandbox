@@ -28,7 +28,7 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
 
     // For the boundary case best fit mu = 0 the slope is always negative and we only need to compute
     // one slope.
-    uint i = 0;
+    unsigned int i = 0;
     if( (f_2 - f_1) <= 0){
         bestFit_ = minXi_;
         bestFitLLH_ = f_1;

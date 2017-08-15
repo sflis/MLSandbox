@@ -27,7 +27,7 @@
 */
 class RNG{
    public:
-        RNG(uint seed):seed_(seed){
+        RNG(unsigned int seed):seed_(seed){
             const gsl_rng_type *T = gsl_rng_default;
             rng_ = gsl_rng_alloc(T);
             gsl_rng_set(rng_, seed);
@@ -39,7 +39,7 @@ class RNG{
         double Poisson(double nu){return gsl_ran_poisson(rng_, nu);}
         double Gauss(double mu, double sigma){return gsl_ran_gaussian(rng_, sigma) + mu;}
         double Binomial(double p, double N){ return gsl_ran_binomial(rng_, p,N);}
-        uint seed_;
+        unsigned int seed_;
     private:
         gsl_rng *rng_;
 

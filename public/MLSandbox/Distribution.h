@@ -33,7 +33,7 @@ class Distribution{
    public:
 
         Distribution(Distribution const &base, boost::shared_ptr<RNG> rng);
-        Distribution(std::vector<double>const &distribution, double rMin, double rMax, uint rSeed = 1);
+        Distribution(std::vector<double>const &distribution, double rMin, double rMax, unsigned int rSeed = 1);
 
         /// Returns the pdf value evaluated at the given value
         double PDF(double x) const; 

@@ -29,7 +29,7 @@ Distribution::Distribution(Distribution const &base, boost::shared_ptr<RNG> rng)
     {}
 
 //_____________________________________________________________________________
-Distribution::Distribution(const std::vector<double> &distribution, double rMin, double rMax, uint rSeed):
+Distribution::Distribution(const std::vector<double> &distribution, double rMin, double rMax, unsigned int rSeed):
 rangeMax_(rMax),
 rangeMin_(rMin),
 useCDF_(false),
