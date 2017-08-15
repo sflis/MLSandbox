@@ -188,7 +188,7 @@ if (__name__ == "__main__"):
 
     import pickle
     for i in range(1):
-        for dec in np.linspace(-np.pi/2*0.95,np.pi*0.95,100):
+        for dec in np.linspace(-np.pi/2*0.95,np.pi/2*0.95,100):
             print(dec*180/np.pi)
             try:
                 time1 = time.time()

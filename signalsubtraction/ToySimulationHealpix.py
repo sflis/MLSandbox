@@ -114,7 +114,7 @@ class complexsource(object):
         self.true_pdf = np.zeros(n_pix)
         
         #Sample source locations in the galactic plane
-        self.ga_sources_ra = np.random.normal(loc=0,scale=0.2,size=nsources)*np.pi#np.random.uniform(0,2,nsources)*np.pi
+        self.ga_sources_ra = np.random.normal(loc=0,scale=0.5,size=nsources)*np.pi#np.random.uniform(0,2,nsources)*np.pi
         self.ga_sources_dec = np.random.normal(loc=0,scale=0.061,size=nsources)*np.pi
         #Rotate the coordinates to Equatorial 
         r = healpy.Rotator(coord=['G','C'])
@@ -179,6 +179,13 @@ def fisher(x1,x2,p1,p2,k):
  
 
 def projected_fisher(ang,theta,thetap):
+    ''' A fisher distribution projected on to the theta axis
+
+        args:
+        ang -- The angular uncertainty (sqrt(var))
+        theta -- The theta angle at which the function should be evaluated
+        thetap -- The center in theta of the fisher distribution
+    '''
     from scipy import special
     k=1/ang**2
     e = np.exp(k*np.cos(theta)*np.cos(thetap))
@@ -223,16 +230,26 @@ class ToySimulation(object):
         self.determine_sig_pdf()
     
     def compute_scr_data_pdf(self):
-        
+        ''' Determines the 'background' pdf from the scrambled data
+        '''
         zenith_pdf =  dashi.histogram.hist1d(self.bedges)
         zenith_pdf.fill(np.array(self.data[1]))
         #Generating a scrambled signal pdf
         self.scr_data_pdf = np.zeros(self.n_pix)
+        solid_ang = 2*np.pi*(np.cos(self.bedges[:-1])-np.cos(self.bedges[1:]))
+        zenith_pdf.bincontent[:] *=healpy.nside2pixarea(self.n_side)/solid_ang
+        # angs = healpy.pix2ang(self.n_side,xrange(self.n_pix))
+        # for i in range(len(zenith_pdf.bincontent))[1:]:
+        #     m = (zenith_pdf.bincenters[i]>angs[0]) & (zenith_pdf.bincenters[i-1]<angs[0]) 
+        #     # print(m)
+        #     self.scr_data_pdf[m] = zenith_pdf.bincontent[i]
+        angs = healpy.pix2ang(self.n_side,xrange(self.n_pix))
         for i in xrange(self.n_pix):
-            ang = healpy.pix2ang(self.n_side,i)
-            ind = np.where(self.bedges>ang[0])[0]-1
-            solid_ang = 2*np.pi*(np.cos(self.bedges[ind[0]])-np.cos(self.bedges[ind[0]+1]))
-            self.scr_data_pdf[i] = zenith_pdf.bincontent[ind[0]]*healpy.nside2pixarea(self.n_side)/solid_ang
+            #ang = (angs[0][i]
+            #ang = healpy.pix2ang(self.n_side,i)
+            ind = np.where(self.bedges>angs[0][i])[0]-1
+            #solid_ang = 2*np.pi*(np.cos(self.bedges[ind[0]])-np.cos(self.bedges[ind[0]+1]))
+            self.scr_data_pdf[i] = zenith_pdf.bincontent[ind[0]]#*healpy.nside2pixarea(self.n_side)/solid_ang
 
     def generate_data_sample(self,nsig):
         ''' Generates a data sample with nsig injected 
@@ -248,6 +265,8 @@ class ToySimulation(object):
         return self.data
     
     def determine_sig_pdf(self):
+        ''' Determines the normal and scrambled signal pdf 
+        '''
         sky_pdf = self.sig_model.pdf()
         zenith_pdf =  dashi.histogram.hist1d(self.bedges)
         #Integrating the signal in RA
@@ -266,13 +285,7 @@ class ToySimulation(object):
 
 
     def generate_pdfs(self):
-        """ Performs a pseudo experiment with nsig number of signal events.
-
-            The background pdf is determined for each pseudo experiment an depends on the 
-            sampled data
-
-            args:
-            nsig -- Number of signal events
+        """ Determines the pdfs for the current sample and also generates a scrambled dataset
 
             Returns:
             A dictionary with pdfs and pseudo data
@@ -314,14 +327,20 @@ class ToySimulation(object):
         
 
 def bg_lin_slope(x):
+    ''' A simple linear background model in declination
+    '''
     return (2*x+1)*np.sin(np.pi-x)
 
     
 def bg_fisher(x):
+    ''' A background model in declination based 
+        on a fisher distribution with a 60 deg psf 
+    '''
     return projected_fisher(60*np.pi/180,0.001,np.pi-x)*np.sin(np.pi-x)
 
 bg_models = {'linear_slope':bg_lin_slope,'fisher60':bg_fisher}
-#sig_models = {'singlesource':,'complexsource':}
+
+
 if (__name__ == "__main__"):
     import sys
     import dashi
@@ -330,10 +349,17 @@ if (__name__ == "__main__"):
 
     seed = int(sys.argv[1])
 
-    N = 7.5e4
-    n_side = 32 
-    bg = bg_model(N,bg_models['linear_slope'],seed =seed)
-    sig = sig_model(10*np.pi/180,(-80*np.pi/180,266*np.pi/180),n_side = n_side,seed = seed)
+    N = 7.5e5 #number of events in sample
+    n_side = 64 #A number on the form 2^N which sets the number of healpix bins  
+    bmodel = bg_models['linear_slope'] #The background model 
+    source_ext = 5 #Source extension in deg
+    source_dec = -50 #Source declination in deg
+    nsources = 100#Number of sources (only valid for complex source)
+    bg = bg_model(N,bmodel,seed =seed)
+    #sig = sig_model(source_ext*np.pi/180,(source_dec*np.pi/180,266*np.pi/180),n_side = n_side,seed = seed)
+    sig = complexsource(source_ext*np.pi/180,n_side = n_side,nsources=nsources,seed = seed)
+    
+
     selection = ToySimulation(bg,sig,n_side = n_side)
     selection.generate_data_sample(int(0.00*N))
     pdfs = selection.generate_pdfs()

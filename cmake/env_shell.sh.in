@@ -21,7 +21,7 @@ printf "########################\n"
 printf "#Entering MLSandbox env#\n"
 printf "########################\n"
 
-_I3_SHELL=$NEW_SHELL
+MLSANDBOX_SHELL=$NEW_SHELL
 
 export PYTHONPATH=@CMAKE_BINARY_DIR@/python:$PYTHONPATH
 

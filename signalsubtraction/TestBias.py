@@ -212,7 +212,7 @@ if (__name__ == "__main__"):
 
 
     bg_shape='linear_slope'#='linear_slope'#'fisher60'
-    n_events = 2.5e4
+    n_events = 2.5e5
     upper_sig_frac = n_events*0.08
 
     n_side=64
@@ -230,9 +230,9 @@ if (__name__ == "__main__"):
         data['declination'] = dec
     elif(source_model == 'ComplexSource'):
         dec = -29
-        sig = toy_sim.complexsource(1.*np.pi/180, nsources=int(ext_arg), n_side = n_side, seed=seed)
+        sig = toy_sim.complexsource(2.*np.pi/180, nsources=int(ext_arg), n_side = n_side, seed=seed)
         data['n_sources'] = ext_arg
-        data['source_ext'] = 1.
+        data['source_ext'] = 2.
         data['declination'] = dec
     
     selection = toy_sim.ToySimulation(bg, sig, n_side = n_side)
