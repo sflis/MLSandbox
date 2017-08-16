@@ -106,6 +106,7 @@ class  FeldmanCousinsAnalysis{
 
         FCRanks &GetRanks(){return ranks_;}
         FCRanks ranks_;
+        FCRanks globalBestFits_;
         Minimizer minimizer_;
 private:
 

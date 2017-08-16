@@ -166,7 +166,7 @@ void FeldmanCousinsAnalysis::ComputeRanks(uint64_t nExperiments,
     threadHandels.resize(nThreads);
 
     //this is where the calculated best fit distributions are stored. NOTE:not implemented yet
-    FCRanks globalBestFits;
+    // FCRanks globalBestFits;
 
     uint64_t globalnTestedHyptheses = 0;
     //There ought to be a better way to set up the xi values queue
@@ -186,7 +186,7 @@ void FeldmanCousinsAnalysis::ComputeRanks(uint64_t nExperiments,
                     new FeldmanCousinsAnalysis( boost::shared_ptr<Likelihood>( llh_->Clone(i) ), cl_)
                 ),
                 ranks_,
-                globalBestFits,
+                globalBestFits_,
                 llh_hypos,
                 nExperiments,
                 i,
@@ -288,12 +288,15 @@ void *rankComputationThread(void *data){
 
     uint64_t n = fcThreadData->nExperiments;
     ranks.resize(n);
+    muFits.resize(n);
+    
     double cl = 0.9;
     while(!muQueueEmpty){
 
         for(uint64_t i = 0; i < n; i++){
             analysis.Sample(currentHypothesis);
             ranks[i] = analysis.EvaluateTestsStatistic(currentHypothesis);
+            muFits[i] = analysis.minimizer_.bestFit_;
         }
         std::sort(ranks.begin(), ranks.end());
         currentRankAtCL = ranks[(1-cl)*(n-1)];
@@ -306,14 +309,15 @@ void *rankComputationThread(void *data){
         cout<<"Hypotheses tested "<<fcThreadData->nTestedHypotheses<<"/"<<fcThreadData->totalHypotheses<<endl;
         cout<<"==================="<<endl;
 
-        //Transfering the computed ranks to the global ranks object in the main thread
+        //Transfering the computed ranks and fits to the global ranks and fits objects in the main thread
         fcThreadData->globalRanks.Fill(currentHypothesis,ranks,false);
+        fcThreadData->globalBestFits.Fill(currentHypothesis,muFits,false);
 
         pthread_mutex_unlock( &mutexWriteRanks );
         //===UnLock Write Ranks===--------------
 
         //===Lock Fetch Hypothesis===+++++++++++++++++++
-        pthread_mutex_lock( &mutexFetchHypothesis );
+        pthread_mutex_lock( &mutexFetchHypothesis);
 
         muQueueEmpty = fcThreadData->testHypothesisSet.empty();
         if(!muQueueEmpty){

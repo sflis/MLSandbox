@@ -64,6 +64,7 @@ void register_FeldmanCousins()
        .def("ComputeLimits",&mlsandbox::python::ComputeLimits)
        .def("GenerateLimitsEnsemble",&mlsandbox::python::GenerateLimitsEnsemble)
        .def_readwrite("ranks",&FeldmanCousinsAnalysis::ranks_)
+       .def_readwrite("bestfits",&FeldmanCousinsAnalysis::globalBestFits_)
        .def_readwrite("minimizer",&FeldmanCousinsAnalysis::minimizer_)
        ;
   }
