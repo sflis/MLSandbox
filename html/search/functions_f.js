@@ -8,5 +8,5 @@ var searchData=
   ['register_5flikelihood',['register_Likelihood',['../pybindings_2Likelihood_8cxx.html#a4dc0bafec23bc1ae4727f0921ddb34c7',1,'Likelihood.cxx']]],
   ['register_5fminimizer',['register_Minimizer',['../pybindings_2Minimizer_8cxx.html#a9591cd1348c773742d2f63e8f8151e42',1,'Minimizer.cxx']]],
   ['register_5fneymananalysis',['register_NeymanAnalysis',['../pybindings_2NeymanAnalysis_8cxx.html#a48f35108bf6e823923f20275fa1183a3',1,'NeymanAnalysis.cxx']]],
-  ['rng',['RNG',['../classRNG.html#add68b5f4738198b83f1021a1817fd821',1,'RNG']]]
+  ['rng',['RNG',['../classRNG.html#ad1a0404ddd79895cfc05432f06c9c385',1,'RNG']]]
 ];

@@ -10,7 +10,7 @@ var searchData=
   ['register_5fminimizer',['register_Minimizer',['../pybindings_2Minimizer_8cxx.html#a9591cd1348c773742d2f63e8f8151e42',1,'Minimizer.cxx']]],
   ['register_5fneymananalysis',['register_NeymanAnalysis',['../pybindings_2NeymanAnalysis_8cxx.html#a48f35108bf6e823923f20275fa1183a3',1,'NeymanAnalysis.cxx']]],
   ['register_5fthese_5fthings',['REGISTER_THESE_THINGS',['../module_8cxx.html#a7102a509156d26af75e87fb9c8bb9d50',1,'module.cxx']]],
-  ['rng',['RNG',['../classRNG.html',1,'RNG'],['../classRNG.html#add68b5f4738198b83f1021a1817fd821',1,'RNG::RNG()']]],
+  ['rng',['RNG',['../classRNG.html',1,'RNG'],['../classRNG.html#ad1a0404ddd79895cfc05432f06c9c385',1,'RNG::RNG()']]],
   ['rng_2eh',['RNG.h',['../RNG_8h.html',1,'']]],
   ['rng_5f',['rng_',['../classBinnedLikelihood.html#a6a3e39234f7cb8a1a28df28204884632',1,'BinnedLikelihood']]]
 ];

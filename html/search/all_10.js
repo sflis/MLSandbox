@@ -6,7 +6,7 @@ var searchData=
   ['samplefromdistri',['SampleFromDistrI',['../classDistribution.html#aeaaf3037d0c8167d4c41fe4213df3181',1,'Distribution']]],
   ['samplei',['sampleI',['../namespacemlsandbox_1_1python.html#a2a2c84be9021d9445d30be3d85447f9b',1,'mlsandbox::python']]],
   ['savefcranks',['saveFCRanks',['../namespacemlsandbox.html#a8c015d48e7a9a7e3885263581f3e82cc',1,'mlsandbox']]],
-  ['seed_5f',['seed_',['../classRNG.html#a6b240cba939fb5463c7497153a852320',1,'RNG']]],
+  ['seed_5f',['seed_',['../classRNG.html#aa644a44fe1386322507d92e23066d063',1,'RNG']]],
   ['serialize',['serialize',['../classFCRanks.html#a920cac200dd2b306fe92b3423f83d6e2',1,'FCRanks']]],
   ['set_5fevents',['set_events',['../namespacemlsandbox_1_1python.html#a2b76c3fcdec9f6639cf79a73939c63a2',1,'mlsandbox::python']]],
   ['setboundaries',['SetBoundaries',['../classMinimizer.html#af529621f077cc602c695d1e60e5adbba',1,'Minimizer']]],
