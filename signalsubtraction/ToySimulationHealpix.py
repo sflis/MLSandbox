@@ -59,19 +59,20 @@ class sig_model(object):
         n_pix = healpy.nside2npix(self.n_side)
         self.true_pdf = np.zeros(n_pix)
 
-        for i in xrange(n_pix):
-            pix_pos = healpy.pix2ang(self.n_side,i)
-            self.true_pdf[i] =  fisher(pix_pos[0],pix_pos[1],np.pi/2-coord[0],coord[1],1./psf**2)
+        inds = np.arange(0,n_pix)
+        angs = healpy.pix2ang(self.n_side,inds)
+        # for ga_dec,ga_ra in zip(self.ga_sources_dec,self.ga_sources_ra):
+        self.true_pdf[:] +=fisher(angs[0],angs[1],np.pi/2-coord[0],coord[1],1./psf**2)
+
+        # for i in xrange(n_pix):
+        #     pix_pos = healpy.pix2ang(self.n_side,i)
+        #     self.true_pdf[i] =  fisher(pix_pos[0],pix_pos[1],np.pi/2-coord[0],coord[1],1./psf**2)
         
         self.distr = Distribution(self.true_pdf,0,1,self.seed)
         
-        #creating the signal pdf that will be used     
-        self.binned_pdf = np.zeros(healpy.nside2npix(self.n_side/2))
-
-        for i in xrange(healpy.nside2npix(self.n_side/2)):
-            pix_pos = healpy.pix2ang(self.n_side/2,i)
-            self.binned_pdf[i] =  fisher(pix_pos[0],pix_pos[1],np.pi/2-coord[0],coord[1],1./psf**2)
-
+        #creating the signal pdf that will be used in the likelihood   
+        self.binned_pdf = healpy.ud_grade(self.true_pdf, self.n_side/2)    
+        
 
     def generate(self,nsig):
         '''Generates signal events
@@ -121,19 +122,16 @@ class complexsource(object):
         self.ga_sources_dec, self.ga_sources_ra = r(np.pi/2-self.ga_sources_dec, self.ga_sources_ra)  # Apply the conversion
         
         #Sum up contributions from all sources in the healpix map 
-        for i in xrange(n_pix):
-            pix_pos = healpy.pix2ang(self.n_side,i)
-            self.true_pdf[i] =  np.sum(fisher(pix_pos[0],pix_pos[1],self.ga_sources_dec,self.ga_sources_ra,1./psf**2))
+        inds = np.arange(0,n_pix)
+        angs = healpy.pix2ang(self.n_side,inds)
+        for ga_dec,ga_ra in zip(self.ga_sources_dec,self.ga_sources_ra):
+            self.true_pdf[:] +=fisher(angs[0],angs[1],ga_dec,ga_ra,1./psf**2)
         #Creating a binned distribution from the healpix map that we can sample from    
         self.distr = Distribution(self.true_pdf,0,1,self.seed)
         
         #creating the signal pdf that will be used in the likelihood   
-        self.binned_pdf = np.zeros(healpy.nside2npix(self.n_side/2))
-
-        for i in xrange(healpy.nside2npix(self.n_side/2)):
-            pix_pos = healpy.pix2ang(self.n_side/2,i)
-            self.binned_pdf[i] =  np.sum(fisher(pix_pos[0],pix_pos[1],self.ga_sources_dec,self.ga_sources_ra,1./psf**2))
-    
+        self.binned_pdf = healpy.ud_grade(self.true_pdf, self.n_side/2)
+        
     
         
         
@@ -232,24 +230,20 @@ class ToySimulation(object):
     def compute_scr_data_pdf(self):
         ''' Determines the 'background' pdf from the scrambled data
         '''
+        #Get the declination distribution of the data
         zenith_pdf =  dashi.histogram.hist1d(self.bedges)
         zenith_pdf.fill(np.array(self.data[1]))
-        #Generating a scrambled signal pdf
-        self.scr_data_pdf = np.zeros(self.n_pix)
+        
         solid_ang = 2*np.pi*(np.cos(self.bedges[:-1])-np.cos(self.bedges[1:]))
         zenith_pdf.bincontent[:] *=healpy.nside2pixarea(self.n_side)/solid_ang
-        # angs = healpy.pix2ang(self.n_side,xrange(self.n_pix))
-        # for i in range(len(zenith_pdf.bincontent))[1:]:
-        #     m = (zenith_pdf.bincenters[i]>angs[0]) & (zenith_pdf.bincenters[i-1]<angs[0]) 
-        #     # print(m)
-        #     self.scr_data_pdf[m] = zenith_pdf.bincontent[i]
-        angs = healpy.pix2ang(self.n_side,xrange(self.n_pix))
-        for i in xrange(self.n_pix):
-            #ang = (angs[0][i]
-            #ang = healpy.pix2ang(self.n_side,i)
-            ind = np.where(self.bedges>angs[0][i])[0]-1
-            #solid_ang = 2*np.pi*(np.cos(self.bedges[ind[0]])-np.cos(self.bedges[ind[0]+1]))
-            self.scr_data_pdf[i] = zenith_pdf.bincontent[ind[0]]#*healpy.nside2pixarea(self.n_side)/solid_ang
+        
+        #Map the declination distribution back on the healpix map
+        self.scr_data_pdf = np.zeros(self.n_pix)
+        for i in xrange(len(zenith_pdf.binedges[:-1])):
+            inds = healpy.query_strip(self.n_side,zenith_pdf.binedges[i],zenith_pdf.binedges[i+1])
+            angs = healpy.pix2ang(self.n_side,inds)
+            self.scr_data_pdf[inds] = zenith_pdf.bincontent[i]
+     
 
     def generate_data_sample(self,nsig):
         ''' Generates a data sample with nsig injected 
@@ -269,19 +263,15 @@ class ToySimulation(object):
         '''
         sky_pdf = self.sig_model.pdf()
         zenith_pdf =  dashi.histogram.hist1d(self.bedges)
-        #Integrating the signal in RA
-        for i in xrange(self.n_pix):
-            ang = healpy.pix2ang(self.n_side,i)
-            ind = np.where(self.bedges>ang[0])[0]-1
-            solid_ang = 2*np.pi*(np.cos(self.bedges[ind[0]])-np.cos(self.bedges[ind[0]+1]))
-            zenith_pdf.fill(np.array([ang[0]]),np.array([sky_pdf[i]]/solid_ang))
-        
-        #Generating a scrambled signal pdf
         self.sky_pdf_scr = np.zeros(self.n_pix)
-        for i in xrange(self.n_pix):
-            ang = healpy.pix2ang(self.n_side,i)
-            ind = np.where(self.bedges>ang[0])[0]-1
-            self.sky_pdf_scr[i] = zenith_pdf.bincontent[ind[0]]*healpy.nside2pixarea(self.n_side)
+        #Integrating the signal in RA
+        for i in xrange(len(zenith_pdf.binedges[:-1])):
+            inds = healpy.query_strip(self.n_side,zenith_pdf.binedges[i],zenith_pdf.binedges[i+1])
+            angs = healpy.pix2ang(self.n_side,inds)
+            solid_ang = 2*np.pi*(np.cos(zenith_pdf.binedges[i])-np.cos(zenith_pdf.binedges[i+1]))
+            zenith_pdf.fill(np.array(angs[0]),np.array(sky_pdf[inds]/solid_ang))# np.array([angs[0]),np.array(sky_pdf[inds]/solid_ang))
+            self.sky_pdf_scr[inds] = zenith_pdf.bincontent[i]*healpy.nside2pixarea(self.n_side)
+     
 
 
     def generate_pdfs(self):
@@ -349,15 +339,15 @@ if (__name__ == "__main__"):
 
     seed = int(sys.argv[1])
 
-    N = 7.5e5 #number of events in sample
-    n_side = 64 #A number on the form 2^N which sets the number of healpix bins  
+    N = 7.5e4 #number of events in sample
+    n_side = 256 #A number on the form 2^N which sets the number of healpix bins  
     bmodel = bg_models['linear_slope'] #The background model 
-    source_ext = 5 #Source extension in deg
+    source_ext = 2#Source extension in deg
     source_dec = -50 #Source declination in deg
-    nsources = 100#Number of sources (only valid for complex source)
+    nsources = 1900#Number of sources (only valid for complex source)
     bg = bg_model(N,bmodel,seed =seed)
-    #sig = sig_model(source_ext*np.pi/180,(source_dec*np.pi/180,266*np.pi/180),n_side = n_side,seed = seed)
-    sig = complexsource(source_ext*np.pi/180,n_side = n_side,nsources=nsources,seed = seed)
+    sig = sig_model(source_ext*np.pi/180,(source_dec*np.pi/180,266*np.pi/180),n_side = n_side,seed = seed)
+    #sig = complexsource(source_ext*np.pi/180,n_side = n_side,nsources=nsources,seed = seed)
     
 
     selection = ToySimulation(bg,sig,n_side = n_side)
