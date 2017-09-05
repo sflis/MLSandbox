@@ -16,7 +16,7 @@ class bg_model(object):
         '''
         self.mean = mean
         self.decl_dep = decl_dep
-        x = np.linspace(0,np.pi,1000)
+        x = np.linspace(0,np.pi,10000)
         y = decl_dep(x)
         ddec = Distribution(y,0,np.pi,seed)
         self.ddec = ddec
@@ -55,7 +55,7 @@ class sig_model(object):
         self.psf = psf
         self.seed = seed        
         #A 'true' signal pdf in as a healpix with small bins
-        self.n_side = n_side*2
+        self.n_side = n_side#*2
         n_pix = healpy.nside2npix(self.n_side)
         self.true_pdf = np.zeros(n_pix)
 
@@ -71,7 +71,7 @@ class sig_model(object):
         self.distr = Distribution(self.true_pdf,0,1,self.seed)
         
         #creating the signal pdf that will be used in the likelihood   
-        self.binned_pdf = healpy.ud_grade(self.true_pdf, self.n_side/2)    
+        self.binned_pdf = healpy.ud_grade(self.true_pdf, self.n_side)#/2)    
         
 
     def generate(self,nsig):
@@ -107,6 +107,7 @@ class complexsource(object):
             seed -- Seed to the random number generator
 
         '''
+
         self.psf = psf
         self.seed = seed        
         #A 'true' signal pdf in as a healpix with small bins
@@ -171,9 +172,9 @@ def fisher(x1,x2,p1,p2,k):
                                                 ) )
     else:
         return k/(2*np.pi)*np.exp(k*(
-                                                np.sin(x1)*np.sin(p1)*np.cos(x2-p2)
-                                                + np.cos(x1)*np.cos(p1)
-                                                -1) )
+                                    np.sin(x1)*np.sin(p1)*np.cos(x2-p2)
+                                    + np.cos(x1)*np.cos(p1)
+                                    -1) )
  
 
 def projected_fisher(ang,theta,thetap):
@@ -186,10 +187,13 @@ def projected_fisher(ang,theta,thetap):
     '''
     from scipy import special
     k=1/ang**2
-    e = np.exp(k*np.cos(theta)*np.cos(thetap))
     bessel = special.i0(k*np.sin(theta)*np.sin(thetap))*np.sin(theta)
-    return k*e*bessel/(2*np.sinh(k))
-
+    if(k<200):
+        e = np.exp(k*np.cos(theta)*np.cos(thetap))
+        return k*e*bessel/(2*np.sinh(k))
+    else:
+        e = np.exp(k*(np.cos(theta)*np.cos(thetap)-1))
+        return k*e*bessel
 
 def gettheta(n_side):
     all_ang = healpy.pix2ang(n_side,np.arange(healpy.nside2npix(n_side)))
@@ -216,6 +220,7 @@ class ToySimulation(object):
             ra_fraction -- How much of the right ascension should be used in the shape analysis
             decl_band -- The size of the declination band in ra
         """
+        import healpy_utils     
         self.bg_model = bg_model
         self.sig_model = sig_model
         self.data = np.empty(0)
@@ -226,6 +231,7 @@ class ToySimulation(object):
         self.bedges = bedges
         #generate scrambled signal pdf
         self.determine_sig_pdf()
+        self.distr_corr =  healpy_utils.PixelCorrectedThetaDistr(n_side)
     
     def compute_scr_data_pdf(self):
         ''' Determines the 'background' pdf from the scrambled data
@@ -233,17 +239,31 @@ class ToySimulation(object):
         #Get the declination distribution of the data
         zenith_pdf =  dashi.histogram.hist1d(self.bedges)
         zenith_pdf.fill(np.array(self.data[1]))
+        #zenith_pdf= self.distr_corr.theta_distr(np.array(self.data[1]))
+
+
+        psf = healpy.nside2resol(self.n_side)
         
-        solid_ang = 2*np.pi*(np.cos(self.bedges[:-1])-np.cos(self.bedges[1:]))
-        zenith_pdf.bincontent[:] *=healpy.nside2pixarea(self.n_side)/solid_ang
+        # print(1/psf**2)
+        # smoothed_pdf = np.zeros(zenith_pdf.bincontent.shape[0])
+        # for i in range(zenith_pdf.bincontent.shape[0]):
+            #print(np.isnan(projected_fisher(psf,zenith_pdf.bincenters[:],zenith_pdf.bincenters[i])*zenith_pdf.bincontent[i]))    
+            # smoothed_pdf += projected_fisher(psf,zenith_pdf.bincenters[:],zenith_pdf.bincenters[i])*zenith_pdf.bincontent[i]
+            
+        # zenith_pdf.bincontent[:] = smoothed_pdf
+#        print(np.isnan(smoothed_pdf))
+
+        #2*np.pi*(np.cos(self.bedges[:-1])-np.cos(self.bedges[1:]))
+        zenith_pdf.bincontent[:] *=healpy.nside2pixarea(self.n_side)#/solid_ang
         
         #Map the declination distribution back on the healpix map
         self.scr_data_pdf = np.zeros(self.n_pix)
         for i in xrange(len(zenith_pdf.binedges[:-1])):
             inds = healpy.query_strip(self.n_side,zenith_pdf.binedges[i],zenith_pdf.binedges[i+1])
             angs = healpy.pix2ang(self.n_side,inds)
-            self.scr_data_pdf[inds] = zenith_pdf.bincontent[i]
-     
+            solid_ang = healpy.nside2pixarea(self.n_side)*len(inds)
+            self.scr_data_pdf[inds] = zenith_pdf.bincontent[i]/solid_ang
+        self.scr_data_pdf = healpy.sphtfunc.smoothing(self.scr_data_pdf,sigma=psf*1)
 
     def generate_data_sample(self,nsig):
         ''' Generates a data sample with nsig injected 
@@ -268,9 +288,11 @@ class ToySimulation(object):
         for i in xrange(len(zenith_pdf.binedges[:-1])):
             inds = healpy.query_strip(self.n_side,zenith_pdf.binedges[i],zenith_pdf.binedges[i+1])
             angs = healpy.pix2ang(self.n_side,inds)
-            solid_ang = 2*np.pi*(np.cos(zenith_pdf.binedges[i])-np.cos(zenith_pdf.binedges[i+1]))
+
+            solid_ang = healpy.nside2pixarea(self.n_side)*len(inds)#2*np.pi*(np.cos(zenith_pdf.binedges[i])-np.cos(zenith_pdf.binedges[i+1]))
             zenith_pdf.fill(np.array(angs[0]),np.array(sky_pdf[inds]/solid_ang))# np.array([angs[0]),np.array(sky_pdf[inds]/solid_ang))
             self.sky_pdf_scr[inds] = zenith_pdf.bincontent[i]*healpy.nside2pixarea(self.n_side)
+        self.sky_pdf_scr = healpy.sphtfunc.smoothing(self.sky_pdf_scr,sigma=healpy.nside2resol(self.n_side))
      
 
 
@@ -328,7 +350,13 @@ def bg_fisher(x):
     '''
     return projected_fisher(60*np.pi/180,0.001,np.pi-x)*np.sin(np.pi-x)
 
-bg_models = {'linear_slope':bg_lin_slope,'fisher60':bg_fisher}
+def bg_flat(x):
+    ''' A simple linear background model in declination
+    '''
+    return np.sin(np.pi-x)#np.ones(len(x))#(2*x+1)
+
+
+bg_models = {'flat':bg_flat,'linear_slope':bg_lin_slope,'fisher60':bg_fisher}
 
 
 if (__name__ == "__main__"):
@@ -339,10 +367,10 @@ if (__name__ == "__main__"):
 
     seed = int(sys.argv[1])
 
-    N = 7.5e4 #number of events in sample
-    n_side = 256 #A number on the form 2^N which sets the number of healpix bins  
-    bmodel = bg_models['linear_slope'] #The background model 
-    source_ext = 2#Source extension in deg
+    N = 2.5e5 #number of events in sample
+    n_side = 64 #A number on the form 2^N which sets the number of healpix bins  
+    bmodel = bg_models['flat'] #The background model 
+    source_ext = 5#Source extension in deg
     source_dec = -50 #Source declination in deg
     nsources = 1900#Number of sources (only valid for complex source)
     bg = bg_model(N,bmodel,seed =seed)
@@ -356,6 +384,8 @@ if (__name__ == "__main__"):
     
 
     
+    plt.figure(1)
+    plt.plot(pdfs['data_scr_pdf']/np.sum(pdfs['data_scr_pdf']))
     plt.figure()
     x = np.linspace(0,np.pi,100)
     plt.plot(x,bg_lin_slope(x))
@@ -368,7 +398,8 @@ if (__name__ == "__main__"):
     healpy.mollview(pdfs['data_scr_pdf'])
     healpy.mollview(pdfs['binned_scr_data'])
     healpy.mollview(pdfs['binned_data'])
-    selection.generate_data_sample(int(0.1*N))
+    xi = 0.01
+    selection.generate_data_sample(int(xi*N))
     pdfs = selection.generate_pdfs()
     healpy.mollview(pdfs['binned_data'])
     plt.figure()
@@ -378,6 +409,14 @@ if (__name__ == "__main__"):
     plt.plot(pdfs['signal_scr_pdf']/np.sum(pdfs['signal_scr_pdf']))
 
     healpy.mollview(pdfs['data_scr_pdf']/np.sum(pdfs['data_scr_pdf']),title='data pdf')
-    healpy.mollview(pdfs['data_scr_pdf']/np.sum(pdfs['data_scr_pdf'])-0.1*pdfs['signal_scr_pdf']/np.sum(pdfs['signal_scr_pdf']),title='corrected pdf')
+    healpy.mollview(pdfs['data_scr_pdf']/np.sum(pdfs['data_scr_pdf'])-xi*pdfs['signal_scr_pdf']/np.sum(pdfs['signal_scr_pdf']),title='corrected pdf')
+    plt.figure(1)
+    plt.title("1D pdf view")
+    #plt.plot(pdfs['signal_pdf']/np.sum(pdfs['signal_pdf']))
+    plt.plot(pdfs['data_scr_pdf']/np.sum(pdfs['data_scr_pdf']) - xi*pdfs['signal_scr_pdf']/np.sum(pdfs['signal_scr_pdf']))
+    plt.plot(pdfs['data_scr_pdf']/np.sum(pdfs['data_scr_pdf']))
+    #plt.plot(pdfs['binned_data']/float(np.sum(pdfs['binned_data'])))
+    plt.plot(pdfs['signal_scr_pdf']/np.sum(pdfs['signal_scr_pdf'])*xi)
+
     plt.show()
 

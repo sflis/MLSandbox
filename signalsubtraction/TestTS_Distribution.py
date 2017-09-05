@@ -11,11 +11,11 @@ import dashi
 dashi.visual()
 
 def plotpdfs(pdfs):
-    plt.plot(pdfs['sig'])
-    plt.plot(pdfs['bg'])
-    plt.plot(pdfs['sig_scr'])
+    plt.plot(pdfs['signal_pdf'])
+    plt.plot(pdfs['data_scr_pdf'])
+    plt.plot(pdfs['signal_scr_pdf'])
     plt.figure()
-    plt.plot(pdfs['data_binned'])
+    plt.plot(pdfs['binned_scr_data'])
     plt.show()
 
 def setup_sc_llh_p(pdfs, seed=1):
@@ -49,6 +49,7 @@ def setup_sc_llh_p(pdfs, seed=1):
                                                                         seed)
         return llh    
 def setup_sc_llh(pdfs, seed=1):
+        #plotpdfs(pdfs)
         x = [1,10]
         sig_exp = MLSandbox.Distribution(pdfs['signal_pdf'], min(x), max(x), 1)
         bg_exp = MLSandbox.Distribution(pdfs['data_scr_pdf'], min(x), max(x), 1)
@@ -136,7 +137,7 @@ def compute_TS_distr(dec ,n_trials,selection,bias_col):
                         llh.SetEvents(pdfs['binned_scr_data'])
                         mini.ComputeBestFit(llh)
                         bias_col[l][dec].append(mini.bestFitLLH-llh.EvaluateLLH(0.0))
-                            
+                        #print(mini.bestFit)
                     except Exception, e:
                         print('Error with %s likelihood:' %l,e)
 
@@ -148,12 +149,13 @@ def compute_TS_distr(dec ,n_trials,selection,bias_col):
 
 
 if (__name__ == "__main__"):
-    import ToySimulationHealpix as toy_sim
+    #import ToySimulationHealpix as toy_sim
+    import SimpleToyModel as toy_sim
     import sys
     import time
     import copy
     seed = int(sys.argv[1])
-    source_ext = int(sys.argv[2])
+    source_ext = float(sys.argv[2])
     #reco = sys.argv[2]
     w2xis = np.linspace(0,1,20)
     bias = dict()
@@ -164,11 +166,11 @@ if (__name__ == "__main__"):
     ts_distr = copy.deepcopy(bias)
     #bias['no_correction'] = dict()
 
-    bg_shape='linear_slope'#='linear_slope'#'fisher60'
-    n_events = 2.5e4
+    bg_shape='flat'#='linear_slope'#'fisher60'
+    n_events = 2.5e5
     upper_sig_frac = n_events*0.08
     #source_ext = 5
-    n_side=32
+    n_side=64
     bg = toy_sim.bg_model(n_events, toy_sim.bg_models[bg_shape], seed=seed)
     sig = toy_sim.sig_model(source_ext*np.pi/180,(-80*np.pi/180,266*np.pi/180), n_side = n_side, seed=seed)
     selection = toy_sim.ToySimulation(bg, sig, n_side = n_side)

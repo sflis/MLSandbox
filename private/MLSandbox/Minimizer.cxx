@@ -32,7 +32,20 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     if( (f_2 - f_1) <= 0){
         bestFit_ = minXi_;
         bestFitLLH_ = f_1;
+
         return bestFitLLH_;
+
+        // lPoint =-0.001;
+        // while(f_1 > f_2){
+        //     mPoint = lPoint;
+        //     lPoint += -0.001;
+        //     f_1 = lh.EvaluateLLH(lPoint);               
+        // }
+        // // rPoint = 0.0;        
+        // if(isnan(f_1)){
+        //     lPoint += 0.001;
+        //     mPoint += 0.001;
+        // }
         //Searching for the right interval
         /*
         rPoint = lPoint;
@@ -45,30 +58,31 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
             i++;
         }*/
     }
-    //else{
-        //Searching for the right interval
-        rPoint = lPoint+searchInterval/2;
-        f_2 = lh.EvaluateLLH(rPoint);
-        
-        while(f_2 > f_1 && rPoint < 1.0 && rPoint<maxXi_){
-            rPoint += searchInterval;
-            f_1 = f_2;
-            f_2 = lh.EvaluateLLH(rPoint);
-            i++;
-        }
-    //}
-    if(rPoint>1.0)
-        rPoint=1.0;
-    
-    if(rPoint>maxXi_)
-        rPoint=maxXi_;
-    
-    if(i==0){
-        mPoint = (rPoint-lPoint)*0.5;
-    }
     else{
-        lPoint = rPoint - searchInterval*1.5;
-        mPoint = rPoint - searchInterval;
+            //Searching for the right interval
+            rPoint = lPoint+searchInterval/2;
+            f_2 = lh.EvaluateLLH(rPoint);
+            
+            while(f_2 > f_1 && rPoint < 1.0 && rPoint<maxXi_){
+                rPoint += searchInterval;
+                f_1 = f_2;
+                f_2 = lh.EvaluateLLH(rPoint);
+                i++;
+            }
+        //}
+        if(rPoint>1.0)
+            rPoint=1.0;
+        
+        if(rPoint>maxXi_)
+            rPoint=maxXi_;
+        
+        if(i==0){
+            mPoint = (rPoint-lPoint)*0.5;
+        }
+        else{
+            lPoint = rPoint - searchInterval*1.5;
+            mPoint = rPoint - searchInterval;
+        }
     }
     // Variables needed for the gsl minimizer
     int status;
@@ -89,7 +103,6 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     double f_max = llh.function(rPoint, &lh);
     double f_lower = llh.function(lPoint, &lh); 
     double mllh = llh.function(mPoint, &lh);
-
     if(mPoint>lh.MaxXiBound() && lh.MaxXiBound()>0){
         mPoint = lh.MaxXiBound()-1e-14;
         mllh = llh.function(mPoint, &lh);
