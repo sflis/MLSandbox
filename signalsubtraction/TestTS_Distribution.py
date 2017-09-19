@@ -149,13 +149,15 @@ def compute_TS_distr(dec ,n_trials,selection,bias_col):
 
 
 if (__name__ == "__main__"):
-    #import ToySimulationHealpix as toy_sim
-    import SimpleToyModel as toy_sim
+    import ToySimulationHealpix as toy_sim
+    #import SimpleToyModel as toy_sim
     import sys
     import time
     import copy
     seed = int(sys.argv[1])
     source_ext = float(sys.argv[2])
+    n_events = float(sys.argv[3])
+    source_model = sys.argv[4]
     #reco = sys.argv[2]
     w2xis = np.linspace(0,1,20)
     bias = dict()
@@ -167,19 +169,34 @@ if (__name__ == "__main__"):
     #bias['no_correction'] = dict()
 
     bg_shape='flat'#='linear_slope'#'fisher60'
-    n_events = 2.5e5
+    #n_events = 2.5e5
     upper_sig_frac = n_events*0.08
     #source_ext = 5
     n_side=64
     bg = toy_sim.bg_model(n_events, toy_sim.bg_models[bg_shape], seed=seed)
-    sig = toy_sim.sig_model(source_ext*np.pi/180,(-80*np.pi/180,266*np.pi/180), n_side = n_side, seed=seed)
+    data = dict()
+    if(source_model == 'SingleSource'):
+        dec = -50
+        sig = toy_sim.sig_model(source_ext*np.pi/180,(dec*np.pi/180,266*np.pi/180), n_side = n_side, seed=seed)
+        data['source_ext'] = source_ext
+        data['source_model'] = 'SingleSource'
+    elif(source_model == 'ComplexSource'):
+        #dec = -29
+        sig = toy_sim.complexsource(2.*np.pi/180, nsources=int(source_ext), n_side = n_side, seed=seed)
+        data['n_sources'] = source_ext
+        data['source_ext'] = 2.
+        data['source_model'] = 'ComplexSource'
+        #data['declination'] = dec
+
+    #sig = toy_sim.sig_model(source_ext*np.pi/180,(-80*np.pi/180,266*np.pi/180), n_side = n_side, seed=seed)
+    
     selection = toy_sim.ToySimulation(bg, sig, n_side = n_side)
 
 
     n_trials = 10000
     time0 = time.time()
     count = 1
-    data = dict()
+    
     data['nevents'] = n_events
     data['source_ext'] = source_ext
     data['bg_shape'] = bg_shape
@@ -190,11 +207,15 @@ if (__name__ == "__main__"):
 
     import pickle
     for i in range(1):
-        for dec in np.linspace(-np.pi/2*0.95,np.pi/2*0.95,100):
+        for dec in np.array([85.,60.,30.,0.])*np.pi/180.:#np.linspace(-np.pi/2*0.95,np.pi/2*0.95,100):
             print(dec*180/np.pi)
             try:
                 time1 = time.time()
-                sig = toy_sim.sig_model(source_ext*np.pi/180,(dec,266*np.pi/180), n_side = n_side, seed=seed)
+                if(source_model == 'SingleSource'):
+                    sig = toy_sim.sig_model(source_ext*np.pi/180,(dec*np.pi/180,266*np.pi/180), n_side = n_side, seed=seed)
+                elif(source_model == 'ComplexSource'):
+                    sig = toy_sim.complexsource(2.*np.pi/180, nsources=int(source_ext), n_side = n_side, seed=seed)
+                #sig = toy_sim.sig_model(source_ext*np.pi/180,(dec,266*np.pi/180), n_side = n_side, seed=seed)
                 selection = toy_sim.ToySimulation(bg, sig, n_side = n_side)
                 compute_TS_distr(dec, n_trials, selection, ts_distr)
 

@@ -132,11 +132,11 @@ class PlotTablePublisher(object):
         #s += "+-------------------+----------------------------------------------------------------+\n"
         #s += "| Description       | Plot                                                           |\n"
         #s += "+===================+================================================================+\n"
-        print(self.figures)
+        # print(self.figures)
         for f in self.figures:
-            print("one",f)
-            print("two",f[0])
-            print("three",f[1])
+            #print("one",f)
+            #print("two",f[0])
+            #print("three",f[1])
             s +=("|%-"+str(self.col1)+"s|%-"+str(self.col2)+"s|\n")%(f[1][:self.col1],".. image:: "+f[0])
             s +=("|%-"+str(self.col1)+"s|   %-"+str(self.col2-3)+"s|\n")%("",":width: 400px")
             s +=("|%-"+str(self.col1)+"s|   %-"+str(self.col2-3)+"s|\n")%("",":height: 300px")

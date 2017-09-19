@@ -372,10 +372,10 @@ if (__name__ == "__main__"):
     bmodel = bg_models['flat'] #The background model 
     source_ext = 5#Source extension in deg
     source_dec = -50 #Source declination in deg
-    nsources = 1900#Number of sources (only valid for complex source)
+    nsources = 600#Number of sources (only valid for complex source)
     bg = bg_model(N,bmodel,seed =seed)
-    sig = sig_model(source_ext*np.pi/180,(source_dec*np.pi/180,266*np.pi/180),n_side = n_side,seed = seed)
-    #sig = complexsource(source_ext*np.pi/180,n_side = n_side,nsources=nsources,seed = seed)
+    #sig = sig_model(source_ext*np.pi/180,(source_dec*np.pi/180,266*np.pi/180),n_side = n_side,seed = seed)
+    sig = complexsource(source_ext*np.pi/180,n_side = n_side,nsources=nsources,seed = seed)
     
 
     selection = ToySimulation(bg,sig,n_side = n_side)
