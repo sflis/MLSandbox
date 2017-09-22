@@ -21,6 +21,7 @@
 #include <inttypes.h>
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_min.h>
+#include <limits>
 
 #include "Likelihood.h"
 /**class: Minimizer
@@ -31,7 +32,11 @@ class Minimizer{
 
 public:
 
-    Minimizer():nIterations_(0),minXi_(1e-15),maxXi_(1.0){
+    Minimizer():nIterations_(0),
+                minXi_(-1.0),
+                maxXi_(1.0),
+                minMinimizerXi_(-1.0),
+                maxMinimizerXi_(1.0){
         const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
         ms_ = gsl_min_fminimizer_alloc (T);
         gsl_set_error_handler_off();
@@ -46,23 +51,31 @@ public:
 
     ~Minimizer(){gsl_min_fminimizer_free (ms_);}
 
-    void SetBoundaries(double min, double max){minXi_ = min; maxXi_ = max;}
+    void SetBoundaries(double min, double max){minMinimizerXi_ = min; maxMinimizerXi_ = max;}
     ///Computes the best fit given a Likelihood
     ///\param lh a likelihood object
     ///\return best fit
     double ComputeBestFit(Likelihood &lh);
+
     ///Best fit of the likelihood parameter from the last fit
     double bestFit_;
+
     ///Log of the likelihood value at the best fit
     double bestFitLLH_;
 
     uint64_t nIterations_;
 
+
+    //Minimizer settings
+    double minMinimizerXi_;
+
+    double maxMinimizerXi_;
+private:
+    
     double minXi_;
 
     double maxXi_;
 
-private:
     gsl_min_fminimizer *ms_;
 
 
