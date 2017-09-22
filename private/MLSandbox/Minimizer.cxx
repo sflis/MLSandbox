@@ -11,65 +11,98 @@
 #include <iostream>
 #include <string>
 using namespace std;
-//_____________________________________________________________________________
+
 double Minimizer::ComputeBestFit(Likelihood &lh){
     /// Determining the best fit (maximizing the likelihood) with the gsl library minimizer 
     /// using brent's method.
-    /// domain mu=[0,nObs].
     lh.MinimizerConditions(*this);
     double searchInterval = 5e-3;
-    double lPoint = minXi_; //Left starting point of the search interval method
-    double rPoint = lPoint + searchInterval;//Right starting point of the search interval
+    double lPoint = 0; //Left starting point of the search interval method
+    double rPoint = 1e-7;//Right starting point of the search interval
     double interval = rPoint - lPoint;
     double mPoint = interval/2 + lPoint; //Middle slope
-    double f_1 = lh.EvaluateLLH(lPoint);
-    double f_2 = lh.EvaluateLLH((minXi_+1e-5));
+    double lllh = lh.EvaluateLLH(lPoint);
+    double rllh = lh.EvaluateLLH(rPoint);
     char error_str[300]; 
+    double max = 0;
+    double mllh =0;
 
-    // For the boundary case best fit mu = 0 the slope is always negative and we only need to compute
-    // one slope.
-    unsigned int i = 0;
-    if( (f_2 - f_1) <= 0){
-        bestFit_ = minXi_;
-        bestFitLLH_ = f_1;
-        return bestFitLLH_;
-        //Searching for the right interval
-        /*
-        rPoint = lPoint;
-        lPoint = -searchInterval/2;
-        f_2 = lh.EvaluateLLH(lPoint);
-        while(f_2 > f_1 && lPoint > -1.0 ){//&& lPoint<maxXi_
-            lPoint -= searchInterval;
-            f_1 = f_2;
-            f_2 = lh.EvaluateLLH(lPoint);
-            i++;
-        }*/
+    minXi_ = minMinimizerXi_;
+    maxXi_ = maxMinimizerXi_;
+    //Finding the general intervall in which 
+    //the minimizer should work in
+    if(lllh<rllh){//max of llh is at xi>0
+        mllh = rllh;
+        mPoint =rPoint;
     }
-    //else{
-        //Searching for the right interval
-        rPoint = lPoint+searchInterval/2;
-        f_2 = lh.EvaluateLLH(rPoint);
-        
-        while(f_2 > f_1 && rPoint < 1.0 && rPoint<maxXi_){
-            rPoint += searchInterval;
-            f_1 = f_2;
-            f_2 = lh.EvaluateLLH(rPoint);
-            i++;
-        }
-    //}
-    if(rPoint>1.0)
-        rPoint=1.0;
+    else{//max of llh is at xi<0
+        searchInterval *= -0.2;
+        mllh = lllh;
+        mPoint = lPoint;
+    }
+    int i =0;
     
-    if(rPoint>maxXi_)
-        rPoint=maxXi_;
-    
-    if(i==0){
-        mPoint = (rPoint-lPoint)*0.5;
+    do{
+        max = mllh;
+        mPoint+=searchInterval;
+        mllh = lh.EvaluateLLH(mPoint);
+        i++;  
+    }while(mllh>max && mPoint>minXi_ && mPoint<maxXi_);
+       
+    if(lllh>rllh){
+        lPoint = mPoint;
+        mPoint = mPoint - searchInterval;
+        rPoint = mPoint - searchInterval;
     }
     else{
-        lPoint = rPoint - searchInterval*1.5;
-        mPoint = rPoint - searchInterval;
+        rPoint = mPoint;
+        mPoint = mPoint - searchInterval;
+        lPoint = mPoint - searchInterval;   
     }
+
+    if(lPoint<minXi_){
+        lPoint=minXi_;
+        if(mPoint<=lPoint)
+            mPoint = lPoint+1e-8;
+
+    }
+    if(rPoint>maxXi_){
+        rPoint=maxXi_;
+        if(mPoint>=rPoint)
+            mPoint = rPoint-1e-8;
+    }
+    
+    //The left boundary can be undefined and thus
+    //needs to be moved closer to the mid point
+    lllh = lh.EvaluateLLH(lPoint);
+    if(isnan(lllh)){
+        double nmPoint = (mPoint-lPoint)/2 + lPoint;
+        double nllh = lh.EvaluateLLH(nmPoint);
+        double nlPoint = lPoint;
+        
+        while(nmPoint-nlPoint>1e-7 or isnan(nllh)){
+            if(isnan(nllh)){
+                nlPoint = nmPoint;
+                nmPoint = (mPoint-nlPoint)/2 + nlPoint;
+                nllh = lh.EvaluateLLH(nmPoint);
+            }
+            else{   
+                nlPoint = (nmPoint-nlPoint)/2 + nlPoint;
+                nllh = lh.EvaluateLLH(nlPoint);
+            }
+            
+        }
+        //f(mPoint) might be larger than
+        //f(nlPooint)
+        if(nllh>mllh)
+            mPoint = nmPoint;
+
+        lPoint = nlPoint;
+        
+    }
+
+    
+
     // Variables needed for the gsl minimizer
     int status;
     int  max_iter = 30;
@@ -79,32 +112,39 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     llh.function = lh.CallBackFcn();
     llh.params = &lh;
 
+    //switching to -llh
+    rllh = llh.function(rPoint, &lh);
+    lllh = llh.function(lPoint, &lh); 
+    mllh = llh.function(mPoint, &lh);
     
-    // Since we cannot garantee f(a)>f(x)<f(b) for all x in [a,b] we check which of the boundary
-    // function values are bigger and use that as the boundary value for both f(a) and f(b)
-    // when initializing the minimizer.
-    // This circumvents the check done at initialization of the minimizer which would faultly state
-    // that there is no minimum between a and b if our guess f(x) would happen to be bigger than a
-    // or b.
-    double f_max = llh.function(rPoint, &lh);
-    double f_lower = llh.function(lPoint, &lh); 
-    double mllh = llh.function(mPoint, &lh);
+    //Testing if min is at the boundary
+    //or close to boundary
+    double bllh = llh.function(lPoint+1e-8,&lh);
+    if(lllh<bllh && lllh<mllh){
+        bestFit_ = lPoint;
+        bestFitLLH_ = lh.EvaluateLLH(bestFit_);
+        return bestFitLLH_;
+    }
+    else if(lllh<mllh && lllh>bllh){
+        mllh  =bllh;
+        mPoint = lPoint+1e-8;
+    }
 
     if(mPoint>lh.MaxXiBound() && lh.MaxXiBound()>0){
         mPoint = lh.MaxXiBound()-1e-14;
         mllh = llh.function(mPoint, &lh);
         if(mPoint<lPoint){
             lPoint = minXi_;
-            f_lower = llh.function(lPoint, &lh);
+            lllh = llh.function(lPoint, &lh);
         }   
     }       
 
-    if(f_max!=f_max){
+    if(rllh!=rllh){
         sprintf(error_str,"Likelihood evaluation returns NaN\n error caught at at line %d in file %s",__LINE__,__FILE__);
         throw std::runtime_error(std::string(error_str));
     }
 
-    if(std::isinf(f_max)){
+    if(std::isinf(rllh)){
         sprintf(error_str,"Likelihood evaluation returns inf\n error caught at at line %d in file %s",__LINE__,__FILE__);
         throw std::runtime_error(std::string(error_str));
     }
@@ -119,16 +159,19 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
         sprintf(error_str,"Likelihood evaluation returns inf\n error caught at at line %d in file %s",__LINE__,__FILE__);
         throw std::runtime_error(std::string(error_str));
     }    
+    
     status = gsl_min_fminimizer_set_with_values(ms_, &llh,
                                        mPoint, mllh,
-                                       lPoint, f_max,
-                                       rPoint, f_max);
+                                       lPoint, lllh,
+                                       rPoint, rllh);
     
     if(status != 0 && status != GSL_CONTINUE){
             
             std::string error(gsl_strerror (status));
             sprintf(error_str,"\n error caught at at line %d in file %s with error code %d",__LINE__,__FILE__,status);
             std::string error_continued(error_str);
+            std::cout<<lPoint<<" "<<mPoint<<" "<<rPoint<<std::endl;
+            std::cout<<lllh-mllh<<" "<<mllh<<" "<<rllh-mllh<<std::endl;
             throw std::runtime_error(error+error_continued);
     }
 
@@ -147,7 +190,7 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
         lPoint = gsl_min_fminimizer_x_lower(ms_);
         rPoint = gsl_min_fminimizer_x_upper(ms_);
 
-        status = gsl_min_test_interval(lPoint, rPoint, 1e-5, 0.0);
+        status = gsl_min_test_interval(lPoint, rPoint, 1e-7, 0.0);
 
     }while (status == GSL_CONTINUE && nIterations_ < max_iter );
 
@@ -159,8 +202,8 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     }
 
     bestFit_ = gsl_min_fminimizer_x_minimum(ms_);
-    if(bestFit_ < minXi_)
-        bestFit_=minXi_;
+    //if(bestFit_ < minXi_)
+    //    bestFit_=minXi_;
     //evaluating the likelihood at the best fit point.
     bestFitLLH_ = lh.EvaluateLLH(bestFit_);
 
