@@ -112,22 +112,6 @@ double LikelihoodCollection::NoSigSubCorr(double xi)const{
         log( xi * signalPdf_[index] + bgFraction * bgPdf_[index]);
 
     }
-    // Adding poisson or binomial factor to the likelihood if enabled.
-    switch(usedModel_){
-        case Poisson:
-            llhSum += -(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_)) +
-            totEvents_*log(N_*(xi*sig_prob_ + (1 - xi)*bg_prob_));
-            break;
-        case Binomial:
-        {
-            double p = sig_prob_*xi + bg_prob_*(1 - xi);
-            llhSum += log(gsl_ran_binomial_pdf(totEvents_, p, N_));
-        }
-            break;
-        case None:
-        default:
-            break;
-    }
     // Counting the number of llh evaluations.
     nTotalLLHEvaluations_++;
 

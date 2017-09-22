@@ -131,6 +131,7 @@ def run_test(ns,n_trials,selection,bias_col):
             v[ns] = list()
 
     mini = MLSandbox.Minimizer()
+    mini.SetBoundaries(-1.,1.0)
     for i in range(n_trials):
         selection.generate_data_sample(ns)
         pdfs = selection.generate_pdfs()
@@ -139,7 +140,7 @@ def run_test(ns,n_trials,selection,bias_col):
         for k,llh in llhs.iteritems():
             if(k == 'collection'):
                 #continue
-                for l in ['standardSigSub','noSigSubCorr','NonTerminatedSigSub','HybridSigSub']:
+                for l in ['standardSigSub','noSigSubCorr','NonTerminatedSigSub']:
                     try:
 
                         llh.SetLLHFunction(l)
@@ -149,6 +150,18 @@ def run_test(ns,n_trials,selection,bias_col):
 
 
                     except Exception, e:
+                        xs = np.linspace(-0.0002,0.015,600)
+                        y = list()
+                        for x in xs:
+                            y.append(np.log(-llh.EvaluateLLH(x)))
+                        plt.figure()
+                        plt.plot(xs,y, color='black')
+                        plt.axvline(mini.bestFit, color='red')
+                        print(mini.bestFit)
+                        print(xs[np.argmin(y)])
+                        plt.axvline(xs[np.argmin(y)], color='blue',ls='--',lw=3)
+                        plt.show()
+
                         print('Error with %s likelihood:' %l,e)
             else:
                 continue
@@ -156,41 +169,33 @@ def run_test(ns,n_trials,selection,bias_col):
                 mini.ComputeBestFit(llh)
                 bias_col[k][ns].append(mini.bestFit*pdfs['n_data'])
 
-def compute_TS_distr(ns,n_trials,selection,bias_col):
-
-    best_fits = list()
-    for k,v in bias_col.iteritems():
-        if(not isinstance(v,dict) or (ns in v.keys())):
-            continue
-        else:
-            v[ns] = list()
-
+def compute_TS_distr(selection):    
     mini = MLSandbox.Minimizer()
-    selection.generate_data_sample(ns)
-    selection.generate_data_sample(ns)
-    selection.generate_data_sample(ns)
-    for i in range(n_trials):
-        pdfs = selection.generate_pdfs()
-        llhs = setup_sc_llh(pdfs)
-        for k,llh in llhs.iteritems():
-            if(k == 'collection'):
-                #continue
-                #plt.figure()
-                for l in ['standardSigSub','noSigSubCorr','HybridSigSub']:
-                    try:
-                        llh.SetLLHFunction(l)
-                        llh.SetEvents(pdfs['binned_scr_data'])
-                        mini.ComputeBestFit(llh)
-                        bias_col[l][ns].append(mini.bestFitLLH-llh.EvaluateLLH(0.0))
+    selection.generate_data_sample(0)
+    pdfs = selection.generate_pdfs()
+    llh = setup_sc_llh(pdfs)['collection']
+    xs = np.linspace(-0.0002,0.015,600)
 
-                    except Exception, e:
-                        print('Error with %s likelihood:' %l,e)
-                    
+    try:
+        llh.SetLLHFunction('noSigSubCorr')
+        llh.SetEvents(pdfs['binned_scr_data'])
+        #print(np.sum(np.isnan(pdfs['binned_scr_data'])))
+        #print(np.sum((pdfs['data_scr_pdf'])<=0))
+        mini.ComputeBestFit(llh)
 
-            else:
-                llh.SetEvents(pdfs['binned_scr_data'])
-                mini.ComputeBestFit(llh)
-                bias_col[k][ns].append(mini.bestFitLLH-llh.EvaluateLLH(0.0))
+    except Exception, e:
+        print('Error with %s likelihood:' %'standardSigSub',e)
+                        
+    y = list()
+    for x in xs:
+        y.append(np.log(-llh.EvaluateLLH(x)))
+    plt.figure()
+    plt.plot(xs,y, color='black')
+    plt.axvline(mini.bestFit, color='red')
+    print(mini.bestFit)
+    print(xs[np.argmin(y)])
+    plt.axvline(xs[np.argmin(y)], color='blue',ls='--',lw=3)
+    plt.show()
 
 
 if (__name__ == "__main__"):
@@ -201,6 +206,8 @@ if (__name__ == "__main__"):
     seed = int(sys.argv[1])
     source_model = sys.argv[2]
     ext_arg = float(sys.argv[3])
+    n_events = float(sys.argv[4])
+    dec = float(sys.argv[5])
     #reco = sys.argv[2]
     w2xis = np.linspace(0,1,20)
     bias = dict()
@@ -211,9 +218,10 @@ if (__name__ == "__main__"):
     ts_distr = copy.deepcopy(bias)
 
 
-    bg_shape='linear_slope'#='linear_slope'#'fisher60'
-    n_events = 2.5e5
-    upper_sig_frac = n_events*0.08
+    bg_shape='flat'#='linear_slope'#'fisher60'
+    #n_events = 2.5e5
+    upper_sig_frac = n_events*0.02
+    
 
     n_side=64
     bg = toy_sim.bg_model(n_events, toy_sim.bg_models[bg_shape], seed=seed)
@@ -224,7 +232,7 @@ if (__name__ == "__main__"):
     data['n_side'] = n_side
 
     if(source_model == 'SingleSource'):
-        dec = -50
+        #dec = -50
         sig = toy_sim.sig_model(ext_arg*np.pi/180,(dec*np.pi/180,266*np.pi/180), n_side = n_side, seed=seed)
         data['source_ext'] = ext_arg
         data['declination'] = dec
@@ -236,7 +244,7 @@ if (__name__ == "__main__"):
         data['declination'] = dec
     
     selection = toy_sim.ToySimulation(bg, sig, n_side = n_side)
-    n_trials = 100
+    n_trials = 10
     time0 = time.time()
     count = 1
 
@@ -245,12 +253,12 @@ if (__name__ == "__main__"):
     #plotpdfs(pdfs)
 
     import pickle
-    for i in range(60):
-        for ns in np.linspace(0,upper_sig_frac,80):
+    for i in range(100):
+        for j,ns in enumerate(np.linspace(0,upper_sig_frac,30)):
             print(ns)
             try:
                 time1 = time.time()
-                run_test(int(ns), n_trials, selection, bias)#,w2xis)
+                run_test(int(ns), n_trials+int(80./(j**2+1)), selection, bias)#,w2xis)compute_TS_distr(selection)#
                 time2 = time.time()
                 dtime = time2-time1
                 print(dtime)
