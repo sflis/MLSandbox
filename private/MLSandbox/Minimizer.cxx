@@ -77,13 +77,13 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     //The left boundary can be undefined and thus
     //needs to be moved closer to the mid point
     lllh = lh.EvaluateLLH(lPoint);
-    if(isnan(lllh)){
+    if(std::isnan(lllh)){
         double nmPoint = (mPoint-lPoint)/2 + lPoint;
         double nllh = lh.EvaluateLLH(nmPoint);
         double nlPoint = lPoint;
         
-        while(nmPoint-nlPoint>1e-7 or isnan(nllh)){
-            if(isnan(nllh)){
+        while(nmPoint-nlPoint>1e-7 or std::isnan(nllh)){
+	    if(std::isnan(nllh)){
                 nlPoint = nmPoint;
                 nmPoint = (mPoint-nlPoint)/2 + nlPoint;
                 nllh = lh.EvaluateLLH(nmPoint);
@@ -205,11 +205,11 @@ double Minimizer::ComputeBestFit(Likelihood &lh){
     }
 
     bestFit_ = gsl_min_fminimizer_x_minimum(ms_);
-    //if(bestFit_ < minXi_)
-    //    bestFit_=minXi_;
+
     //evaluating the likelihood at the best fit point.
     bestFitLLH_ = lh.EvaluateLLH(bestFit_);
 
     return bestFitLLH_;
 
 }
+
