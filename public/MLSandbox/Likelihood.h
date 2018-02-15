@@ -16,8 +16,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 
-#ifndef FELDMAN_COUSINS_LIKELIHOOD_H
-#define FELDMAN_COUSINS_LIKELIHOOD_H
+#ifndef MLSANDBOX_LIKELIHOOD_H
+#define MLSANDBOX_LIKELIHOOD_H
 
 #include "Distribution.h"
 

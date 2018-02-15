@@ -13,8 +13,8 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>
-#ifndef BINNED_DISTRIBUTION_H
-#define BINNED_DISTRIBUTION_H
+#ifndef MLSANDBOX_BINNED_DISTRIBUTION_H
+#define MLSANDBOX_BINNED_DISTRIBUTION_H
 
 #include <inttypes.h>
 #include <vector>

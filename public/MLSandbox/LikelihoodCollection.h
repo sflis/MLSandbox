@@ -16,8 +16,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 
-#ifndef MLSANDBOX_LikelihoodCollection_H
-#define MLSANDBOX_LikelihoodCollection_H
+#ifndef MLSANDBOX_LIKELIHOODCOLLECTION_H
+#define MLSANDBOX_LIKELIHOODCOLLECTION_H
 #include "MLSandbox/Likelihood.h"
 #include <iostream>
 #include <string>
