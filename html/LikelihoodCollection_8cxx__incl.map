@@ -1,7 +1,7 @@
 <map id="/home/travis/build/sflis/MLSandbox/private/MLSandbox/LikelihoodCollection.cxx" name="/home/travis/build/sflis/MLSandbox/private/MLSandbox/LikelihoodCollection.cxx">
-<area shape="rect" id="node2" href="$LikelihoodCollection_8h.html" title="MLSandbox/LikelihoodCollection.h" alt="" coords="91,109,313,136"/>
-<area shape="rect" id="node21" href="$Minimizer_8h.html" title="MLSandbox/Minimizer.h" alt="" coords="628,109,791,136"/>
-<area shape="rect" id="node3" href="$Likelihood_8h.html" title="MLSandbox/Likelihood.h" alt="" coords="389,184,552,211"/>
-<area shape="rect" id="node4" href="$Distribution_8h.html" title="Distribution.h" alt="" coords="675,259,773,285"/>
-<area shape="rect" id="node8" href="$RNG_8h.html" title="RNG.h" alt="" coords="477,333,539,360"/>
+<area shape="rect" id="node2" href="$LikelihoodCollection_8h.html" title="MLSandbox/LikelihoodCollection.h" alt="" coords="127,109,349,136"/>
+<area shape="rect" id="node21" href="$Minimizer_8h.html" title="MLSandbox/Minimizer.h" alt="" coords="823,109,985,136"/>
+<area shape="rect" id="node3" href="$Likelihood_8h.html" title="MLSandbox/Likelihood.h" alt="" coords="427,184,591,211"/>
+<area shape="rect" id="node4" href="$Distribution_8h.html" title="Distribution.h" alt="" coords="379,259,477,285"/>
+<area shape="rect" id="node8" href="$RNG_8h.html" title="RNG.h" alt="" coords="163,333,225,360"/>
 </map>

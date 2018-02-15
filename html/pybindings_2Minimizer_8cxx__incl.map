@@ -1,7 +1,7 @@
 <map id="/home/travis/build/sflis/MLSandbox/private/pybindings/Minimizer.cxx" name="/home/travis/build/sflis/MLSandbox/private/pybindings/Minimizer.cxx">
-<area shape="rect" id="node2" href="$Minimizer_8h.html" title="MLSandbox/Minimizer.h" alt="" coords="256,109,419,136"/>
-<area shape="rect" id="node22" href="$bindingutils_8h.html" title="bindingutils.h" alt="" coords="1472,109,1571,136"/>
-<area shape="rect" id="node6" href="$Likelihood_8h.html" title="Likelihood.h" alt="" coords="411,199,502,225"/>
-<area shape="rect" id="node7" href="$Distribution_8h.html" title="Distribution.h" alt="" coords="94,288,192,315"/>
-<area shape="rect" id="node10" href="$RNG_8h.html" title="RNG.h" alt="" coords="337,363,399,389"/>
+<area shape="rect" id="node2" href="$Minimizer_8h.html" title="MLSandbox/Minimizer.h" alt="" coords="236,109,398,136"/>
+<area shape="rect" id="node23" href="$bindingutils_8h.html" title="bindingutils.h" alt="" coords="1480,109,1578,136"/>
+<area shape="rect" id="node7" href="$Likelihood_8h.html" title="Likelihood.h" alt="" coords="418,199,509,225"/>
+<area shape="rect" id="node8" href="$Distribution_8h.html" title="Distribution.h" alt="" coords="101,288,200,315"/>
+<area shape="rect" id="node11" href="$RNG_8h.html" title="RNG.h" alt="" coords="344,363,406,389"/>
 </map>

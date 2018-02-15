@@ -460,5 +460,5 @@ Patching output file 82/85
 Patching output file 83/85
 Patching output file 84/85
 Patching output file 85/85
-lookup cache used 502/65536 hits=2145 misses=519
+lookup cache used 504/65536 hits=2155 misses=521
 finished...

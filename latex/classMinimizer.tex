@@ -32,9 +32,9 @@ double \hyperlink{classMinimizer_ace3797e38fc23cf74bf05a3b1c3cdc36}{best\-Fit\-L
 \begin{DoxyCompactList}\small\item\em Log of the likelihood value at the best fit. \end{DoxyCompactList}\item 
 uint64\-\_\-t \hyperlink{classMinimizer_ac2b79419b1d5230732bdf9c3f4ead23e}{n\-Iterations\-\_\-}
 \item 
-double \hyperlink{classMinimizer_afb5a706ff1374955187d666634f2ac63}{min\-Xi\-\_\-}
+double \hyperlink{classMinimizer_a8628b992d7975decfd81d4f606072352}{min\-Minimizer\-Xi\-\_\-}
 \item 
-double \hyperlink{classMinimizer_af45f99d12232ed7f056ad16182392752}{max\-Xi\-\_\-}
+double \hyperlink{classMinimizer_adfbb5e367fbe3893a3bb97cfead25183}{max\-Minimizer\-Xi\-\_\-}
 \end{DoxyCompactItemize}
 
 
@@ -83,7 +83,7 @@ Computes the best fit given a \hyperlink{classLikelihood}{Likelihood}
 \begin{DoxyReturn}{Returns}
 best fit 
 \end{DoxyReturn}
-Determining the best fit (maximizing the likelihood) with the gsl library minimizer using brent's method. domain mu=\mbox{[}0,n\-Obs\mbox{]}. \hypertarget{classMinimizer_af529621f077cc602c695d1e60e5adbba}{\index{Minimizer@{Minimizer}!Set\-Boundaries@{Set\-Boundaries}}
+Determining the best fit (maximizing the likelihood) with the gsl library minimizer using brent's method. \hypertarget{classMinimizer_af529621f077cc602c695d1e60e5adbba}{\index{Minimizer@{Minimizer}!Set\-Boundaries@{Set\-Boundaries}}
 \index{Set\-Boundaries@{Set\-Boundaries}!Minimizer@{Minimizer}}
 \subsubsection[{Set\-Boundaries}]{\setlength{\rightskip}{0pt plus 5cm}void Minimizer\-::\-Set\-Boundaries (
 \begin{DoxyParamCaption}
@@ -108,12 +108,12 @@ Best fit of the likelihood parameter from the last fit.
 
 Log of the likelihood value at the best fit. 
 
-\hypertarget{classMinimizer_af45f99d12232ed7f056ad16182392752}{\index{Minimizer@{Minimizer}!max\-Xi\-\_\-@{max\-Xi\-\_\-}}
-\index{max\-Xi\-\_\-@{max\-Xi\-\_\-}!Minimizer@{Minimizer}}
-\subsubsection[{max\-Xi\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Minimizer\-::max\-Xi\-\_\-}}\label{classMinimizer_af45f99d12232ed7f056ad16182392752}
-\hypertarget{classMinimizer_afb5a706ff1374955187d666634f2ac63}{\index{Minimizer@{Minimizer}!min\-Xi\-\_\-@{min\-Xi\-\_\-}}
-\index{min\-Xi\-\_\-@{min\-Xi\-\_\-}!Minimizer@{Minimizer}}
-\subsubsection[{min\-Xi\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Minimizer\-::min\-Xi\-\_\-}}\label{classMinimizer_afb5a706ff1374955187d666634f2ac63}
+\hypertarget{classMinimizer_adfbb5e367fbe3893a3bb97cfead25183}{\index{Minimizer@{Minimizer}!max\-Minimizer\-Xi\-\_\-@{max\-Minimizer\-Xi\-\_\-}}
+\index{max\-Minimizer\-Xi\-\_\-@{max\-Minimizer\-Xi\-\_\-}!Minimizer@{Minimizer}}
+\subsubsection[{max\-Minimizer\-Xi\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Minimizer\-::max\-Minimizer\-Xi\-\_\-}}\label{classMinimizer_adfbb5e367fbe3893a3bb97cfead25183}
+\hypertarget{classMinimizer_a8628b992d7975decfd81d4f606072352}{\index{Minimizer@{Minimizer}!min\-Minimizer\-Xi\-\_\-@{min\-Minimizer\-Xi\-\_\-}}
+\index{min\-Minimizer\-Xi\-\_\-@{min\-Minimizer\-Xi\-\_\-}!Minimizer@{Minimizer}}
+\subsubsection[{min\-Minimizer\-Xi\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Minimizer\-::min\-Minimizer\-Xi\-\_\-}}\label{classMinimizer_a8628b992d7975decfd81d4f606072352}
 \hypertarget{classMinimizer_ac2b79419b1d5230732bdf9c3f4ead23e}{\index{Minimizer@{Minimizer}!n\-Iterations\-\_\-@{n\-Iterations\-\_\-}}
 \index{n\-Iterations\-\_\-@{n\-Iterations\-\_\-}!Minimizer@{Minimizer}}
 \subsubsection[{n\-Iterations\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Minimizer\-::n\-Iterations\-\_\-}}\label{classMinimizer_ac2b79419b1d5230732bdf9c3f4ead23e}

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['maxxi_5f',['maxXi_',['../classMinimizer.html#af45f99d12232ed7f056ad16182392752',1,'Minimizer']]],
+  ['maxminimizerxi_5f',['maxMinimizerXi_',['../classMinimizer.html#adfbb5e367fbe3893a3bb97cfead25183',1,'Minimizer']]],
   ['maxxibound',['MaxXiBound',['../classCombinedLikelihood.html#a2cf396d545d7873be85a9bbcb72f4b53',1,'CombinedLikelihood::MaxXiBound()'],['../classLikelihood.html#a948c31dcc4fe8efc7c39db49ad56c745',1,'Likelihood::MaxXiBound()'],['../classBinnedLikelihood.html#ab6144b4d092744dc9d5ee58a491bf77d',1,'BinnedLikelihood::MaxXiBound()'],['../classLikelihoodCollection.html#adc81d79fce77d226853f4cfcb33fb7a3',1,'LikelihoodCollection::MaxXiBound()'],['../classSignalContaminatedLH.html#a579d86a266c6ecb44cff26e47d141a9e',1,'SignalContaminatedLH::MaxXiBound()']]],
   ['minimizer',['Minimizer',['../classMinimizer.html',1,'Minimizer'],['../classMinimizer.html#a6954aac8325fa56845db3074b4a552d2',1,'Minimizer::Minimizer()'],['../classMinimizer.html#accc9c6d6c3724e4cd057ef4d00b45dfe',1,'Minimizer::Minimizer(const Minimizer &amp;min)']]],
   ['minimizer_2ecxx',['Minimizer.cxx',['../MLSandbox_2Minimizer_8cxx.html',1,'']]],
@@ -8,7 +8,7 @@ var searchData=
   ['minimizer_2eh',['Minimizer.h',['../Minimizer_8h.html',1,'']]],
   ['minimizer_5f',['minimizer_',['../classFeldmanCousinsAnalysis.html#a4a16f04a45c379c10b12f76714116226',1,'FeldmanCousinsAnalysis::minimizer_()'],['../classNeymanAnalysis.html#ab7b0eaaf2cb5b407f1496a745111f28e',1,'NeymanAnalysis::minimizer_()']]],
   ['minimizerconditions',['MinimizerConditions',['../classLikelihood.html#ae43d17adaa0b34b9da4948e262b8d898',1,'Likelihood::MinimizerConditions()'],['../classLikelihoodCollection.html#ae1d445fbfc327da63d469d67891dc7e3',1,'LikelihoodCollection::MinimizerConditions()'],['../classSignalContaminatedLH.html#ad991e7649ed72c411830cb0c7788dff4',1,'SignalContaminatedLH::MinimizerConditions()']]],
-  ['minxi_5f',['minXi_',['../classMinimizer.html#afb5a706ff1374955187d666634f2ac63',1,'Minimizer']]],
+  ['minminimizerxi_5f',['minMinimizerXi_',['../classMinimizer.html#a8628b992d7975decfd81d4f606072352',1,'Minimizer']]],
   ['minxibound',['MinXiBound',['../classLikelihood.html#a5af640d09a81f553b8331d2557b01aa6',1,'Likelihood::MinXiBound()'],['../classBinnedLikelihood.html#a16f5c7acb008393fcdb12df2524d7033',1,'BinnedLikelihood::MinXiBound()']]],
   ['mlsandbox',['mlsandbox',['../namespacemlsandbox.html',1,'']]],
   ['model',['Model',['../classLikelihoodCollection.html#a3d71df2ed0bdff414ae5fedb30f7cc76',1,'LikelihoodCollection::Model()'],['../classSignalContaminatedLH.html#a9d4a8fe949ffa894ce3dc79a79257c39',1,'SignalContaminatedLH::Model()']]],

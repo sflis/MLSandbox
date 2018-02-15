@@ -119,10 +119,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ace3797e38fc23cf74bf05a3b1c3cdc36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2b79419b1d5230732bdf9c3f4ead23e"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMinimizer.html#ac2b79419b1d5230732bdf9c3f4ead23e">nIterations_</a></td></tr>
 <tr class="separator:ac2b79419b1d5230732bdf9c3f4ead23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb5a706ff1374955187d666634f2ac63"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMinimizer.html#afb5a706ff1374955187d666634f2ac63">minXi_</a></td></tr>
-<tr class="separator:afb5a706ff1374955187d666634f2ac63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af45f99d12232ed7f056ad16182392752"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMinimizer.html#af45f99d12232ed7f056ad16182392752">maxXi_</a></td></tr>
-<tr class="separator:af45f99d12232ed7f056ad16182392752"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8628b992d7975decfd81d4f606072352"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMinimizer.html#a8628b992d7975decfd81d4f606072352">minMinimizerXi_</a></td></tr>
+<tr class="separator:a8628b992d7975decfd81d4f606072352"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfbb5e367fbe3893a3bb97cfead25183"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMinimizer.html#adfbb5e367fbe3893a3bb97cfead25183">maxMinimizerXi_</a></td></tr>
+<tr class="separator:adfbb5e367fbe3893a3bb97cfead25183"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A small wrapper class around the GSL minimizer. </p>
@@ -220,7 +220,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>best fit </dd></dl>
-<p>Determining the best fit (maximizing the likelihood) with the gsl library minimizer using brent's method. domain mu=[0,nObs]. </p>
+<p>Determining the best fit (maximizing the likelihood) with the gsl library minimizer using brent's method. </p>
 
 </div>
 </div>
@@ -287,24 +287,24 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af45f99d12232ed7f056ad16182392752"></a>
+<a class="anchor" id="adfbb5e367fbe3893a3bb97cfead25183"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double Minimizer::maxXi_</td>
+          <td class="memname">double Minimizer::maxMinimizerXi_</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="afb5a706ff1374955187d666634f2ac63"></a>
+<a class="anchor" id="a8628b992d7975decfd81d4f606072352"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double Minimizer::minXi_</td>
+          <td class="memname">double Minimizer::minMinimizerXi_</td>
         </tr>
       </table>
 </div><div class="memdoc">
