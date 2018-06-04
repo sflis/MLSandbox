@@ -24,3 +24,10 @@ you should be able to import MLSandbox in your python script simply with
 ```python
 import MLSandbox
 ```
+
+Status
+------
+* .. image:: https://travis-ci.org/sflis/MLSandbox.svg?branch=master
+    :target: https://travis-ci.org/sflis/MLSandbox
+    :alt: Test Status Travis-CI
+
