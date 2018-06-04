@@ -27,10 +27,8 @@ import MLSandbox
 
 Status
 ------
-.. image:: https://travis-ci.org/sflis/MLSandbox.svg?branch=master
-  :target: https://travis-ci.org/sflis/MLSandbox
-  :alt: Test Status Travis-CI
+Status of build: 
 
-* .. image:: http://img.shields.io/travis/gammapy/gammapy.svg?branch=master
-    :target: https://travis-ci.org/gammapy/gammapy
-    :alt: Test Status Travis-CI
+![Test Status Travis-CI](https://travis-ci.org/sflis/MLSandbox.svg?branch=master)
+  
+
